@@ -4,6 +4,9 @@
     <Filter Include="Source">
       <UniqueIdentifier>{33c7ae01-aa8a-46bd-8176-355d11be1050}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Imgui">
+      <UniqueIdentifier>{bf6e0236-93e2-41e0-9ca0-d167cc322e30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -47,6 +50,21 @@
     </ClCompile>
     <ClCompile Include="Source\Log.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_demo.cpp">
+      <Filter>Source\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_draw.cpp">
+      <Filter>Source\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_tables.cpp">
+      <Filter>Source\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_widgets.cpp">
+      <Filter>Source\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui.cpp">
+      <Filter>Source\Imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +121,24 @@
     </ClInclude>
     <ClInclude Include="Source\Log.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui_internal.h">
+      <Filter>Source\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imstb_rectpack.h">
+      <Filter>Source\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imstb_textedit.h">
+      <Filter>Source\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imstb_truetype.h">
+      <Filter>Source\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imconfig.h">
+      <Filter>Source\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui.h">
+      <Filter>Source\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
