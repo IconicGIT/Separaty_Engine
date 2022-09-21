@@ -4,7 +4,7 @@
 
 //#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
-ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL)
+ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled)//, music(NULL)
 {}
 
 // Destructor
@@ -14,7 +14,7 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
-	LOG("Loading Audio Mixer");
+	/*LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
 
@@ -41,15 +41,17 @@ bool ModuleAudio::Init()
 		ret = false;
 	}
 
-	return ret;
+	return ret;*/
+	return true;
 }
+
 
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
-	if(music != NULL)
+	/*if(music != NULL)
 	{
 		Mix_FreeMusic(music);
 	}
@@ -65,13 +67,14 @@ bool ModuleAudio::CleanUp()
 	Mix_CloseAudio();
 	Mix_Quit();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	return true;*/
 	return true;
 }
 
 // Play a music file
 bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 {
-	bool ret = true;
+	/*bool ret = true;
 	
 	if(music != NULL)
 	{
@@ -84,7 +87,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 			Mix_HaltMusic();
 		}
 
-		// this call blocks until fade out is done
+		 this call blocks until fade out is done
 		Mix_FreeMusic(music);
 	}
 
@@ -116,13 +119,14 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 	}
 
 	LOG("Successfully playing %s", path);
-	return ret;
+	return ret;*/
+	return true;
 }
 
 // Load WAV
 unsigned int ModuleAudio::LoadFx(const char* path)
 {
-	unsigned int ret = 0;
+	/*unsigned int ret = 0;
 
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
 
@@ -136,13 +140,14 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 		ret = fx.count();
 	}
 
-	return ret;
+	return ret;*/
+	return true;
 }
 
 // Play WAV
 bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 {
-	bool ret = false;
+	/*bool ret = false;
 
 	Mix_Chunk* chunk = NULL;
 	
@@ -152,5 +157,6 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 		ret = true;
 	}
 
-	return ret;
+	return ret;*/
+	return true;
 }
