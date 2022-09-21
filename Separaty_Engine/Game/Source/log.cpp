@@ -1,7 +1,8 @@
-#pragma once
+#include "Log.h"
 #include "Globals.h"
 
-void log(const char file[], int line, const char* format, ...)
+
+void Log(const char file[], int line, const char* format, ...)
 {
 	static char tmp_string[4096];
 	static char tmp_string2[4096];
@@ -12,5 +13,6 @@ void log(const char file[], int line, const char* format, ...)
 	vsprintf_s(tmp_string, 4096, format, ap);
 	va_end(ap);
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
-	OutputDebugString(tmp_string2);
+	LPCWSTR tmp = (LPCWSTR)tmp_string2;
+	OutputDebugString(tmp);
 }

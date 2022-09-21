@@ -18,9 +18,6 @@
     <ClCompile Include="Source\Light.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\log.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Timer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Log.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,6 +99,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Timer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Log.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
