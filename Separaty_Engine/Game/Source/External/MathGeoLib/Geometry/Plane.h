@@ -20,6 +20,9 @@
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
 
+#include "../glmath.h"
+#include "../Color.h"
+
 MATH_BEGIN_NAMESPACE
 
 /// Specifies a plane in 3D space. This plane is an affine 2D subspace of the 3D space, meaning

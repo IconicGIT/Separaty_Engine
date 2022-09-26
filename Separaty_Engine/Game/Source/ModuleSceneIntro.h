@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
-#include "p2DynArray.h"
 #include "Globals.h"
+#include "Primitive.h"
 
 class Primitive;
 class  PhysBody3D;
@@ -19,6 +19,11 @@ public:
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 
+	Prim_Plane plane;
+	Prim_Cube cube;
+	Prim_Sphere sphere;
+	Prim_Cylinder cil;
+
 private:
-	p2DynArray<Primitive*> primitives;
+	std::vector<Primitive*> primitives;
 };

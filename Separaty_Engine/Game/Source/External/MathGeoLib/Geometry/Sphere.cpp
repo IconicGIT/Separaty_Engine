@@ -1394,7 +1394,7 @@ Sphere Sphere::FitThroughPoints(const vec &a, const vec &b, const vec &c, const 
 StringT Sphere::ToString() const
 {
 	char str[256];
-	sprintf(str, "Sphere(pos:(%.2f, %.2f, %.2f) r:%.2f)",
+	sprintf_s(str, "Sphere(pos:(%.2f, %.2f, %.2f) r:%.2f)",
 		pos.x, pos.y, pos.z, r);
 	return str;
 }
@@ -1414,7 +1414,7 @@ StringT Sphere::SerializeToString() const
 StringT Sphere::SerializeToCodeString() const
 {
 	char str[256];
-	sprintf(str, "%.9g", r);
+	sprintf_s(str, "%.9g", r);
 	return "Sphere(" + pos.SerializeToCodeString() + "," + str + ")";
 }
 #endif

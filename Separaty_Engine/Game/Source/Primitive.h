@@ -2,6 +2,8 @@
 #pragma once
 #include "glmath.h"
 #include "Color.h"
+#include "MathGeoLib/Geometry/GeometryAll.h"
+
 
 enum PrimitiveTypes
 {
@@ -29,6 +31,10 @@ public:
 	Color color;
 	mat4x4 transform;
 	bool axis,wire;
+	float lineWidth;
+
+
+
 	//TODO 4: Add a PhysBody to the primitive
 
 protected:
@@ -37,12 +43,13 @@ protected:
 };
 
 // ============================================
-class Cube : public Primitive
+class Prim_Cube : public Primitive
 {
 public :
-	Cube();
-	Cube(float sizeX, float sizeY, float sizeZ);
+	Prim_Cube();
+	Prim_Cube(float sizeX, float sizeY, float sizeZ);
 
+	void SetSize(float sizeX, float sizeY, float sizeZ);
 protected:
 	void InnerRender() const;
 public:
@@ -50,38 +57,49 @@ public:
 };
 
 // ============================================
-class Sphere : public Primitive
+class Prim_Sphere : public Primitive
 {
 public:
-	Sphere(float radius = 1.f, float mass = 1.f);
+	Prim_Sphere(float radius = 1.f, float mass = 1.f);
 
+	void SetRadius(float radius, float mass = 1.f);
+	void SetColumns(int n);
+	void SetRows(int n);
 protected:
 	void InnerRender() const;
 public:
+	float slices, stacks;
 	float radius;
 };
 
 // ============================================
-class Cylinder : public Primitive
+class Prim_Cylinder : public Primitive
 {
 public:
-	Cylinder();
-	Cylinder(float radius, float height);
+	Prim_Cylinder();
+	Prim_Cylinder(float radius, float height, float columns);
+
+	void SetRadius(float radius);
+	void SetHeight(float height);
+	void SetColumns(float columns);
 
 protected:
 	void InnerRender() const;
 public:
 	float radius;
 	float height;
+	float columns;
 };
 
 // ============================================
-class Line : public Primitive
+class Prim_Line : public Primitive
 {
 public:
-	Line();
-	Line(float x, float y, float z);
+	Prim_Line();
+	Prim_Line(float x, float y, float z);
 
+	void SetOrigin(float x, float y, float z);
+	void SetDestination(float x, float y, float z);
 protected:
 	void InnerRender() const;
 public:
@@ -90,15 +108,20 @@ public:
 };
 
 // ============================================
-class Plane : public Primitive
+class Prim_Plane : public Primitive
 {
 public:
-	Plane();
-	Plane(float x, float y, float z, float d);
+	Prim_Plane();
+	Prim_Plane(float x, float y, float z, float d);
 
+	void SetNormal(float x, float y, float z);
+	void SetExtension(float e);
+
+	Plane plane;
 protected:
 	void InnerRender() const;
 public:
 	vec3 normal;
 	float constant;
+	float extension;
 };

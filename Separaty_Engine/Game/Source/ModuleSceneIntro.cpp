@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include "Primitive.h"
+
 
 
 
@@ -15,11 +15,14 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	LOG("Loading Intro assets");
+	DEBUG_LOG("Loading Intro assets");
 	bool ret = true;
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
+
+	plane.SetNormal(0, 1, 0);
+
 
 	return ret;
 }
@@ -27,13 +30,13 @@ bool ModuleSceneIntro::Start()
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
-	LOG("Unloading Intro scene");
+	DEBUG_LOG("Unloading Intro scene");
 
-	for (int n = 0; n < primitives.Count(); n++)
+	for (int n = 0; n < primitives.size(); n++)
 	{
 		delete primitives[n];
 	}
-	primitives.Clear();
+	primitives.clear();
 
 	return true;
 }
@@ -41,9 +44,30 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+
+	plane.Render();
+	//cube.Render();
+	//sphere.Render();
+	cil.Render();
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+	{
+		plane.SetExtension(10);
+		sphere.SetRadius(1);
+		sphere.SetColumns(5);
+		//sphere.SetRows(5);
+		cil.SetColumns(10);
+	}
+	else
+	{
+		plane.SetExtension(200);
+		sphere.SetRadius(1);
+
+		sphere.SetColumns(25);
+		sphere.SetRows(25);
+		cil.SetColumns(30);
+
+	}
 
 	if (App->debug == true)
 	{
@@ -57,10 +81,10 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 	//TODO 3: Nothing to do here. But it's good to know where all primitives are being updated
-	for (uint n = 0; n < primitives.Count(); n++)
-	{
-		primitives[n]->Update();
-	}
+	//for (uint n = 0; n < primitives.Count(); n++)
+	//{
+	//	primitives[n]->Update();
+	//}
 
 	return UPDATE_CONTINUE;
 }
@@ -68,10 +92,10 @@ update_status ModuleSceneIntro::Update(float dt)
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
 	//TODO 3: Nothing to do here. But it's good to know where all primitives are being rendered
-	for (uint n = 0; n < primitives.Count(); n++)
-	{
-		primitives[n]->Render();
-	}
+	//for (uint n = 0; n < primitives.Count(); n++)
+	//{
+	//	primitives[n]->Render();
+	//}
 
 	return UPDATE_CONTINUE;
 }

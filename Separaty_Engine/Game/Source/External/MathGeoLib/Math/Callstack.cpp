@@ -36,7 +36,7 @@ static StringT GetSymbolName(void *address, HANDLE hProcess)
 		{
 			// SymGetLineFromAddr64 returned success
 			char str[128];
-			sprintf(str, ":%u: ", line.LineNumber);
+			sprintf_s(str, ":%u: ", line.LineNumber);
 			return StringT(line.FileName) + str + pSymbol->Name;
 		}
 		else

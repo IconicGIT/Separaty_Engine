@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 
+
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	CalculateViewMatrix();
@@ -20,8 +21,9 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	LOG("Setting up the camera");
+	DEBUG_LOG("Setting up the camera");
 	bool ret = true;
+	
 
 	return ret;
 }
@@ -29,7 +31,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	DEBUG_LOG("Cleaning camera");
 
 	return true;
 }
@@ -37,6 +39,25 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+
+
+
+
+
+
+	//if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	//{
+	//	float numBetween1And10 = lcg.Float(1.f, 10.f);
+	//	DEBUG_LOG("random number: %f", numBetween1And10);
+	//}
+	//
+
+	
+
+
+
+
+
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 

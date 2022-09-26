@@ -8,7 +8,7 @@
 #include <stdint.h> // uint64_t etc.
 #include <assert.h> // assert
 #include <math.h> // ceil
-#include <stdio.h> // sprintf
+#include <stdio.h> // sprintf_s
 #include <stddef.h> // ptrdiff_t
 #include <limits.h> // INT_MIN
 #include <string.h> // strcpy
@@ -321,7 +321,7 @@ int i32_to_hex_string(int i, char *str)
 		*str++ = '-';
 		if (i == INT_MIN)
 		{
-			strcpy(str, "80000000");
+			strcpy_s(str, sizeof(char) * strlen(str), "80000000");
 			return 9; // == strlen("-80000000")
 		}
 		return u32_to_string((uint32_t)-i, str) + 1;
@@ -362,7 +362,7 @@ int i32_to_string(int i, char *str)
 		*str++ = '-';
 		if (i == INT_MIN)
 		{
-			strcpy(str, "2147483648");
+			strcpy_s(str, sizeof(char) * strlen(str), "2147483648");
 			return 11; // == strlen("-2147483648")
 		}
 		return u32_to_string((uint32_t)-i, str) + 1;
@@ -387,7 +387,7 @@ int dtoa_grisu3(double v, char *dst)
 		*dst = '\0';
 		return 3;
 #else
-		return sprintf(dst, "NaN(%08X%08X)", (uint32_t)(u64 >> 32), (uint32_t)u64);
+		return sprintf_s(dst, "NaN(%08X%08X)", (uint32_t)(u64 >> 32), (uint32_t)u64);
 #endif
 	}
 	// Prehandle negative values.
@@ -398,13 +398,13 @@ int dtoa_grisu3(double v, char *dst)
 	if (u64 == D64_EXP_MASK) { *s2++ = 'i'; *s2++ = 'n'; *s2++ = 'f'; *s2 = '\0'; return (int)(s2 - dst); }
 
 	success = grisu3(v, s2, &len, &d_exp);
-	// If grisu3 was not able to convert the number to a string, then use old sprintf (suboptimal).
+	// If grisu3 was not able to convert the number to a string, then use old sprintf_s (suboptimal).
 	if (!success)
 	{
 #ifdef __EMSCRIPTEN__
 		return js_double_to_string(v, dst);
 #else
-		return sprintf(s2, "%.17g", v) + (int)(s2 - dst);
+		return printf_s(s2, "%.17g", v) + (int)(s2 - dst);
 #endif
 	}
 

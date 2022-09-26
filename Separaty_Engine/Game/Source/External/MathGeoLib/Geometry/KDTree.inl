@@ -224,7 +224,12 @@ int KdTree<T>::TreeHeight(int nodeIndex) const
 	const KdTreeNode &node = nodes[nodeIndex];
 	if (node.IsLeaf())
 		return 1;
-	return 1 + std::max(TreeHeight(node.LeftChildIndex()), TreeHeight(node.RightChildIndex()));
+	
+	int a = TreeHeight(node.LeftChildIndex());
+	int b = TreeHeight(node.RightChildIndex());
+	int res = (((a) > (b)) ? (a) : (b));
+	//int a = std::max(TreeHeight(node.LeftChildIndex()), TreeHeight(node.RightChildIndex()));
+	return 1 + res;
 }
 
 template<typename T>

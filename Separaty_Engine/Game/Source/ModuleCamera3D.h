@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "MathGeoLib.h"
+#include "MathGeoLibFwd.h"
 
 class ModuleCamera3D : public Module
 {
@@ -27,6 +29,6 @@ public:
 	vec3 X, Y, Z, Position, Reference;
 
 private:
-
+	/*LCG lcg;*/
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

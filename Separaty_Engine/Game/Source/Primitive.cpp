@@ -8,7 +8,7 @@
 //#pragma comment (lib, "glut/glut32.lib")
 
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
+Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point), lineWidth(2.0f)
 {}
 
 // ------------------------------------------------------------
@@ -31,7 +31,7 @@ void Primitive::Render() const
 	if(axis == true)
 	{
 		// Draw Axis Grid
-		glLineWidth(2.0f);
+		glLineWidth(lineWidth);
 
 		glBegin(GL_LINES);
 
@@ -108,17 +108,24 @@ void Primitive::Scale(float x, float y, float z)
 }
 
 // CUBE ============================================
-Cube::Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
+Prim_Cube::Prim_Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
 
-Cube::Cube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
+Prim_Cube::Prim_Cube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
 
-void Cube::InnerRender() const
+void Prim_Cube::SetSize(float sizeX, float sizeY, float sizeZ)
+{
+	size.x = sizeX;
+	size.y = sizeY;
+	size.z = sizeZ;
+}
+
+void Prim_Cube::InnerRender() const
 {	
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
@@ -167,32 +174,63 @@ void Cube::InnerRender() const
 
 // SPHERE ============================================
 
-Sphere::Sphere(float _radius, float mass) : Primitive(), radius(_radius)
+Prim_Sphere::Prim_Sphere(float _radius, float mass) : Primitive(), radius(_radius), slices(25), stacks(25)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 	//TODO 4: Initialize the PhysBody to be a Sphere
 }
 
-void Sphere::InnerRender() const
+void Prim_Sphere::SetRadius(float _radius, float mass)
 {
-	/*glutSolidSphere(radius, 25, 25);*/
+	radius = _radius;
+}
+
+void Prim_Sphere::SetColumns(int n)
+{
+	stacks = n;
+}
+
+void Prim_Sphere::SetRows(int n)
+{
+	slices = n;
+}
+
+void Prim_Sphere::InnerRender() const
+{
+	GLUquadric* q = gluNewQuadric();
+	gluSphere(q, radius, slices, stacks);
 }
 
 
 // CYLINDER ============================================
-Cylinder::Cylinder() : Primitive(), radius(1.0f), height(1.0f)
+Prim_Cylinder::Prim_Cylinder() : Primitive(), radius(1.0f), height(1.0f), columns(30)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
 }
 
-Cylinder::Cylinder(float radius, float height) : Primitive(), radius(radius), height(height)
+Prim_Cylinder::Prim_Cylinder(float radius, float height, float columns) : Primitive(), radius(radius), height(height), columns(columns)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
 }
 
-void Cylinder::InnerRender() const
+void Prim_Cylinder::SetRadius(float radius)
 {
-	int n = 30;
+	this->radius = radius;
+}
+
+void Prim_Cylinder::SetHeight(float height)
+{
+	this->height = height;
+}
+
+void Prim_Cylinder::SetColumns(float columns)
+{
+	this->columns = columns;
+}
+
+void Prim_Cylinder::InnerRender() const
+{
+	int n = columns;
 
 	// Cylinder Bottom
 	glBegin(GL_POLYGON);
@@ -227,17 +265,31 @@ void Cylinder::InnerRender() const
 }
 
 // LINE ==================================================
-Line::Line() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
+Prim_Line::Prim_Line() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
 {
 	type = PrimitiveTypes::Primitive_Line;
 }
 
-Line::Line(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
+Prim_Line::Prim_Line(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
 {
 	type = PrimitiveTypes::Primitive_Line;
 }
 
-void Line::InnerRender() const
+void Prim_Line::SetOrigin(float x, float y, float z)
+{
+	origin.x = x;
+	origin.y = y;
+	origin.z = z;
+}
+
+void Prim_Line::SetDestination(float x, float y, float z)
+{
+	destination.x = x;
+	destination.y = y;
+	destination.z = z;
+}
+
+void Prim_Line::InnerRender() const
 {
 	glLineWidth(2.0f);
 
@@ -252,23 +304,43 @@ void Line::InnerRender() const
 }
 
 // PLANE ==================================================
-Plane::Plane() : Primitive(), normal(0, 1, 0), constant(1)
+Prim_Plane::Prim_Plane() : Primitive(), normal(0, 1, 0), constant(1)
 {
 	type = PrimitiveTypes::Primitive_Plane;
+
+	vec n(normal.x, normal.y, normal.z);
+	plane.normal = n;
+	extension = 200;
 }
 
-Plane::Plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
+Prim_Plane::Prim_Plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
 {
 	type = PrimitiveTypes::Primitive_Plane;
+	vec n(normal.x, normal.y, normal.z);
+	plane.normal = n;
+	extension = 200;
+
 }
 
-void Plane::InnerRender() const
+void Prim_Plane::SetNormal(float x, float y, float z)
+{
+	vec n(normal.x, normal.y, normal.z);
+	plane.normal = n;
+
+}
+
+void Prim_Plane::SetExtension(float e)
+{
+	extension = e;
+}
+
+void Prim_Plane::InnerRender() const
 {
 	glLineWidth(1.0f);
 
 	glBegin(GL_LINES);
 
-	float d = 200.0f;
+	float d = extension;
 
 	for(float i = -d; i <= d; i += 1.0f)
 	{
