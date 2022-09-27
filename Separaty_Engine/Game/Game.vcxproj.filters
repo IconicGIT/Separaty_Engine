@@ -198,6 +198,9 @@
     <ClCompile Include="Source\External\MathGeoLib\Time\Clock.cpp">
       <Filter>Source\External\MathGeoLib</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleUI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -490,6 +493,9 @@
     </ClInclude>
     <ClInclude Include="Source\External\MathGeoLib\Time\Clock.h">
       <Filter>Source\External\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleUI.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
