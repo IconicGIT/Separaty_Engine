@@ -21,12 +21,19 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Start()
 {
-	
+
+
+
+	return true;
 }
 
 
 bool ModuleUI::CleanUp()
 {
+
+
+
+	return true;
 }
 
 // Update
