@@ -13,6 +13,9 @@
     <Filter Include="Source\External\MathGeoLib">
       <UniqueIdentifier>{9b1ef5ec-1e81-4914-88fa-1a8b21eaaf09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\External\Imgui\misc">
+      <UniqueIdentifier>{5f0f0862-3b6e-4f51-a33c-0da63c50f21b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -56,21 +59,6 @@
     </ClCompile>
     <ClCompile Include="Source\Log.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\Imgui\imgui_demo.cpp">
-      <Filter>Source\External\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\Imgui\imgui_draw.cpp">
-      <Filter>Source\External\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\Imgui\imgui_tables.cpp">
-      <Filter>Source\External\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\Imgui\imgui_widgets.cpp">
-      <Filter>Source\External\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\Imgui\imgui.cpp">
-      <Filter>Source\External\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\MathGeoLib\Algorithm\GJK.cpp">
       <Filter>Source\External\MathGeoLib</Filter>
@@ -201,6 +189,30 @@
     <ClCompile Include="Source\ModuleUI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_impl_sdl.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_tables.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_widgets.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_demo.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_draw.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source\External\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Imgui\misc\cpp\imgui_stdlib.cpp">
+      <Filter>Source\External\Imgui\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -247,24 +259,6 @@
     </ClInclude>
     <ClInclude Include="Source\Log.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Imgui\imgui_internal.h">
-      <Filter>Source\External\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Imgui\imstb_rectpack.h">
-      <Filter>Source\External\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Imgui\imstb_textedit.h">
-      <Filter>Source\External\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Imgui\imstb_truetype.h">
-      <Filter>Source\External\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Imgui\imconfig.h">
-      <Filter>Source\External\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Imgui\imgui.h">
-      <Filter>Source\External\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\MathGeoLib\Algorithm\GJK.h">
       <Filter>Source\External\MathGeoLib</Filter>
@@ -496,6 +490,36 @@
     </ClInclude>
     <ClInclude Include="Source\ModuleUI.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui_impl_sdl.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui_internal.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imstb_rectpack.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imstb_textedit.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imstb_truetype.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imconfig.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\imgui.h">
+      <Filter>Source\External\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Imgui\misc\cpp\imgui_stdlib.h">
+      <Filter>Source\External\Imgui\misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

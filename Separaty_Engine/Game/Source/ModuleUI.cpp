@@ -4,13 +4,12 @@
 //#include "ModuleRenderer3D.h"
 //#include "ModuleWindow.h"
 
-#include "Imgui/imgui.h"
-#include "Imgui/imgui_impl_glfw.h"
-#include "Imgui/imgui_impl_opengl3.h"
-#include "Imgui/imgui_impl_sdl.h"
-#include "Imgui/imgui_internal.h"
-#include "External/Imgui/imgui.h"
 #include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_internal.h"
+
+
 
 #include "Glew/include/glew.h"
 
@@ -57,9 +56,7 @@ bool ModuleUI::Start()
 
 update_status ModuleUI::PreUpdate(float dt)
 {
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -68,14 +65,13 @@ update_status ModuleUI::PreUpdate(float dt)
 // Update
 update_status ModuleUI::Update(float dt)
 {
-	return UPDATE_CONTINUE;
-}
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
 
-update_status ModuleUI::PostUpdate(float dt)
-{
 	ImGui::ShowDemoWindow();
 	ImGui::Begin("Separaty Engine");
-	ImGui::SetWindowSize({400, 400}, 0);
+	ImGui::SetWindowSize({ 400, 400 }, 0);
 	ImGui::Text("Example");
 
 	if (ImGui::Button("Example2", { 250, 150 }))
@@ -85,8 +81,17 @@ update_status ModuleUI::PostUpdate(float dt)
 
 	ImGui::End();
 	ImGui::Render();
+	//ImGui::EndFrame();
+	ImGui::UpdatePlatformWindows();
+
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleUI::PostUpdate(float dt)
+{
+	
 	return UPDATE_CONTINUE;
 }
 

@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External;$(ProjectDir)Source\External\Imgui;$(ProjectDir)Source\External\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Imgui\misc;$(ProjectDir)Source\External;$(ProjectDir)Source\External\Imgui;$(ProjectDir)Source\External\MathGeoLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External;$(ProjectDir)Source\External\Imgui;$(ProjectDir)Source\External\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Imgui\misc;$(ProjectDir)Source\External;$(ProjectDir)Source\External\Imgui;$(ProjectDir)Source\External\MathGeoLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,8 +166,11 @@
     <ClCompile Include="Source\External\Imgui\imgui.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\External\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\External\Imgui\imgui_impl_sdl.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\External\Imgui\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\External\MathGeoLib\Algorithm\GJK.cpp" />
     <ClCompile Include="Source\External\MathGeoLib\Algorithm\GJK2D.cpp" />
     <ClCompile Include="Source\External\MathGeoLib\Algorithm\Random\LCG.cpp" />
@@ -229,10 +232,14 @@
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\External\Imgui\imconfig.h" />
     <ClInclude Include="Source\External\Imgui\imgui.h" />
+    <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Source\External\Imgui\imgui_impl_sdl.h" />
     <ClInclude Include="Source\External\Imgui\imgui_internal.h" />
     <ClInclude Include="Source\External\Imgui\imstb_rectpack.h" />
     <ClInclude Include="Source\External\Imgui\imstb_textedit.h" />
     <ClInclude Include="Source\External\Imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\External\Imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="Source\External\MathGeoLib\Algorithm\GJK.h" />
     <ClInclude Include="Source\External\MathGeoLib\Algorithm\GJK2D.h" />
     <ClInclude Include="Source\External\MathGeoLib\Algorithm\Random\LCG.h" />
