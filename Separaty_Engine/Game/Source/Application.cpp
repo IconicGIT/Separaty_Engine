@@ -19,7 +19,7 @@ Application::Application() : debug(false)
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(ui);
+	
 
 	
 	// Scenes
@@ -27,6 +27,7 @@ Application::Application() : debug(false)
 
 	// Renderer last!
 	AddModule(renderer3D);
+	AddModule(ui);
 }
 
 Application::~Application()
