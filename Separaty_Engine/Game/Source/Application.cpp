@@ -151,3 +151,9 @@ void Application::AddModule(Module* mod)
 }
 
 Application* App = nullptr;
+
+void Application::RequestBrowser(const char* string)
+{
+	const char* link = string;
+	ShellExecuteA(NULL, "open", link, NULL, NULL, SW_SHOWNORMAL);
+}

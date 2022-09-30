@@ -1146,7 +1146,7 @@ extern DECLSPEC void SDLCALL SDL_SetWindowBordered(SDL_Window * window,
  * \sa SDL_GetWindowFlags
  */
 extern DECLSPEC void SDLCALL SDL_SetWindowResizable(SDL_Window * window,
-                                                    SDL_bool resizable);
+                                                    bool resizable);
 
 /**
  * Set the window to always be above the others.

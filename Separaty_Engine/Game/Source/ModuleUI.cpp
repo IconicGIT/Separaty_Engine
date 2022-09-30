@@ -74,10 +74,132 @@ update_status ModuleUI::Update(float dt)
 	ImGui::SetWindowSize({ 400, 400 }, 0);
 	ImGui::Text("Example");
 
-	if (ImGui::Button("Example2", { 250, 150 }))
+	/*if (ImGui::Button("Example2", { 250, 150 }))
 	{
 		exit(0);
+	}*/
+
+	/////////////////////
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::Button("New Scene"))
+			{
+
+			}
+			if (ImGui::Button("Open Scene"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::Button("Save"))
+			{
+
+			}
+			if (ImGui::Button(""))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::Button(""))
+			{
+
+			}
+			if (ImGui::Button(""))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::Button("Close"))
+			{
+				return UPDATE_STOP;
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo", "CTRL+Z"))
+			{
+
+			}
+			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL+X"))
+			{
+
+			}
+			if (ImGui::MenuItem("Copy", "CTRL+C"))
+			{
+
+			}
+			if (ImGui::MenuItem("Paste", "CTRL+V"))
+			{
+
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("View"))
+		{
+
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Window"))
+		{
+
+			if (ImGui::Checkbox("Fullscreen", &fullScreen))
+			{
+				App->window->SetFullscreen(fullScreen);
+			}
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Vsync", &Vsync))
+			{
+				App->window->SetVsync(Vsync);
+			}
+			if (ImGui::Checkbox("Resizable", &resizable))
+			{
+				App->window->SetResizable(resizable);
+			}
+
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Help"))
+		{
+
+
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("About us"))
+		{
+			ImGui::Text("Separaty Engine");
+
+			ImGui::Separator();
+
+			if (ImGui::Button("Github"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+			if (ImGui::Button("Github Web Page"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+			if (ImGui::Button("Download latest versions"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+			if (ImGui::Button(""))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
 	}
+	//////////////////////
 
 	ImGui::End();
 	ImGui::Render();
