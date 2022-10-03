@@ -97,16 +97,16 @@ update_status ModuleUI::Update(float dt)
 			{
 
 			}
-			if (ImGui::Button(""))
+			if (ImGui::Button("Load"))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::Button(""))
+			if (ImGui::Button("1"))
 			{
 
 			}
-			if (ImGui::Button(""))
+			if (ImGui::Button("1"))
 			{
 
 			}
@@ -190,7 +190,7 @@ update_status ModuleUI::Update(float dt)
 			{
 				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
 			}
-			if (ImGui::Button(""))
+			if (ImGui::Button("l"))
 			{
 				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
 			}
