@@ -173,28 +173,86 @@ update_status ModuleUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("About us"))
-		{
-			ImGui::Text("Separaty Engine");
-
+		{		
+			ImGui::Text("SEPARATY ENGINE");
 			ImGui::Separator();
+			ImGui::Text("An engine that without hesitation, will be BETTER THAN UNITY!");
+			ImGui::Separator();
+			ImGui::Text("By Gerard Martinez & Brandon Arandia");
+			ImGui::NewLine();
 
+			ImGui::Text("Take a look at our github:");
 			if (ImGui::Button("Github"))
 			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   //TEST PARA VER CUAL QUEDA MEJOR
 			}
+			if (ImGui::MenuItem("Github"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   //TEST PARA VER CUAL QUEDA MEJOR
+			}
+			ImGui::NewLine();
+
+			ImGui::Text("Visit github page for detailed information regarding code and functionalities:");
 			if (ImGui::Button("Github Web Page"))
 			{
 				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
 			}
-			if (ImGui::Button("Download latest versions"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
-			}
-			if (ImGui::Button("l"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
-			}
+			ImGui::NewLine();
 
+			ImGui::Text("Download latest versions of the Engine here:");
+			if (ImGui::Button("Latest versions"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+			/*if (ImGui::Button("l"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}*/
+			ImGui::NewLine();
+			ImGui::Separator(); 
+			//ImGui::NewLine();
+
+			ImGui::Text("3rd parties libraries used:");
+			//LIBRERIAS UTILIZADAS DURANTE EL PROYECTO (faltan)
+			ImGui::BulletText("SDL 2.0.4");
+			ImGui::BulletText("MathGeoLib 1.5");
+			ImGui::BulletText("Json 1.2.1");
+			ImGui::BulletText("ImGui 1.89");
+			ImGui::BulletText("Glew 2.2.0");
+			ImGui::BulletText("OpenGL 2.0");
+
+
+
+
+
+
+			/////////////////////////
+
+			ImGui::NewLine();
+			ImGui::Separator();
+			//ImGui::NewLine();
+			ImGui::Text("MIT License");
+			ImGui::NewLine();
+			ImGui::Text("Copyright (c) 2012 - 2021 Krzysztof Gabis");
+			ImGui::NewLine();
+			ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a");
+			ImGui::Text("copy of this software and associated documentation files(the 'Software'),");
+			ImGui::Text("to dealin the Software without restriction, including without limitation");
+			ImGui::Text("the rights to use, copy, modify, merge, publish, distribute, sublicense,");
+			ImGui::Text("and /or sell copies of the Software, and to permit persons to whom the");
+			ImGui::Text("Software is furnished to do so, subject to the following conditions:");
+			ImGui::NewLine();
+			ImGui::Text("The above copyright notice and this permission notice shall be included");
+			ImGui::Text("in all copies or substantial portions of the Software.");
+			ImGui::NewLine();
+			ImGui::Text("THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR");
+			ImGui::Text("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,");
+			ImGui::Text("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE");
+			ImGui::Text("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER");
+			ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
+			ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN");
+			ImGui::Text("THE SOFTWARE.");
+			
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
