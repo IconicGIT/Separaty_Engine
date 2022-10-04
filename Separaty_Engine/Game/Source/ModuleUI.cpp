@@ -84,34 +84,34 @@ update_status ModuleUI::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			if (ImGui::Button("New Scene"))
+			if (ImGui::MenuItem("New Scene"))
 			{
 
 			}
-			if (ImGui::Button("Open Scene"))
-			{
-
-			}
-			ImGui::Separator();
-			if (ImGui::Button("Save"))
-			{
-
-			}
-			if (ImGui::Button("Load"))
+			if (ImGui::MenuItem("Open Scene"))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::Button("1"))
+			if (ImGui::MenuItem("Save"))
 			{
 
 			}
-			if (ImGui::Button("1"))
+			if (ImGui::MenuItem("Load"))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::Button("Close"))
+			if (ImGui::MenuItem("1"))
+			{
+
+			}
+			if (ImGui::MenuItem("1"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Close"))
 			{
 				return UPDATE_STOP;
 			}
@@ -119,24 +119,77 @@ update_status ModuleUI::Update(float dt)
 		}
 		if (ImGui::BeginMenu("Edit"))
 		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z"))
+			if (ImGui::MenuItem("Undo", "CTRL + Z"))
 			{
 
 			}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
+			if (ImGui::MenuItem("Redo", "CTRL + Y", false, false))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X"))
+			if (ImGui::MenuItem("Select All", "SHIFT + A"))
 			{
 
 			}
-			if (ImGui::MenuItem("Copy", "CTRL+C"))
+			if (ImGui::MenuItem("Deselect All", "SHIFT + D"))
 			{
 
 			}
-			if (ImGui::MenuItem("Paste", "CTRL+V"))
+			/*if (ImGui::MenuItem("Invert Selection", "CTRL + I"))
+			{
+
+			}*/
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL + X"))
+			{
+
+			}
+			if (ImGui::MenuItem("Copy", "CTRL + C"))
+			{
+
+			}
+			if (ImGui::MenuItem("Paste", "CTRL + V"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Duplicate", "CTRL + D"))
+			{
+
+			}
+			if (ImGui::MenuItem("Rename", "SHIFT + R"))
+			{
+
+			}
+			if (ImGui::MenuItem("Delete", "SUPR"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Frame Selected", "F"))
+			{
+
+			}
+			if (ImGui::MenuItem("Lock View to Selected", "SHIFT + F"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Project Settings..."))
+			{
+
+			}
+			if (ImGui::MenuItem("Preferences..."))
+			{
+
+			}
+			if (ImGui::MenuItem("Show Application Data"))
+			{
+				//Crear Ventana con todo 
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Controls"))
 			{
 
 			}
@@ -183,10 +236,6 @@ update_status ModuleUI::Update(float dt)
 
 			ImGui::Text("Take a look at our github:");
 			if (ImGui::Button("Github"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   //TEST PARA VER CUAL QUEDA MEJOR
-			}
-			if (ImGui::MenuItem("Github"))
 			{
 				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   //TEST PARA VER CUAL QUEDA MEJOR
 			}

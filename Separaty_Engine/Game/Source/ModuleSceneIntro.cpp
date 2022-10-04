@@ -46,9 +46,9 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 
 	plane.Render();
-	//cube.Render();
+	cube.Render();
 	//sphere.Render();
-	cil.Render();
+	//cil.Render();
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 	{
