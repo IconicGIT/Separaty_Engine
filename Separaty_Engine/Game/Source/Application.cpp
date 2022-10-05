@@ -81,6 +81,13 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
+
+	float frameMaxSpeed = 1000.0f / window->maxFPS;
+	if ((frameMaxSpeed - dt * 1000.f) > 0.0f)
+	{
+		SDL_Delay(fabs(floor((long)frameMaxSpeed - (float)ms_timer.Read())));
+	}
+
 	ms_timer.Start();
 }
 

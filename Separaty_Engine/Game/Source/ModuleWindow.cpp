@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
+#include "Log.h"
+
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
@@ -112,14 +114,20 @@ void ModuleWindow::SetResizable(bool resizable)
 {
 	SDL_SetWindowResizable(window, resizable);
 }
-void ModuleWindow::SetBrightness()
+void ModuleWindow::UpdateBrightness()
 {
 	SDL_SetWindowBrightness(window, brightness);
+
+	DEBUG_LOG("%f");
 }
+
+void ModuleWindow::SetWindowSize()
+{
+	SDL_SetWindowSize(window, width, height);
+}
+
 ///////
 
-
-//Brightness
 
 // Width
 

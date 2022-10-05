@@ -72,7 +72,6 @@ update_status ModuleUI::Update(float dt)
 	ImGui::ShowDemoWindow();
 	ImGui::Begin("Separaty Engine");
 	ImGui::SetWindowSize({ 400, 400 }, 0);
-	ImGui::Text("Example");
 
 	/*if (ImGui::Button("Example2", { 250, 150 }))
 	{
@@ -85,34 +84,43 @@ update_status ModuleUI::Update(float dt)
 		//FILE 
 		if (ImGui::BeginMenu("File"))
 		{
-			if (ImGui::MenuItem("New Scene"))
+			if (ImGui::MenuItem("New Scene" , "CTRL + N"))
 			{
 
 			}
-			if (ImGui::MenuItem("Open Scene"))
-			{
-
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Save"))
-			{
-
-			}
-			if (ImGui::MenuItem("Load"))
+			if (ImGui::MenuItem("Open Scene", "CTRL + O"))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("1"))
+			if (ImGui::MenuItem("Save", "CTRL + S"))
 			{
 
 			}
-			if (ImGui::MenuItem("1"))
+			if (ImGui::MenuItem("Save As", "CTRL + SHIFT + S"))
+			{
+
+			}
+
+			if (ImGui::MenuItem("Load", "CTRL + L"))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Close"))
+			if (ImGui::MenuItem("New Project"))
+			{
+
+			}
+			if (ImGui::MenuItem("Open Project"))
+			{
+
+			}
+			if (ImGui::MenuItem("Save Project"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Exit"))
 			{
 				return UPDATE_STOP;
 			}
@@ -186,7 +194,8 @@ update_status ModuleUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("Preferences..."))
 			{
-
+				showPreferences = !showPreferences;
+				
 			}
 			if (ImGui::MenuItem("Show Application Data"))
 			{
@@ -197,6 +206,13 @@ update_status ModuleUI::Update(float dt)
 			{
 
 			}
+			ImGui::EndMenu();
+		}
+
+		//Game Object
+		if (ImGui::BeginMenu("Game Object"))
+		{
+
 			ImGui::EndMenu();
 		}
 
@@ -213,9 +229,11 @@ update_status ModuleUI::Update(float dt)
 			if (ImGui::TreeNode("Brightness"))
 			{
 				ImGui::SliderFloat("Brightness", &App->window->brightness, 0.001f, 1.000f); //NO FUNCIONA
+				App->window->UpdateBrightness();
 				ImGui::TreePop();
+
 			}
-			if (ImGui::TreeNode("Windowa SIze"))
+			if (ImGui::TreeNode("Windowa Size"))
 			{
 				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) //FUNCIONA
 				{
@@ -251,20 +269,6 @@ update_status ModuleUI::Update(float dt)
 			}
 			
 			ImGui::Separator();
-			//APPLY BUTTON NECESARIO?
-			//Apply Button
-			if (ImGui::Button("Apply", ImVec2(60, 25)))
-			{
-				App->window->SetFullscreen(&App->window->fullScreen);
-				App->window->SetFullscreen(&App->window->fullDesktop);
-				App->window->SetResizable(App->window->resizable);
-				App->window->SetVsync(App->window->vsync);
-			}
-			if (ImGui::IsItemHovered())
-			{
-				ImGui::SetTooltip("Click to apply changes!");
-			}
-			ImGui::SameLine();
 			/*if (ImGui::Button("Save", ImVec2(60, 25)))
 			{
 				App->Save();
@@ -281,91 +285,113 @@ update_status ModuleUI::Update(float dt)
 		//HELP
 		if (ImGui::BeginMenu("Help"))
 		{
-
-
-			ImGui::EndMenu();
-		}
-
-		//ABOUT US
-		if (ImGui::BeginMenu("About us"))
-		{		
-			ImGui::Text("SEPARATY ENGINE");
-			ImGui::Separator();
-			ImGui::Text("An engine that without hesitation, will be BETTER THAN UNITY!");
-			ImGui::Separator();
-			ImGui::Text("By Gerard Martinez & Brandon Arandia");
-			ImGui::NewLine();
-
-			ImGui::Text("Take a look at our github:");
-			if (ImGui::Button("Github"))
+			if (ImGui::TreeNode("About us"))
 			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   //TEST PARA VER CUAL QUEDA MEJOR
+				ImGui::Text("SEPARATY ENGINE");
+				ImGui::Separator();
+				ImGui::Text("An engine that without hesitation, will be BETTER THAN UNITY!");
+				ImGui::Separator();
+				ImGui::Text("By Gerard Martinez & Brandon Arandia");
+				ImGui::NewLine();
+
+				ImGui::Text("Take a look at our github:");
+				if (ImGui::Button("Github"))
+				{
+					App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");  
+				}
+				ImGui::NewLine();
+
+				ImGui::Text("Visit github page for detailed information regarding code and functionalities:");
+				if (ImGui::Button("Github Web Page"))
+				{
+					App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+				}
+				ImGui::NewLine();
+
+				ImGui::Text("Download latest versions of the Engine here:");
+				if (ImGui::Button("Latest versions"))
+				{
+					App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+				}
+				/*if (ImGui::Button("l"))
+				{
+					App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+				}*/
+				ImGui::NewLine();
+				ImGui::Separator();
+				//ImGui::NewLine();
+
+				ImGui::Text("3rd parties libraries used:");
+				//LIBRERIAS UTILIZADAS DURANTE EL PROYECTO (faltan)
+				ImGui::BulletText("SDL 2.0.4");
+				ImGui::BulletText("MathGeoLib 1.5");
+				ImGui::BulletText("Json 1.2.1");
+				ImGui::BulletText("ImGui 1.89");
+				ImGui::BulletText("Glew 2.2.0");
+				ImGui::BulletText("OpenGL 2.0");
+
+
+
+
+
+
+				/////////////////////////
+
+				ImGui::NewLine();
+				ImGui::Separator();
+				//ImGui::NewLine();
+				ImGui::Text("MIT License");
+				ImGui::NewLine();
+				ImGui::Text("Copyright (c) 2012 - 2021 Krzysztof Gabis");
+				ImGui::NewLine();
+				ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a");
+				ImGui::Text("copy of this software and associated documentation files(the 'Software'),");
+				ImGui::Text("to dealin the Software without restriction, including without limitation");
+				ImGui::Text("the rights to use, copy, modify, merge, publish, distribute, sublicense,");
+				ImGui::Text("and /or sell copies of the Software, and to permit persons to whom the");
+				ImGui::Text("Software is furnished to do so, subject to the following conditions:");
+				ImGui::NewLine();
+				ImGui::Text("The above copyright notice and this permission notice shall be included");
+				ImGui::Text("in all copies or substantial portions of the Software.");
+				ImGui::NewLine();
+				ImGui::Text("THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR");
+				ImGui::Text("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,");
+				ImGui::Text("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE");
+				ImGui::Text("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER");
+				ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
+				ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN");
+				ImGui::Text("THE SOFTWARE.");
+
+				
+				ImGui::TreePop();
 			}
-			ImGui::NewLine();
-
-			ImGui::Text("Visit github page for detailed information regarding code and functionalities:");
-			if (ImGui::Button("Github Web Page"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
-			}
-			ImGui::NewLine();
-
-			ImGui::Text("Download latest versions of the Engine here:");
-			if (ImGui::Button("Latest versions"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
-			}
-			/*if (ImGui::Button("l"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
-			}*/
-			ImGui::NewLine();
-			ImGui::Separator(); 
-			//ImGui::NewLine();
-
-			ImGui::Text("3rd parties libraries used:");
-			//LIBRERIAS UTILIZADAS DURANTE EL PROYECTO (faltan)
-			ImGui::BulletText("SDL 2.0.4");
-			ImGui::BulletText("MathGeoLib 1.5");
-			ImGui::BulletText("Json 1.2.1");
-			ImGui::BulletText("ImGui 1.89");
-			ImGui::BulletText("Glew 2.2.0");
-			ImGui::BulletText("OpenGL 2.0");
-
-
-
-
-
-
-			/////////////////////////
-
-			ImGui::NewLine();
 			ImGui::Separator();
-			//ImGui::NewLine();
-			ImGui::Text("MIT License");
-			ImGui::NewLine();
-			ImGui::Text("Copyright (c) 2012 - 2021 Krzysztof Gabis");
-			ImGui::NewLine();
-			ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a");
-			ImGui::Text("copy of this software and associated documentation files(the 'Software'),");
-			ImGui::Text("to dealin the Software without restriction, including without limitation");
-			ImGui::Text("the rights to use, copy, modify, merge, publish, distribute, sublicense,");
-			ImGui::Text("and /or sell copies of the Software, and to permit persons to whom the");
-			ImGui::Text("Software is furnished to do so, subject to the following conditions:");
-			ImGui::NewLine();
-			ImGui::Text("The above copyright notice and this permission notice shall be included");
-			ImGui::Text("in all copies or substantial portions of the Software.");
-			ImGui::NewLine();
-			ImGui::Text("THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR");
-			ImGui::Text("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,");
-			ImGui::Text("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE");
-			ImGui::Text("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER");
-			ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
-			ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN");
-			ImGui::Text("THE SOFTWARE.");
+
+			if (ImGui::MenuItem("Separaty Manual"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   
+			}
 			
+			if (ImGui::MenuItem("Engine Uses & Examples"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Make Any Comment"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+
+			if (ImGui::MenuItem("Report Bugs"))
+			{
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+			}
+		
 			ImGui::EndMenu();
 		}
+
+		
 		ImGui::EndMainMenuBar();
 	}
 	//////////////////////
@@ -374,11 +400,24 @@ update_status ModuleUI::Update(float dt)
 	//VENTANAS EMERGENTES DE LOS DIFERENTES MENUS 
 
 	//EDIT
+	// 
+		//Preferences
+	if (showPreferences)
+	{
+		if (ImGui::TreeNode("Style"))
+		{
+			ImGui::ShowStyleEditor();
+			ImGui::TreePop();
+			ImGui::Separator();
+		}
+
+	}
+		//APP DATA
 	if (showApplicationData)
 	{
 		ImGui::Begin("Show Application Data", &showApplicationData);
 
-		// ----Application Child----
+		// Application 
 		if (ImGui::CollapsingHeader("Application"))
 		{
 			//AppNameDisplay
@@ -394,19 +433,13 @@ update_status ModuleUI::Update(float dt)
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", App->window->maxFPS);
 			//FPSGraph
-			App->window->FPSGraph(dt, 70);
+			App->window->FPSGraph(dt, 100);
 			//MillisecondsGraph
-			App->window->MSGraph(dt, 70);
+			App->window->MSGraph(dt, 100);
 		}
 		
 
-		// ---- Window Child ----
-		if (ImGui::CollapsingHeader("Window"))
-		{
-			
-		}
-
-		// ---- Hardware ----
+		// Hardware 
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
 			SDL_version version;
@@ -504,8 +537,7 @@ update_status ModuleUI::Update(float dt)
 		{
 			ImGuiIO& io = ImGui::GetIO();
 
-			// Display ImGuiIO output flags
-			
+						
 			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 			if (ImGui::TreeNode("Mouse State"))
 			{		

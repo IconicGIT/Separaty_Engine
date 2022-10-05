@@ -18,6 +18,7 @@ public:
 	bool openAbout = false;
 
 	bool showApplicationData = false;
+	bool showPreferences = false;
 
 	char inputs[20];
 

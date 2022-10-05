@@ -27,7 +27,8 @@ public:
 	void SetFullscreen(bool fullscreen);
 	void SetVsync(bool vsync);
 	void SetResizable(bool resizable);
-	void SetBrightness();
+	void UpdateBrightness();
+	void SetWindowSize();
 
 	float brightness = 1.0f;
 	int width = 1280;
