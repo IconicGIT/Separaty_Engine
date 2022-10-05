@@ -16,6 +16,9 @@
     <Filter Include="Source\External\Imgui\misc">
       <UniqueIdentifier>{5f0f0862-3b6e-4f51-a33c-0da63c50f21b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\External\JSON">
+      <UniqueIdentifier>{41cfc0d5-cf64-4906-aaf4-0a761c176b6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -212,6 +215,12 @@
     </ClCompile>
     <ClCompile Include="Source\External\Imgui\misc\cpp\imgui_stdlib.cpp">
       <Filter>Source\External\Imgui\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\JSON parson\JSON_Parsing.cpp">
+      <Filter>Source\External\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\JSON parson\parson.c">
+      <Filter>Source\External\JSON</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +529,12 @@
     </ClInclude>
     <ClInclude Include="Source\External\Imgui\misc\cpp\imgui_stdlib.h">
       <Filter>Source\External\Imgui\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\JSON parson\JSON_Parsing.h">
+      <Filter>Source\External\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\JSON parson\parson.h">
+      <Filter>Source\External\JSON</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
