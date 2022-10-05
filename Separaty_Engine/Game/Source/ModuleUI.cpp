@@ -198,7 +198,7 @@ update_status ModuleUI::Update(float dt)
 			{
 				showApplicationData = !showApplicationData;
 			}
-			if (ImGui::MenuItem("Show Output"))
+			if (ImGui::MenuItem("Show Console"))
 			{
 				showOutput = !showOutput;
 			}
@@ -213,14 +213,122 @@ update_status ModuleUI::Update(float dt)
 		//Game Object
 		if (ImGui::BeginMenu("Game Object"))
 		{
+			if (ImGui::TreeNode("Create 3D Object"))
+			{
+				if (ImGui::MenuItem("Cube"))
+				{
 
+				}
+				if (ImGui::MenuItem("Sphere"))
+				{
+
+				}
+				if (ImGui::MenuItem("Capsule"))
+				{
+
+				}
+				if (ImGui::MenuItem("Cylinder"))
+				{
+
+				}
+				if (ImGui::MenuItem("Plane"))
+				{
+
+				}
+				ImGui::TreePop();
+
+			}
+			ImGui::Separator();
+			if (ImGui::TreeNode("Effects"))
+			{
+				if (ImGui::MenuItem("Particles"))
+				{
+
+				}
+
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+			if (ImGui::TreeNode("Light"))
+			{
+				if (ImGui::MenuItem("Directional Light"))
+				{
+
+				}
+				if (ImGui::MenuItem("Point Light"))
+				{
+
+				}
+				if (ImGui::MenuItem("Spotlight"))
+				{
+
+				}
+				if (ImGui::MenuItem("Area Light"))
+				{
+
+				}
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+			if (ImGui::TreeNode("Audio"))
+			{
+				if (ImGui::MenuItem("Audio Source"))
+				{
+
+				}
+				if (ImGui::MenuItem("Audio Reverb Zone"))
+				{
+
+				}
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Camera"))
+			{
+
+			}
 			ImGui::EndMenu();
 		}
 
 		//VIEW
 		if (ImGui::BeginMenu("View"))
 		{
+			if (ImGui::TreeNode("Render Options"))
+			{
 
+				if (ImGui::Checkbox("GL_AmbientOclussion", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+				}
+				if (ImGui::Checkbox("GL_Color_material", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+				}
+				if (ImGui::Checkbox("GL_Cull_face", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+
+				}
+				if (ImGui::Checkbox("GL_Depth_test", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+				}
+				if (ImGui::Checkbox("GL_Front", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+				}
+				if (ImGui::Checkbox("GL_Lightning", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+
+				}
+				if (ImGui::Checkbox("Wireframe Mode", &App->window->fullScreen)) // Funcion de prueba
+				{
+
+				}
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
 			ImGui::EndMenu();
 		}
 
@@ -234,6 +342,7 @@ update_status ModuleUI::Update(float dt)
 				ImGui::TreePop();
 
 			}
+			ImGui::Separator();
 			if (ImGui::TreeNode("Windows Size"))
 			{
 				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) //FUNCIONA
@@ -257,6 +366,7 @@ update_status ModuleUI::Update(float dt)
 
 				ImGui::TreePop();
 			}
+			ImGui::Separator();
 			if (ImGui::TreeNode("Vsync"))
 			{
 				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Refresh rate: %d", App->window->maxFPS);
@@ -270,7 +380,6 @@ update_status ModuleUI::Update(float dt)
 
 				ImGui::TreePop();
 			}
-			
 			ImGui::Separator();
 			/*if (ImGui::Button("Save", ImVec2(60, 25)))
 			{
@@ -407,6 +516,8 @@ update_status ModuleUI::Update(float dt)
 		//Preferences
 	if (showPreferences)
 	{
+		ImGui::Begin("Preferences...", &showPreferences);
+
 		if (ImGui::TreeNode("Style"))
 		{
 			ImGui::ShowStyleEditor();
@@ -414,6 +525,7 @@ update_status ModuleUI::Update(float dt)
 			ImGui::Separator();
 		}
 
+		ImGui::End();
 	}
 		//APP DATA
 	if (showApplicationData)
@@ -637,11 +749,6 @@ update_status ModuleUI::Update(float dt)
 			}
 			
 		}
-
-
-
-
-
 		ImGui::End();
 	}
 
@@ -650,11 +757,8 @@ update_status ModuleUI::Update(float dt)
 		ImGui::Begin("Output", &showOutput);
 
 		PrintOutputList();
-		
 
 		ImGui::End();
-		
-
 	}
 
 	ImGui::End();
