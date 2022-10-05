@@ -69,6 +69,11 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
+	{
+		App->ui->AppendToOutput(DEBUG_LOG("text"));
+	}
+
 	if (App->debug == true)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)

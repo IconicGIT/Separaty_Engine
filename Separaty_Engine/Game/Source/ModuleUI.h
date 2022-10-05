@@ -2,6 +2,11 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_internal.h"
+
 class ModuleUI : public Module
 {
 public:
@@ -19,6 +24,17 @@ public:
 
 	bool showApplicationData = false;
 	bool showPreferences = false;
+	bool showOutput = false;
+	std::vector<char*> outputList;
+
+	void AppendToOutput(char* DEBUG_LOG)
+	{
+		char* text = new char[4096];
+		strncpy_s(text, 4096, DEBUG_LOG, strlen(DEBUG_LOG));
+
+		std::vector<char*>::iterator firstPlaec = outputList.begin();
+		outputList.insert(firstPlaec, text);
+	}
 
 	char inputs[20];
 
@@ -29,4 +45,12 @@ public:
 
 private:
 	
+	void PrintOutputList()
+	{
+		for (char* listElement : outputList)
+		{
+			ImGui::Text(listElement);
+		}
+	}
+
 };

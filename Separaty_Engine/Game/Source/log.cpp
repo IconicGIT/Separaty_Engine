@@ -2,7 +2,7 @@
 #include "Globals.h"
 
 
-void Log(const char file[], int line, const char* format, ...)
+char* Log(const char file[], int line, const char* format, ...)
 {
 	static char tmp_string[4096];
 	static char tmp_string2[4096];
@@ -15,4 +15,5 @@ void Log(const char file[], int line, const char* format, ...)
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	LPCWSTR tmp = (LPCWSTR)tmp_string2;
 	OutputDebugString(tmp);
+	return tmp_string;
 }

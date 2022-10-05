@@ -4,10 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_internal.h"
+
 
 #include <string> 
 
@@ -201,6 +198,10 @@ update_status ModuleUI::Update(float dt)
 			{
 				showApplicationData = !showApplicationData;
 			}
+			if (ImGui::MenuItem("Show Output"))
+			{
+				showOutput = !showOutput;
+			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Controls"))
 			{
@@ -229,7 +230,7 @@ update_status ModuleUI::Update(float dt)
 			if (ImGui::TreeNode("Brightness"))
 			{
 				ImGui::SliderFloat("Brightness", &App->window->brightness, 0.001f, 1.000f); //NO FUNCIONA
-				App->window->UpdateBrightness();
+				//App->window->UpdateBrightness();
 				ImGui::TreePop();
 
 			}
@@ -249,9 +250,9 @@ update_status ModuleUI::Update(float dt)
 				{
 					App->window->SetResizable(App->window->resizable);
 				}			
-				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 //NO FUNCIONA
-				ImGui::SliderInt("Height", &App->window->height, 480, 1080); //NO FUNCIONA
-				App->window->UpdateWindowSize();
+				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 //FUNCIONA
+				ImGui::SliderInt("Height", &App->window->height, 480, 1080); //FUNCIONA
+				//App->window->UpdateWindowSize();
 
 
 				ImGui::TreePop();
@@ -644,6 +645,17 @@ update_status ModuleUI::Update(float dt)
 		ImGui::End();
 	}
 
+	if (showOutput)
+	{
+		ImGui::Begin("Output", &showOutput);
+
+		PrintOutputList();
+		
+
+		ImGui::End();
+		
+
+	}
 
 	ImGui::End();
 	ImGui::Render();
@@ -666,6 +678,11 @@ bool ModuleUI::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
+	for (char* listElement : outputList)
+	{
+		delete listElement;
+	}
 
 	return true;
 }

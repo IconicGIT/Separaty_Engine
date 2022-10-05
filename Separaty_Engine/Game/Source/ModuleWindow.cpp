@@ -95,6 +95,39 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+update_status ModuleWindow::Update(float dt)
+{
+	update_status ret = update_status::UPDATE_CONTINUE;
+
+
+
+	return ret;
+}
+
+update_status ModuleWindow::PostUpdate(float dt)
+{
+	update_status ret = update_status::UPDATE_CONTINUE;
+
+
+	//Check for width/height updates, then apply and show in debug
+	if (width_check != width || height_check != height)
+	{
+		UpdateWindowSize();
+	}
+	width_check = width;
+	height_check = height;
+
+	
+
+	if (brightness_check != brightness)
+	{
+		UpdateBrightness();
+	}
+	brightness_check = brightness;
+
+	return ret;
+}
+
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
@@ -118,13 +151,13 @@ void ModuleWindow::UpdateBrightness()
 {
 	SDL_SetWindowBrightness(window, brightness);
 
-	DEBUG_LOG("%f");
+	App->ui->AppendToOutput(DEBUG_LOG("Updated brightness to: %f", brightness));
 }
 
 void ModuleWindow::UpdateWindowSize()
 {
 	SDL_SetWindowSize(window, width, height);
-	DEBUG_LOG("width: %i, height: %i", width, height);
+	App->ui->AppendToOutput(DEBUG_LOG("Updated window size: width: %i, height: %i", width, height));
 }
 
 ///////

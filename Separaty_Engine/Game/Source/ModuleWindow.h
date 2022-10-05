@@ -19,6 +19,8 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
+	update_status Update(float dt) override;
+	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
 	void SetTitle(const char* title);
@@ -31,8 +33,11 @@ public:
 	void UpdateWindowSize();
 
 	float brightness = 1.0f;
+	float brightness_check = brightness;
 	int width = 1280;
+	int width_check = width;
 	int height = 1024;
+	int height_check = height;
 
 	bool fullScreen = false;
 	bool vsync = false;
