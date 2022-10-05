@@ -28,7 +28,7 @@ public:
 	void SetVsync(bool vsync);
 	void SetResizable(bool resizable);
 	void UpdateBrightness();
-	void SetWindowSize();
+	void UpdateWindowSize();
 
 	float brightness = 1.0f;
 	int width = 1280;

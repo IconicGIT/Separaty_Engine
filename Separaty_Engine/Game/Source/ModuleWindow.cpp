@@ -121,9 +121,10 @@ void ModuleWindow::UpdateBrightness()
 	DEBUG_LOG("%f");
 }
 
-void ModuleWindow::SetWindowSize()
+void ModuleWindow::UpdateWindowSize()
 {
 	SDL_SetWindowSize(window, width, height);
+	DEBUG_LOG("width: %i, height: %i", width, height);
 }
 
 ///////

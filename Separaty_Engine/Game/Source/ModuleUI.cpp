@@ -233,7 +233,7 @@ update_status ModuleUI::Update(float dt)
 				ImGui::TreePop();
 
 			}
-			if (ImGui::TreeNode("Windowa Size"))
+			if (ImGui::TreeNode("Windows Size"))
 			{
 				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) //FUNCIONA
 				{
@@ -251,6 +251,8 @@ update_status ModuleUI::Update(float dt)
 				}			
 				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 //NO FUNCIONA
 				ImGui::SliderInt("Height", &App->window->height, 480, 1080); //NO FUNCIONA
+				App->window->UpdateWindowSize();
+
 
 				ImGui::TreePop();
 			}
@@ -262,8 +264,8 @@ update_status ModuleUI::Update(float dt)
 				{
 					App->window->SetVsync(App->window->vsync);
 				}
-				App->window->FPSGraph(dt, 70);
-				App->window->MSGraph(dt, 70);
+				App->window->FPSGraph(dt, 60);
+				App->window->MSGraph(dt, 60);
 
 				ImGui::TreePop();
 			}
