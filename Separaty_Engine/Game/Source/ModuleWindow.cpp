@@ -2,6 +2,11 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_internal.h"
+
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
@@ -95,7 +100,9 @@ void ModuleWindow::SetTitle(const char* title)
 
 void ModuleWindow::SetFullscreen(bool fullscreen)
 {
-	SDL_SetWindowFullscreen(window, fullscreen);
+	if (fullScreen)	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	if (fullDesktop)	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	else if (fullScreen == false && fullDesktop == false ) SDL_SetWindowFullscreen(window, 0);
 }
 void ModuleWindow::SetVsync(bool vsync)
 {
@@ -104,5 +111,42 @@ void ModuleWindow::SetVsync(bool vsync)
 void ModuleWindow::SetResizable(bool resizable)
 {
 	SDL_SetWindowResizable(window, resizable);
+}
+void ModuleWindow::SetBrightness()
+{
+	SDL_SetWindowBrightness(window, brightness);
+}
+///////
+
+
+//Brightness
+
+// Width
+
+//Height
+
+
+////////
+
+void ModuleWindow::FPSGraph(float dt, int size)
+{
+	fpsLog.push_back(1 / dt);
+	sprintf_s(title, 20, "Framerate %.1f", fpsLog[fpsLog.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &fpsLog[0], fpsLog.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+	if (fpsLog.size() > size)
+	{
+		fpsLog.erase(fpsLog.begin());
+	}
+}
+
+void ModuleWindow::MSGraph(float dt, int size)
+{
+	msLog.push_back(dt * 1000);
+	sprintf_s(title, 20, "Milliseconds %0.1f", msLog[msLog.size() - 1]);
+	ImGui::PlotHistogram("##milliseconds", &msLog[0], msLog.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+	if (msLog.size() > size)
+	{
+		msLog.erase(msLog.begin());
+	}
 }
 

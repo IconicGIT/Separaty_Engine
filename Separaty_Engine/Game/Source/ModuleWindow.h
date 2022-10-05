@@ -2,7 +2,10 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
+#include "Globals.h"
 #include "SDL/include/SDL.h"
+
+#include <vector>
 
 class Application;
 
@@ -20,9 +23,30 @@ public:
 
 	void SetTitle(const char* title);
 
+	//Windows
 	void SetFullscreen(bool fullscreen);
 	void SetVsync(bool vsync);
 	void SetResizable(bool resizable);
+	void SetBrightness();
+
+	float brightness = 1.0f;
+	int width = 1280;
+	int height = 1024;
+
+	bool fullScreen = false;
+	bool vsync = false;
+	bool resizable = true;
+	bool fullDesktop = false;
+	
+	//FPS / MS
+	std::vector<float> fpsLog;
+	std::vector<float> msLog;
+
+	void FPSGraph(float dt, int size);
+	void MSGraph(float dt, int size);
+
+	int maxFPS = 60;
+	char title[20];
 
 public:
 	//The window we'll be rendering to

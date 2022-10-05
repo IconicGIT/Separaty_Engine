@@ -18,6 +18,7 @@
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "Separaty Engine"
+#define ORGANITZATION "UPC CITM"
 
 
 #define CAP(n) ((n <= 0.0f) ? n=0.0f : (n >= 1.0f) ? n=1.0f : n=n)

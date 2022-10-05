@@ -17,9 +17,10 @@ public:
 	bool closeButton = false;
 	bool openAbout = false;
 
-	bool fullScreen = false;
-	bool Vsync = false;
-	bool resizable = false;
+	bool showApplicationData = false;
+
+	char inputs[20];
+
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 
