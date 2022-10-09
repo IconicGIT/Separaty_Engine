@@ -32,8 +32,8 @@ public:
 		char* text = new char[4096];
 		strncpy_s(text, 4096, DEBUG_LOG, strlen(DEBUG_LOG));
 
-		std::vector<char*>::iterator firstPlaec = outputList.begin();
-		outputList.insert(firstPlaec, text);
+		std::vector<char*>::iterator firstPlace = outputList.begin();
+		outputList.insert(firstPlace, text);
 	}
 
 	char inputs[20];

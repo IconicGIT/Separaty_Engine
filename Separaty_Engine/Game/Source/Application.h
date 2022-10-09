@@ -12,6 +12,8 @@
 #include "ModuleCamera3D.h"
 #include "ModuleUI.h"
 
+#include "parson.h"
+
 class Application
 {
 public:
@@ -30,6 +32,9 @@ private:
 	float	dt;
 	std::vector<Module*> list_modules;
 
+	mutable bool saveGameRequested;
+	bool loadGameRequested;
+
 public:
 
 	Application();
@@ -41,9 +46,16 @@ public:
 
 	void RequestBrowser(const char* string);
 
+	void LoadGameRequest();
+	bool SaveGameRequest() const;
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+	bool LoadGame();
+	bool SaveGame() const;
+
 };

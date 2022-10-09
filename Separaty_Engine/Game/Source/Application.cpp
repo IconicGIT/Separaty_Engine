@@ -94,6 +94,16 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+
+	if (loadGameRequested == true)
+	{
+		LoadGame();
+	}
+	if (saveGameRequested == true)
+	{
+		SaveGame();
+	}
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -164,3 +174,138 @@ void Application::RequestBrowser(const char* string)
 	const char* link = string;
 	ShellExecuteA(NULL, "open", link, NULL, NULL, SW_SHOWNORMAL);
 }
+
+
+// Load / Save
+void Application::LoadGameRequest()
+{
+	bool ret = true;
+
+	/*pugi::xml_document gameStateFile;
+	pugi::xml_parse_result  result = gameStateFile.load_file("saveGame.xml");
+
+	if (gameStateFile.child("saveState") == NULL)
+		ret = false;
+	*/
+
+	loadGameRequested = ret;
+}
+
+// ---------------------------------------
+bool Application::SaveGameRequest() const
+{
+	bool ret = false;
+
+	saveGameRequested = true;
+
+
+	return ret;
+}
+
+bool Application::LoadGame()
+{
+	bool ret = true;
+
+	loadGameRequested = false;
+
+
+	return ret;
+}
+
+bool Application::SaveGame() const
+{
+	bool ret = true;
+
+
+
+	JSON_Value* schema = json_parse_string("{\"name\":\"\"}");
+	JSON_Value* user_data = json_parse_file("user_data.json");
+
+	std::string a = "alberto";
+	const char* buf = a.c_str();
+	const char* name;
+
+	user_data = json_value_init_object();
+	json_object_set_string(json_object(user_data), "name", buf);
+	json_serialize_to_file(user_data, "user_data.json");
+
+	name = json_object_get_string(json_object(user_data), "name");
+	printf("Hello, %s.", name);
+	json_value_free(schema);
+	json_value_free(user_data);
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saved."));
+
+	saveGameRequested = false;
+
+	return ret;
+}
+
+/*
+
+// call all the modules to load themselves
+bool App::LoadGame()
+{
+	loadingScreen = true;
+	bool ret = true;
+
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result result = gameStateFile.load_file(SAVE_STATE_FILENAME);
+	//pugi::xml_parse_result result = gameStateFile.load_file("config.xml");
+	if (result == NULL)
+	{
+		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		p2ListItem<Module*>* item;
+			item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(gameStateFile.child("saveState").child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
+
+	loadGameRequested = false;
+
+
+	return ret;
+}
+
+// xml save method for current state
+bool App::SaveGame() const
+{
+	bool ret = true;
+
+	pugi::xml_document* saveDoc = new pugi::xml_document();
+	pugi::xml_node  saveStateNode = saveDoc->append_child("saveState");
+
+	p2ListItem<Module*>* item;
+	item = modules.start;
+
+
+	while (item != NULL)
+	{
+		if (item->data->toSave == true)
+		{
+			if (ret != item->data->SaveState(saveStateNode.append_child(item->data->name.GetString())))
+				LOG("could not save status of %s", item->data->name.GetString());
+		}
+
+		item = item->next;
+	}
+
+	if (ret != saveDoc->save_file("saveGame.xml"))
+		LOG("Could not save savegame file....");
+
+	saveGameRequested = false;
+
+	LOG("Game Saved...");
+
+	return ret;
+}
+
+*/

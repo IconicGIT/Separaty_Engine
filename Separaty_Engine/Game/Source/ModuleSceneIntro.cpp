@@ -74,6 +74,12 @@ update_status ModuleSceneIntro::Update(float dt)
 		App->ui->AppendToOutput(DEBUG_LOG("text"));
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		App->SaveGameRequest();
+		App->ui->AppendToOutput(DEBUG_LOG("Save Requesting..."));
+	}
+
 	if (App->debug == true)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
