@@ -16,6 +16,9 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
+	bool LoadState(JSON_Value* file) override;
+	bool SaveState(JSON_Value* file) const override;
+
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 

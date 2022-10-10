@@ -14,6 +14,9 @@ public:
 
 	bool Init();
 	bool CleanUp();
+	bool LoadState(JSON_Value* file) override;
+	bool SaveState(JSON_Value* file) const override;
+
 
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);

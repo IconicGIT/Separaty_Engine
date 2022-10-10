@@ -790,3 +790,24 @@ bool ModuleUI::CleanUp()
 
 	return true;
 }
+
+bool  ModuleUI::SaveState(JSON_Value* file) const
+{
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	file = json_value_init_object();
+	json_object_set_string(json_object(file), "module_name", buf);
+	json_serialize_to_file(file, "Config.json");
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saved UI module."));
+
+
+	return true;
+}
+
+bool  ModuleUI::LoadState(JSON_Value* file)
+{
+
+	return true;
+}

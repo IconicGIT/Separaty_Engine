@@ -160,3 +160,24 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	return ret;*/
 	return true;
 }
+
+bool  ModuleAudio::SaveState(JSON_Value* file) const
+{
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	file = json_value_init_object();
+	json_object_set_string(json_object(file), "module_name", buf);
+	json_serialize_to_file(file, "Config.json");
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saved Audio module."));
+
+
+	return true;
+}
+
+bool  ModuleAudio::LoadState(JSON_Value* file)
+{
+
+	return true;
+}

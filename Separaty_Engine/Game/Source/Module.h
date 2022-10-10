@@ -2,12 +2,17 @@
 
 class  PhysBody3D;
 
+#include "parson.h"
+
 class Module
 {
 private :
 	bool enabled;
-
+	
 public:
+
+	std::string name;
+
 	Module(bool start_enabled = true) : enabled(start_enabled)
 	{}
 
@@ -42,6 +47,16 @@ public:
 	virtual bool CleanUp() 
 	{ 
 		return true; 
+	}
+
+	virtual bool LoadState(JSON_Value* file)
+	{
+		return true;
+	}
+
+	virtual bool SaveState(JSON_Value* file) const
+	{
+		return true;
 	}
 
 	//TODO 7: Create virtual method "On Collision", that recieves the two colliding PhysBodies

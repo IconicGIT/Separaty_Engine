@@ -18,6 +18,9 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
+	bool LoadState(JSON_Value* file) override;
+	bool SaveState(JSON_Value* file) const override;
+
 
 	bool closeButton = false;
 	bool openAbout = false;

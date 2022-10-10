@@ -175,3 +175,24 @@ void ModuleCamera3D::CalculateViewMatrix()
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
+
+bool  ModuleCamera3D::SaveState(JSON_Value* file) const
+{
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	file = json_value_init_object();
+	json_object_set_string(json_object(file), "module_name", buf);
+	json_serialize_to_file(file, "Config.json");
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saved Camera module."));
+
+
+	return true;
+}
+
+bool  ModuleCamera3D::LoadState(JSON_Value* file)
+{
+
+	return true;
+}

@@ -11,6 +11,7 @@
 
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
+	name = "Window";
 	window = NULL;
 	screen_surface = NULL;
 }
@@ -190,5 +191,26 @@ void ModuleWindow::MSGraph(float dt, int size)
 	{
 		msLog.erase(msLog.begin());
 	}
+}
+
+bool  ModuleWindow::SaveState(JSON_Value* file) const
+{
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	file = json_value_init_object();
+	json_object_set_string(json_object(file), "module_name", buf);
+	json_serialize_to_file(file, "Config.json");
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saved Window module."));
+
+
+	return true;
+}
+
+bool  ModuleWindow::LoadState(JSON_Value* file)
+{
+
+	return true;
 }
 

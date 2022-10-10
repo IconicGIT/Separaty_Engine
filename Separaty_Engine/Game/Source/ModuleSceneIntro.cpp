@@ -112,3 +112,25 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 }
 
 //TODO 9: And change the color of the colliding bodies, so we can visualize it working!
+
+
+bool  ModuleSceneIntro::SaveState(JSON_Value* file) const
+{
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	file = json_value_init_object();
+	json_object_set_string(json_object(file), "module_name", buf);
+	json_serialize_to_file(file, "Config.json");
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saved Scene module."));
+
+
+	return true;
+}
+
+bool  ModuleSceneIntro::LoadState(JSON_Value* file)
+{
+
+	return true;
+}

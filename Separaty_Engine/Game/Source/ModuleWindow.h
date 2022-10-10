@@ -23,6 +23,10 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
+	bool LoadState(JSON_Value* file) override;
+
+	bool SaveState(JSON_Value* file) const override;
+
 	void SetTitle(const char* title);
 
 	//Windows
@@ -31,6 +35,8 @@ public:
 	void SetResizable(bool resizable);
 	void UpdateBrightness();
 	void UpdateWindowSize();
+
+	
 
 	float brightness = 1.0f;
 	float brightness_check = brightness;

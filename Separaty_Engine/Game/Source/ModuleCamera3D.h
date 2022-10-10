@@ -14,6 +14,8 @@ public:
 	bool Start();
 	update_status Update(float dt) override;
 	bool CleanUp();
+	bool LoadState(JSON_Value* file) override;
+	bool SaveState(JSON_Value* file) const override;
 
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);

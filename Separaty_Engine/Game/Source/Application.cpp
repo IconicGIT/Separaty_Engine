@@ -218,8 +218,8 @@ bool Application::SaveGame() const
 
 
 
-	JSON_Value* schema = json_parse_string("{\"name\":\"\"}");
-	JSON_Value* user_data = json_parse_file("user_data.json");
+	/*JSON_Value* schema = json_parse_string("{\"Separaty_Engine_Config\":\"\"}");
+	JSON_Value* user_data = json_parse_file("Config.json");
 
 	std::string a = "alberto";
 	const char* buf = a.c_str();
@@ -232,7 +232,25 @@ bool Application::SaveGame() const
 	name = json_object_get_string(json_object(user_data), "name");
 	printf("Hello, %s.", name);
 	json_value_free(schema);
-	json_value_free(user_data);
+	json_value_free(user_data);*/
+
+	JSON_Value* schema = json_parse_string("{\"Separaty_Engine_Config\":\"\"}");
+	JSON_Value* config_file = json_parse_file("Config.json");
+
+	// Call Init() in all modules
+	Module* item = list_modules.front();
+	int item_it = 0;
+
+	while (item_it < list_modules.size() && ret == true)
+	{
+		item = list_modules[item_it];
+		
+		item->SaveState(config_file);
+
+
+		item_it++;
+
+	}
 
 	App->ui->AppendToOutput(DEBUG_LOG("Saved."));
 
