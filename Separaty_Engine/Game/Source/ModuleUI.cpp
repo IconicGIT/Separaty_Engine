@@ -198,7 +198,7 @@ update_status ModuleUI::Update(float dt)
 			{
 				showApplicationData = !showApplicationData;
 			}
-			if (ImGui::MenuItem("Show Console"))
+			if (ImGui::MenuItem("Show Output"))
 			{
 				showOutput = !showOutput;
 			}
