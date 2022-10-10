@@ -181,12 +181,7 @@ void Application::LoadGameRequest()
 {
 	bool ret = true;
 
-	/*pugi::xml_document gameStateFile;
-	pugi::xml_parse_result  result = gameStateFile.load_file("saveGame.xml");
-
-	if (gameStateFile.child("saveState") == NULL)
-		ret = false;
-	*/
+	App->ui->AppendToOutput(DEBUG_LOG("Load Requesting..."));
 
 	loadGameRequested = ret;
 }
@@ -196,8 +191,9 @@ bool Application::SaveGameRequest() const
 {
 	bool ret = false;
 
-	saveGameRequested = true;
+	App->ui->AppendToOutput(DEBUG_LOG("Save Requesting..."));
 
+	saveGameRequested = true;
 
 	return ret;
 }
@@ -206,8 +202,29 @@ bool Application::LoadGame()
 {
 	bool ret = true;
 
-	loadGameRequested = false;
+	JSON_Value* config_file = json_parse_file("Config.json");
 
+	// Call Init() in all modules
+	Module* item = list_modules.front();
+	int item_it = 0;
+
+	while (item_it < list_modules.size() && ret == true)
+	{
+		item = list_modules[item_it];
+
+
+		item->LoadState(config_file);
+
+
+		item_it++;
+
+	}
+
+	json_value_free(config_file);
+
+	App->ui->AppendToOutput(DEBUG_LOG("Loading finished."));
+
+	loadGameRequested = false;
 
 	return ret;
 }
@@ -234,7 +251,7 @@ bool Application::SaveGame() const
 	json_value_free(schema);
 	json_value_free(user_data);*/
 
-	JSON_Value* schema = json_parse_string("{\"Separaty_Engine_Config\":\"\"}");
+
 	JSON_Value* config_file = json_parse_file("Config.json");
 
 	// Call Init() in all modules
@@ -245,6 +262,7 @@ bool Application::SaveGame() const
 	{
 		item = list_modules[item_it];
 		
+
 		item->SaveState(config_file);
 
 
@@ -252,7 +270,12 @@ bool Application::SaveGame() const
 
 	}
 
-	App->ui->AppendToOutput(DEBUG_LOG("Saved."));
+	json_serialize_to_file(config_file, "Config.json");
+
+
+	json_value_free(config_file);
+
+	App->ui->AppendToOutput(DEBUG_LOG("Saving finished."));
 
 	saveGameRequested = false;
 

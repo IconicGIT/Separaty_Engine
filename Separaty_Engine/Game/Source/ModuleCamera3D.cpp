@@ -5,6 +5,8 @@
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
+	name = "Camera3D";
+
 	CalculateViewMatrix();
 
 	X = vec3(1.0f, 0.0f, 0.0f);
@@ -70,7 +72,9 @@ update_status ModuleCamera3D::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT 
+		&& (!App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT 
+		|| App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)) newPos += Z * speed;
 
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
@@ -178,11 +182,34 @@ void ModuleCamera3D::CalculateViewMatrix()
 
 bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 {
+
+
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
-	file = json_value_init_object();
-	json_object_set_string(json_object(file), "module_name", buf);
+	json_object_dotset_string(json_object(file), "modules.Camera.name", buf);
+	json_serialize_to_file(file, "Config.json");
+
+
+	json_object_dotset_number(json_object(file), "modules.Camera.Position.x", (double)Position.x);
+	json_object_dotset_number(json_object(file), "modules.Camera.Position.y", (double)Position.y);
+	json_object_dotset_number(json_object(file), "modules.Camera.Position.z", (double)Position.z);
+
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.x", (double)X.x);
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.y", (double)X.y);
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.z", (double)X.z);
+
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.Y.x", (double)Y.x);
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.Y.y", (double)Y.y);
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.Y.z", (double)Y.z);
+
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.Z.x", (double)Z.x);
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.Z.y", (double)Z.y);
+	json_object_dotset_number(json_object(file), "modules.Camera.Direction.Z.z", (double)Z.z);
+
+	//call recalculateMatrix when after loading X Y Z
+
+
 	json_serialize_to_file(file, "Config.json");
 
 	App->ui->AppendToOutput(DEBUG_LOG("Saved Camera module."));
@@ -193,6 +220,9 @@ bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 
 bool  ModuleCamera3D::LoadState(JSON_Value* file)
 {
+	const char* n = json_object_dotget_string(json_object(file), "modules.Camera.name");
+
+	App->ui->AppendToOutput(DEBUG_LOG("%s", n));
 
 	return true;
 }

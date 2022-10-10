@@ -27,7 +27,7 @@ public:
 
 	bool showApplicationData = false;
 	bool showPreferences = false;
-	bool showOutput = false;
+	bool showOutput = true;
 	std::vector<char*> outputList;
 
 	void AppendToOutput(char* DEBUG_LOG)

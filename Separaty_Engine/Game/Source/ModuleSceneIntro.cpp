@@ -7,6 +7,8 @@
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
+	name = "Scene";
+
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -77,7 +79,11 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
 		App->SaveGameRequest();
-		App->ui->AppendToOutput(DEBUG_LOG("Save Requesting..."));
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		App->LoadGameRequest();
 	}
 
 	if (App->debug == true)
@@ -116,12 +122,19 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 
 bool  ModuleSceneIntro::SaveState(JSON_Value* file) const
 {
+
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
-	file = json_value_init_object();
-	json_object_set_string(json_object(file), "module_name", buf);
+	json_object_dotset_string(json_object(file), "modules.Scene.name", buf);
 	json_serialize_to_file(file, "Config.json");
+
+
+	//json_object_dotset_number(json_object(file), "modules.Window.width", (double)width);
+	//json_object_dotset_number(json_object(file), "modules.Window.height", (double)height);
+
+
+	//json_serialize_to_file(file, "Config.json");
 
 	App->ui->AppendToOutput(DEBUG_LOG("Saved Scene module."));
 
@@ -131,6 +144,9 @@ bool  ModuleSceneIntro::SaveState(JSON_Value* file) const
 
 bool  ModuleSceneIntro::LoadState(JSON_Value* file)
 {
+	const char* n = json_object_dotget_string(json_object(file), "modules.Scene.name");
+
+	App->ui->AppendToOutput(DEBUG_LOG("%s", n));
 
 	return true;
 }

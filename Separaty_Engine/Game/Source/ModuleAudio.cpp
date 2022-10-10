@@ -5,7 +5,9 @@
 //#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled)//, music(NULL)
-{}
+{
+	name = "Audio";
+}
 
 // Destructor
 ModuleAudio::~ModuleAudio()
@@ -166,9 +168,15 @@ bool  ModuleAudio::SaveState(JSON_Value* file) const
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
-	file = json_value_init_object();
-	json_object_set_string(json_object(file), "module_name", buf);
+	json_object_dotset_string(json_object(file), "modules.Audio.name", buf);
 	json_serialize_to_file(file, "Config.json");
+
+
+	//json_object_dotset_number(json_object(file), "modules.Window.width", (double)width);
+	//json_object_dotset_number(json_object(file), "modules.Window.height", (double)height);
+
+
+	//json_serialize_to_file(file, "Config.json");
 
 	App->ui->AppendToOutput(DEBUG_LOG("Saved Audio module."));
 
@@ -178,6 +186,9 @@ bool  ModuleAudio::SaveState(JSON_Value* file) const
 
 bool  ModuleAudio::LoadState(JSON_Value* file)
 {
+	const char* n = json_object_dotget_string(json_object(file), "modules.Audio.name");
+
+	App->ui->AppendToOutput(DEBUG_LOG("%s", n));
 
 	return true;
 }
