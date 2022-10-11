@@ -2,6 +2,10 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+
+
 
 
 
@@ -48,7 +52,7 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 
 	plane.Render();
-	cube.Render();
+	/*cube.Render();*/
 	//sphere.Render();
 	//cil.Render();
 
@@ -71,11 +75,6 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
-	{
-		App->ui->AppendToOutput(DEBUG_LOG("text"));
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
 		App->SaveGameRequest();
@@ -90,9 +89,14 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
-			//TODO 3: Create a "new" sphere, and add it to the "primitives" DynArray
+		/*	glLineWidth(2.0f);
+			glBegin(GL_LINES);
+			glVertex3f(0.f, 0.f, 0.f);
+			glVertex3f(0.f, 10.f, 0.f);
+			glEnd();
+			glLineWidth(1.0f);*/
 
-			//TODO 9: Push ModuleSceneIntro to the sphere collision listeners
+
 		}
 	}
 

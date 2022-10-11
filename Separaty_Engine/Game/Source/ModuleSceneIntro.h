@@ -19,6 +19,8 @@ public:
 	bool LoadState(JSON_Value* file) override;
 	bool SaveState(JSON_Value* file) const override;
 
+	//Draw 
+
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 
