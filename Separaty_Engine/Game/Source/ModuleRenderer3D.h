@@ -8,13 +8,12 @@
 
 struct Gl_Attributes
 {
-	bool Depth_test;
-	bool Cull_Face;
-	bool Lightning;
-	bool Color_Materials;
-	bool Texture_2D;
-	bool Front;
 	bool AmbientOclussion;
+	bool Color_Materials;
+	bool Cull_Face;
+	bool Depth_test;
+	bool Front;	
+	bool Lightning;
 	bool Wireframe;
 };
 
