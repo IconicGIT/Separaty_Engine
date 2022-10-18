@@ -33,6 +33,7 @@ public:
 	bool axis,wire;
 	float lineWidth;
 
+private:
 
 
 	//TODO 4: Add a PhysBody to the primitive

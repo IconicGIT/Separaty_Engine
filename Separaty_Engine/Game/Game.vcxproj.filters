@@ -222,9 +222,6 @@
     <ClCompile Include="Source\External\JSON parson\parson.c">
       <Filter>Source\External\JSON</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleImport.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -538,9 +535,6 @@
     </ClInclude>
     <ClInclude Include="Source\External\JSON parson\parson.h">
       <Filter>Source\External\JSON</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleImport.h">
-      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
