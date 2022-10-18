@@ -111,6 +111,50 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
+	//View Modes
+
+	if (atributes.Depth_test == true)
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+	else glDisable(GL_DEPTH_TEST);
+
+	if (atributes.Cull_Face == true)
+	{
+		glEnable(GL_CULL_FACE);
+	}
+	else glDisable(GL_CULL_FACE);
+
+	if (atributes.Lightning == true)
+	{
+		glEnable(GL_LIGHTING);
+	}
+	else glDisable(GL_LIGHTING);
+
+	if (atributes.Color_Materials == true)
+	{
+		glEnable(GL_COLOR_MATERIAL);
+	}
+	else glDisable(GL_COLOR_MATERIAL);
+
+	if (atributes.Front == true)
+	{
+		glEnable(GL_FRONT);
+	}
+	else glDisable(GL_FRONT);
+
+	if (atributes.AmbientOclussion == true)
+	{
+		glEnable(GL_AMBIENT);
+	}
+	else glDisable(GL_AMBIENT);
+
+	if (atributes.Wireframe == true)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
