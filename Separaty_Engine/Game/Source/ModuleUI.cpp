@@ -299,36 +299,27 @@ update_status ModuleUI::Update(float dt)
 			if (ImGui::TreeNode("Render Options"))
 			{
 
-				if (ImGui::Checkbox("GL_AmbientOclussion", &App->renderer3D->atributes.AmbientOclussion)) // Funcion de prueba
-				{
+				if (ImGui::Checkbox("AMBIENT OCLUSSION", &App->renderer3D->atributes.AmbientOclussion)) // Funcion de prueba
+				{}
 
-				}
-				if (ImGui::Checkbox("GL_Color_material", &App->renderer3D->atributes.Color_Materials)) // Funcion de prueba
-				{
+				if (ImGui::Checkbox("COLOR MATERIAL", &App->renderer3D->atributes.Color_Materials)) // Funcion de prueba
+				{}
 
-				}
-				if (ImGui::Checkbox("GL_Cull_face", &App->renderer3D->atributes.Cull_Face)) // Funcion de prueba
-				{
+				if (ImGui::Checkbox("CULL FACE", &App->renderer3D->atributes.Cull_Face)) // Funcion de prueba
+				{}
 
+				if (ImGui::Checkbox("DEPTH TEST", &App->renderer3D->atributes.Depth_test)) // Funcion de prueba
+				{}
 
-				}
-				if (ImGui::Checkbox("GL_Depth_test", &App->renderer3D->atributes.Depth_test)) // Funcion de prueba
-				{
+				if (ImGui::Checkbox("FRONT", &App->renderer3D->atributes.Front)) // Funcion de prueba
+				{}
 
-				}
-				if (ImGui::Checkbox("GL_Front", &App->renderer3D->atributes.Front)) // Funcion de prueba
-				{
+				if (ImGui::Checkbox("LIGHTNING", &App->renderer3D->atributes.Lightning)) // Funcion de prueba
+				{}
 
-				}
-				if (ImGui::Checkbox("GL_Lightning", &App->renderer3D->atributes.Lightning)) // Funcion de prueba
-				{
+				if (ImGui::Checkbox("WIREFRAME", &App->renderer3D->atributes.Wireframe)) // Funcion de prueba
+				{}
 
-
-				}
-				if (ImGui::Checkbox("Wireframe Mode", &App->renderer3D->atributes.Wireframe)) // Funcion de prueba
-				{
-
-				}
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
