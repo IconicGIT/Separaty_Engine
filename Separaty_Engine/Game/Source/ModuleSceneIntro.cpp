@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 
-#include "Glew/include/glew.h"
+
 #include "SDL/include/SDL_opengl.h"
 
 
@@ -29,6 +29,8 @@ bool ModuleSceneIntro::Start()
 
 	plane.SetNormal(0, 1, 0);
 
+	gameObject = new GameObject();
+	gameObject->Init();
 
 	return ret;
 }
@@ -51,29 +53,33 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 
-	plane.Render();
-	cube.Render();
-	sphere.Render();
-	//cil.Render();
+	gameObject->Update(dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
-	{
-		plane.SetExtension(10);
-		sphere.SetRadius(1);
-		sphere.SetColumns(5);
-		//sphere.SetRows(5);
-		cil.SetColumns(10);
-	}
-	else
-	{
-		plane.SetExtension(200);
-		sphere.SetRadius(1);
+	//plane.Render();
+	//cube.Render();
+	//sphere.Render();
+	////cil.Render();
 
-		sphere.SetColumns(25);
-		sphere.SetRows(25);
-		cil.SetColumns(30);
 
-	}
+
+	//if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+	//{
+	//	plane.SetExtension(10);
+	//	sphere.SetRadius(1);
+	//	sphere.SetColumns(5);
+	//	//sphere.SetRows(5);
+	//	cil.SetColumns(10);
+	//}
+	//else
+	//{
+	//	plane.SetExtension(200);
+	//	sphere.SetRadius(1);
+
+	//	sphere.SetColumns(25);
+	//	sphere.SetRows(25);
+	//	cil.SetColumns(30);
+
+	//}
 
 	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{

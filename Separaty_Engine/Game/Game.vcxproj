@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Imgui\misc;$(ProjectDir)Source\External;$(ProjectDir)Source\External\Imgui;$(ProjectDir)Source\External\MathGeoLib;$(ProjectDir)Source\External\JSON parson</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Imgui\misc;$(ProjectDir)Source\External;$(ProjectDir)Source\External\Imgui;$(ProjectDir)Source\External\MathGeoLib;$(ProjectDir)Source\External\JSON parson;$(ProjectDir)Source\External\Glew</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -215,6 +215,7 @@
     <ClCompile Include="Source\External\MathGeoLib\Math\SSEMath.cpp" />
     <ClCompile Include="Source\External\MathGeoLib\Math\TransformOps.cpp" />
     <ClCompile Include="Source\External\MathGeoLib\Time\Clock.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\Log.cpp" />
@@ -320,6 +321,7 @@
     <ClInclude Include="Source\External\MathGeoLib\Math\TransformOps.h" />
     <ClInclude Include="Source\External\MathGeoLib\Math\vec2d.h" />
     <ClInclude Include="Source\External\MathGeoLib\Time\Clock.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Light.h" />
