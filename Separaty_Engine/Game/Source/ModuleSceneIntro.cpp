@@ -31,6 +31,7 @@ bool ModuleSceneIntro::Start()
 
 	gameObject = new GameObject();
 	gameObject->Init();
+	gameObject->Start();
 
 	return ret;
 }
@@ -54,8 +55,9 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 
 	gameObject->Update(dt);
+	gameObject->PostUpdate(dt);
 
-	//plane.Render();
+	plane.Render();
 	//cube.Render();
 	//sphere.Render();
 	////cil.Render();

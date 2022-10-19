@@ -18,17 +18,19 @@ public:
 	GameObject(bool start_enabled = true);
 	~GameObject();
 
-	virtual bool Init();
-	virtual bool Start();
-	virtual update_status Update(float dt) override;
-	virtual update_status PostUpdate(float dt) override;
-	virtual bool CleanUp();
-	virtual bool LoadState(JSON_Value* file) override;
-	virtual bool SaveState(JSON_Value* file) const override;
+	bool Init();
+	bool Start();
+	update_status Update(float dt) override;
+	update_status PostUpdate(float dt) override;
+	bool CleanUp();
+	bool LoadState(JSON_Value* file) override;
+	bool SaveState(JSON_Value* file) const override;
 
-	/*bool ImportMesh();*/
+	bool selected;
+	mat4x4 transform;
 
 
+	void RenderAxis();
 
 	unsigned int VAO;
 	unsigned int VBO;
