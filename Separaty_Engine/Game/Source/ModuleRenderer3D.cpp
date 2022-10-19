@@ -1,9 +1,25 @@
+#include "Glew/include/GL/glew.h"
+
+//#include "glew/include/GL/eglew.h"
+//#include "glew/include/GL/glxew.h"
+//#include "glew/include/GL/wglew.h"
+//#include <gl/GL.h>
+//#include <gl/GLU.h>
+
+
+//#pragma comment (lib, "glut/glut32.lib")
+//#pragma comment (lib, "Glew/libx86/glew32.lib")
+//#pragma comment (lib, "Glew/libx86/glew32s.lib")
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+
+//#include "imgui.h"
+//#include "imgui_impl_opengl3.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -98,6 +114,14 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	GLenum error = glewInit();
+	if (GLEW_OK != error)
+	{
+		DEBUG_LOG("Glew failed, Error: %s\n", glewGetErrorString(error));
+	}
+	DEBUG_LOG("Glew version: %s\n", glewGetString(GLEW_VERSION));
+
 
 	return ret;
 }

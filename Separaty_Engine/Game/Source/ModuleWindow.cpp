@@ -1,9 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
-#include "Glew/include/GL/glew.h"
-#include <GL/glew.h>
-#include <gl/GLU.h>
 
 #include "Log.h"
 
@@ -46,9 +43,6 @@ bool ModuleWindow::Init()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-
-		/*if (!glfwInit())
-			exit(EXIT_FAILURE);*/
 
 		if(WIN_FULLSCREEN == true)
 		{
