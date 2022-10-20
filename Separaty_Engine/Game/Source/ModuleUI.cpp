@@ -49,6 +49,10 @@ bool ModuleUI::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
 
+	gameObject = new GameObject();
+	gameObject->Init();
+	gameObject->Start();
+
 	return true;
 }
 
@@ -103,7 +107,6 @@ update_status ModuleUI::Update(float dt)
 
 			if (ImGui::MenuItem("Load", "CTRL + L"))
 			{
-
 				App->LoadGameRequest();
 			}
 			ImGui::Separator();
@@ -220,23 +223,28 @@ update_status ModuleUI::Update(float dt)
 			{
 				if (ImGui::MenuItem("Cube"))
 				{
-
+					createCube = true;
 				}
 				if (ImGui::MenuItem("Sphere"))
 				{
-
+					createSphere = true;
 				}
 				if (ImGui::MenuItem("Capsule"))
 				{
-
+					createCapsule = true;
 				}
 				if (ImGui::MenuItem("Cylinder"))
 				{
-
+					createCylinder = true;
 				}
 				if (ImGui::MenuItem("Plane"))
 				{
-
+					createPlane = true;
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Clean Primitives"))
+				{
+					cleanPrimitives = true;
 				}
 				ImGui::TreePop();
 
@@ -503,11 +511,11 @@ update_status ModuleUI::Update(float dt)
 	//////////////////////
 
 
-	//VENTANAS EMERGENTES DE LOS DIFERENTES MENUS 
+	//WINDOWS FROM THE DIFFERENT MEUNS 
 
 	//EDIT
 	// 
-		//Preferences
+		//PREFERENCES
 	if (showPreferences)
 	{
 		ImGui::Begin("Preferences...", &showPreferences);
@@ -761,6 +769,74 @@ update_status ModuleUI::Update(float dt)
 	ImGui::UpdatePlatformWindows();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	//PRIMITIVES
+
+	if (createCube)
+	{
+		gameObject->Update(dt);
+		gameObject->PostUpdate(dt);
+	}
+	if (createSphere)
+	{
+		gameObject->Update(dt);
+		gameObject->PostUpdate(dt);
+	}
+	if (createCapsule)
+	{
+		gameObject->Update(dt);
+		gameObject->PostUpdate(dt);
+	}
+	if (createCylinder)
+	{
+		gameObject->Update(dt);
+		gameObject->PostUpdate(dt);
+	}
+	if (createPlane)
+	{
+		gameObject->Update(dt);
+		gameObject->PostUpdate(dt);
+	}
+
+	if (cleanPrimitives)
+	{
+		createCube = false;
+		createSphere = false;
+		createCapsule = false;
+		createCylinder = false;
+		createPlane = false;
+
+		cleanPrimitives = false;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	return UPDATE_CONTINUE;
 }

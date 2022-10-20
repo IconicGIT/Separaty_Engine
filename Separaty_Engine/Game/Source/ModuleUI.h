@@ -30,6 +30,16 @@ public:
 	bool showOutput = true;
 	std::vector<char*> outputList;
 
+	//PRIMITIVEs
+
+	bool createCube = false;
+	bool createSphere = false;
+	bool createCapsule = false;
+	bool createCylinder = false;
+	bool createPlane = false;
+
+	bool cleanPrimitives = false;
+
 	void AppendToOutput(char* DEBUG_LOG)
 	{
 		char* text = new char[4096];
@@ -40,7 +50,7 @@ public:
 	}
 
 	char inputs[20];
-
+	GameObject* gameObject;
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 

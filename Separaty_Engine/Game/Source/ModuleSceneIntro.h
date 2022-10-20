@@ -23,9 +23,6 @@ public:
 
 	//Draw 
 
-
-	//TODO 9: Create an "OnCollision" method specific for this module
-
 	Prim_Plane plane;
 	Prim_Cube cube;
 	Prim_Sphere sphere;

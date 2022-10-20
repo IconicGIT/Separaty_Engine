@@ -29,9 +29,9 @@ bool ModuleSceneIntro::Start()
 
 	plane.SetNormal(0, 1, 0);
 
-	gameObject = new GameObject();
+	/*gameObject = new GameObject();
 	gameObject->Init();
-	gameObject->Start();
+	gameObject->Start();*/
 
 	return ret;
 }
@@ -54,8 +54,8 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 
-	gameObject->Update(dt);
-	gameObject->PostUpdate(dt);
+	/*gameObject->Update(dt);
+	gameObject->PostUpdate(dt);*/
 
 	plane.Render();
 	//cube.Render();
