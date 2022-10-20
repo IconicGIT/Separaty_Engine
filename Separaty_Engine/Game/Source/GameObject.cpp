@@ -16,15 +16,19 @@ GameObject::~GameObject()
 
 bool GameObject::Init()
 {
-	float vertices[] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f   // top left 
+	GLfloat vertices[] = {
+		1.0,	1.0,	1.0,
+		0.0f,	1.0,	1.0,
+		1.0,	1.0,	0.0f,
+		0.0f,	1.0,	0.0f,
+		1.0,	0.0f,	1.0,
+		0.0f,	0.0f,	1.0,
+		0.0f,	0.0f,	0.0f,
+		1.0,	0.0f,	0.0f
 	};
-	unsigned int indices[] = {  // note that we start from 0!
-		0, 1, 3,   // first triangle
-		1, 2, 3    // second triangle
+	GLuint indices[] = {  // note that we start from 0!
+		3, 2, 6, 7, 4, 2, 0,
+		3, 1, 6, 5, 4, 1, 0
 	};
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -42,17 +46,18 @@ bool GameObject::Init()
 	}
 
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	
 
 	// ..:: Initialization code :: ..
 	// 1. bind Vertex Array Object
+	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	// 2. copy our vertices array in a vertex buffer for OpenGL to use
+	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	// 3. copy our index array in a element buffer for OpenGL to use
+	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	// 4. then set the vertex attributes pointers
@@ -84,10 +89,10 @@ update_status GameObject::Update(float dt)
 
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
-	App->ui->AppendToOutput(DEBUG_LOG("gameobject"));
+	//App->ui->AppendToOutput(DEBUG_LOG("gameobject"));
 
 	return UPDATE_CONTINUE;
 }
