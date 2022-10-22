@@ -225,6 +225,12 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -540,6 +546,12 @@
       <Filter>Source\External\JSON</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneManager.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

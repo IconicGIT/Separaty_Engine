@@ -9,6 +9,7 @@ Application::Application() : debug(false)
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
 	ui = new ModuleUI();
+	scene_manager = new SceneManager();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -19,7 +20,7 @@ Application::Application() : debug(false)
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	
+	AddModule(scene_manager);
 
 	
 	// Scenes
