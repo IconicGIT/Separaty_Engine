@@ -49,9 +49,9 @@ bool ModuleUI::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
 
-	gameObject = new GameObject();
+	/*gameObject = new GameObject();
 	gameObject->Init();
-	gameObject->Start();
+	gameObject->Start();*/
 
 	return true;
 }
@@ -772,7 +772,7 @@ update_status ModuleUI::Update(float dt)
 
 	//PRIMITIVES
 
-	if (createCube)
+	/*if (createCube)
 	{
 		gameObject->Update(dt);
 		gameObject->PostUpdate(dt);
@@ -796,7 +796,7 @@ update_status ModuleUI::Update(float dt)
 	{
 		gameObject->Update(dt);
 		gameObject->PostUpdate(dt);
-	}
+	}*/
 
 	if (cleanPrimitives)
 	{

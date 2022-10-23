@@ -50,7 +50,7 @@ public:
 	}
 
 	char inputs[20];
-	GameObject* gameObject;
+	/*GameObject* gameObject;*/
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 

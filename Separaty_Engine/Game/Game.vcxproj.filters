@@ -19,6 +19,9 @@
     <Filter Include="Source\External\JSON">
       <UniqueIdentifier>{41cfc0d5-cf64-4906-aaf4-0a761c176b6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Components">
+      <UniqueIdentifier>{491f45fb-b12a-457a-a5db-9b8878bdd4c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -230,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GOC_MeshRenderer.cpp">
+      <Filter>Source\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -553,6 +559,12 @@
     </ClInclude>
     <ClInclude Include="Source\SceneManager.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GOC_MeshRenderer.h">
+      <Filter>Source\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

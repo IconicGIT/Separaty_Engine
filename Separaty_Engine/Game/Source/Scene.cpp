@@ -26,13 +26,66 @@ bool Scene::Start()
 
 update_status Scene::Update(float dt)
 {
-
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
+	update_status ret = UPDATE_CONTINUE;
+	if (!gameObjects.empty())
 	{
-		App->ui->AppendToOutput(DEBUG_LOG(name.c_str()));
+
+		Module* item = gameObjects.front();
+		int item_it = 0;
+
+		while (item_it < gameObjects.size() && ret == true)
+		{
+			item = gameObjects[item_it];
+			ret = item->PreUpdate(dt);
+			item_it++;
+		}
+
+		item = gameObjects.front();
+		item_it = 0;
+
+		while (item_it < gameObjects.size() && ret == true)
+		{
+			item = gameObjects[item_it];
+			ret = item->Update(dt);
+			item_it++;
+		}
+
+		item = gameObjects.front();
+		item_it = 0;
+
+		while (item_it < gameObjects.size() && ret == true)
+		{
+			item = gameObjects[item_it];
+			ret = item->PostUpdate(dt);
+			item_it++;
+		}
 	}
+
+	//if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
+	//{
+	//	App->ui->AppendToOutput(DEBUG_LOG(name.c_str()));
+	//}
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		CreateNewGameObject();
+	}
+
 	return UPDATE_CONTINUE;
 
+}
+
+
+bool Scene::CreateNewGameObject()
+{
+	std::string gameobject_name = "GameObject  " + std::to_string(gameObjects.size());
+
+	GameObject* go = new GameObject();
+	go->name = gameobject_name;
+	go->Start();
+	gameObjects.push_back(go);
+
+	return true;
 }
 
 bool Scene::CleanUp()

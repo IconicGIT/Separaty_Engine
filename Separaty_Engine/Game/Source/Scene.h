@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "GameObject.h"
 
+class GameObject;
 
 class Scene : public Module
 {
@@ -21,9 +22,11 @@ public:
 	bool LoadState(JSON_Value* file) override;
 	bool SaveState(JSON_Value* file) const override;
 	
+	bool CreateNewGameObject();
 private:
 
 	std::string sceneName;
 	bool active;
+	std::vector<GameObject*> gameObjects;
 };
 
