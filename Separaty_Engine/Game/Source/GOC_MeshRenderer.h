@@ -1,29 +1,24 @@
 #pragma once
 
-#include "GameObjComponent.h"
+#include "GameObject.h"
 #include <vector>
 
 #include "Glew/include/GL/glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "glmath.h"
 
-
-struct Mesh
-{
-	GLfloat* vertices;
-	GLint* indices;
-
-};
-
-
+class GameObjectComponent;
+class GameObject;
+ 
 class GOC_MeshRenderer : public GameObjectComponent
 {
 public:
-	GOC_MeshRenderer();
+	GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform);
 	~GOC_MeshRenderer();
 
 	void Render();
-	bool Execute() override;
+	bool Execute();
 
 	void SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
 
@@ -36,8 +31,6 @@ private:
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
-
-	Mesh mesh;
 
 
 	unsigned int vertexShader;

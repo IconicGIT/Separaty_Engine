@@ -3,7 +3,6 @@
 #include "Globals.h"
 #include "Module.h"
 
-#include "GameObject.h"
 #include "Scene.h"
 
 class Scene;

@@ -218,6 +218,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\GOC_MeshRenderer.cpp" />
+    <ClCompile Include="Source\GOC_Transform.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -329,6 +330,7 @@
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\GOC_MeshRenderer.h" />
+    <ClInclude Include="Source\GOC_Transform.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Module.h" />

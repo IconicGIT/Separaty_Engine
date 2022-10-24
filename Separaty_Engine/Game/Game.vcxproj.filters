@@ -237,6 +237,9 @@
     <ClCompile Include="Source\GOC_MeshRenderer.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GOC_Transform.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -564,6 +567,9 @@
       <Filter>Source\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\GOC_MeshRenderer.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GOC_Transform.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
   </ItemGroup>

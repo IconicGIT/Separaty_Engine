@@ -1,9 +1,11 @@
 #include "GOC_MeshRenderer.h"
 
 
-GOC_MeshRenderer::GOC_MeshRenderer()
+GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform)
 {
-	transform = IdentityMatrix;
+	this->transform = transform;
+	gameObject = gameObjectAttached;
+	GOC_type = GOC_Type::GOC_MESH_RENDERER;
 }
 
 GOC_MeshRenderer::~GOC_MeshRenderer()
@@ -12,6 +14,13 @@ GOC_MeshRenderer::~GOC_MeshRenderer()
 
 void GOC_MeshRenderer::SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
 {
+
+	//for (size_t i = 0; i < vertices.size(); i += 3)
+	//{
+	//	vertices[i] += transform.translation().x;
+	//	vertices[i + 1] += transform.translation().y;
+	//	vertices[i + 2] += transform.translation().z;
+	//}
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -50,6 +59,9 @@ void GOC_MeshRenderer::SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint
 
 void GOC_MeshRenderer::Render()
 {
+	glPushMatrix();
+	glMultMatrixf(transform.M);
+
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
@@ -60,8 +72,6 @@ void GOC_MeshRenderer::Render()
 
 void GOC_MeshRenderer::RenderAxis()
 {
-	glPushMatrix();
-	glMultMatrixf(transform.M);
 
 	// Draw Axis Grid
 	glLineWidth(1.0f);
@@ -98,6 +108,7 @@ void GOC_MeshRenderer::RenderAxis()
 bool GOC_MeshRenderer::Execute()
 {
 	//App->ui->AppendToOutput(DEBUG_LOG("executing"));
+	transform = gameObject->transform->Get4x4Matrix();
 	Render();
 
 	return true;

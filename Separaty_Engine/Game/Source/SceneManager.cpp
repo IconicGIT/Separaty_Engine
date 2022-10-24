@@ -99,7 +99,7 @@ bool SceneManager::CreateNewScene()
 	std::string scene_name = "scene " + std::to_string(scenes_id);
 	scenes_id++;
 
-	Scene* scene = new Scene(scene_name);
+	Scene* scene = new Scene(scene_name, scenes_id);
 	scene->Start();
 	scenes.push_back(scene);
 

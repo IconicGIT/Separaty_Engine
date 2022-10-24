@@ -2,11 +2,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
-#include "GameObject.h"
 
 class Primitive;
 class PhysBody3D;
-class GameObject;
 
 class ModuleSceneIntro : public Module
 {
@@ -27,8 +25,6 @@ public:
 	Prim_Cube cube;
 	Prim_Sphere sphere;
 	Prim_Cylinder cil;
-
-	GameObject* gameObject;
 
 private:
 	std::vector<Primitive*> primitives;

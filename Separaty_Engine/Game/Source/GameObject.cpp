@@ -1,12 +1,9 @@
 #include "GameObject.h"
 
-#include "Glew/include/GL/glew.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
-GameObject::GameObject(bool start_enabled)
+GameObject::GameObject(uint id, bool start_enabled)
 {
-
+	this->id = id;
 }
 
 GameObject::~GameObject()
@@ -16,60 +13,14 @@ GameObject::~GameObject()
 
 bool GameObject::Init()
 {
-	GLfloat vertices[] = {
-		1.0,	1.0,	1.0,
-		0.0f,	1.0,	1.0,
-		1.0,	1.0,	0.0f,
-		0.0f,	1.0,	0.0f,
-		1.0,	0.0f,	1.0,
-		0.0f,	0.0f,	1.0,
-		0.0f,	0.0f,	0.0f,
-		1.0,	0.0f,	0.0f
-	};
-	GLuint indices[] = {  // note that we start from 0!
-		3, 2, 6, 7, 4, 2, 0,
-		3, 1, 6, 5, 4, 1, 0
-	};
-
-	//vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	//glCompileShader(vertexShader);
-
-	//int  success;
-	//char infoLog[512];
-	//glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	//if (!success)
-	//{
-	//	glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-	//	std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	//}
-
-
-	//
-
-	//// ..:: Initialization code :: ..
-	//// 1. bind Vertex Array Object
-	//glGenVertexArrays(1, &VAO);
-	//glBindVertexArray(VAO);
-	//// 2. copy our vertices array in a vertex buffer for OpenGL to use
-	//glGenBuffers(1, &VBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//// 3. copy our index array in a element buffer for OpenGL to use
-	//glGenBuffers(1, &EBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	//// 4. then set the vertex attributes pointers
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
-
+	transform = new GOC_Transform(this); 
+	components.push_back(transform);
 	return true;
 }
 
 bool GameObject::Start()
 {
-	meshRenderer = new GOC_MeshRenderer();
+	AddComponent(GOC_Type::GOC_MESH_RENDERER);
 
 	std::vector<GLfloat> vertices = {
 		1.0,	1.0,	1.0,
@@ -87,22 +38,36 @@ bool GameObject::Start()
 		3, 1, 6, 5, 4, 1, 0
 	};
 
-	meshRenderer->SetMesh(vertices, indices);
+	GOC_MeshRenderer* meshRenderer =  (GOC_MeshRenderer*)GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
+	meshRenderer->SetMesh(vertices, indices);
 	return true;
 }
 
 update_status GameObject::Update(float dt)
 {
+	bool ret = UPDATE_CONTINUE;
 
-	/*glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);*/
+	GameObjectComponent* item = components.front();
+	int item_it = 0;
 
-	//App->ui->AppendToOutput(DEBUG_LOG("gameobject"));
+	while (item_it < components.size() && ret == true)
+	{
+		item = components[item_it];
+		ret = item->Execute();
+		item_it++;
+	}
 
-	meshRenderer->Execute();
+	if (id == 0)
+	{
+		
+		//App->ui->AppendToOutput(DEBUG_LOG("Created GameObject, pos: %f %f %f", pos.x, pos.y, pos.z));
+
+		a += 0.05f;
+		float pos = sinf(a);
+		transform->SetPos(pos, 0, 0);
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -115,47 +80,20 @@ update_status GameObject::PostUpdate(float dt)
 
 bool GameObject::CleanUp()
 {
+	bool ret = UPDATE_CONTINUE;
+
+	GameObjectComponent* item = components.front();
+	int item_it = 0;
+
+	while (item_it < components.size() && ret == true)
+	{
+		item = components[item_it];
+		delete item;
+		item_it++;
+	}
 
 	return true;
 }
-
-//void GameObject::RenderAxis()
-//{
-//
-//	glPushMatrix();
-//	glMultMatrixf(transform.M);
-//
-//	// Draw Axis Grid
-//	glLineWidth(1.0f);
-//
-//	glBegin(GL_LINES);
-//
-//	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-//
-//	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-//	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-//	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-//
-//	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-//
-//	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-//	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-//	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-//	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-//
-//	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-//
-//	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-//	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-//	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-//	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-//
-//	glEnd();
-//
-//	glLineWidth(1.0f);
-//
-//	glPopMatrix();
-//}
 
 
 bool GameObject::LoadState(JSON_Value* file)
@@ -169,3 +107,45 @@ bool GameObject::SaveState(JSON_Value* file) const
 
 	return true;
 }
+
+void GameObject::AddComponent(GOC_Type type)
+{
+	for (auto component : components)
+	{
+		if (component->GetGOC_Type() == type)
+		{
+			App->ui->AppendToOutput(DEBUG_LOG("There already exists a component of that type in %s!", name));
+			return;
+		}
+	}
+	
+
+	switch (type)
+	{
+	case GOC_Type::GOC_MESH_RENDERER:
+	{
+		GOC_MeshRenderer* comp = new GOC_MeshRenderer(this, transform->Get4x4Matrix());
+		components.push_back(comp);
+	}
+		break;
+	default:
+		break;
+	}
+}
+
+GameObjectComponent* GameObject::GetComponent(GOC_Type type)
+{
+	for (auto component : components)
+	{
+		if (component->GetGOC_Type() == type)
+		{
+			
+			return component;
+		}
+		else
+		{
+			App->ui->AppendToOutput(DEBUG_LOG("There is not any component of that type in %s!", name));
+		}
+	}
+}
+

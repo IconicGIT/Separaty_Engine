@@ -11,11 +11,11 @@ class Scene : public Module
 public:
 	Scene(bool active = true);
 
-	Scene(std::string name, bool active = true);
+	Scene(std::string name, uint id, bool active = true);
 
 	~Scene();
 
-
+	bool Init();
 	bool Start();
 	update_status Update(float dt) override;
 	bool CleanUp();
@@ -28,5 +28,6 @@ private:
 	std::string sceneName;
 	bool active;
 	std::vector<GameObject*> gameObjects;
+	uint sceneID;
 };
 
