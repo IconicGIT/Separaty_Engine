@@ -14,6 +14,21 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 
 Visit github page for detailed information regarding code and functionalities:
 
+## How to use it
+
+### Game Objects Inspector Actions:
+
+- **Transform**: Translate, Rotate and Scale the object
+
+- **Mesh**: Toggle the view of the vertex and face normals
+
+- **Material**:
+
+    Toggle the checkers image
+    
+    Remove the current texture
+    
+    
 ## Controls
 
 ### Camera Controls:
@@ -37,7 +52,30 @@ Visit github page for detailed information regarding code and functionalities:
 - **F**: Focus the camera around the selected object
 
     (If an object is not selected) Focus around the center of the scene.
+    
+### Shortcuts:  
 
+- **CTRL + Z**: Undo
+
+- **CTRL + Y**: Redo
+
+- **SHIFT + A**: Select All
+
+- **SHIFT + D**: Deselect All
+
+- **CTRL + X**: Cut
+
+- **CTRL + C**: Copy
+
+- **CTRL + V**: Paste
+
+- **CTRL + D**: Duplicate
+
+- **SHIFT + R**: Rename
+
+- **SUPR**: Delete
+    
+    
 ## Developers
 
 * Brandon Arandia
@@ -47,9 +85,6 @@ Visit github page for detailed information regarding code and functionalities:
 * Gerard Martinez
 
     - Github account: [GerardMartinez02](https://github.com/GerardMartinez02)
-
-
-
 
 ## License
 ### MIT License
