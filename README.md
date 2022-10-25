@@ -16,7 +16,27 @@ Visit github page for detailed information regarding code and functionalities:
 
 ## Controls
 
-### Keyboard
+### Camera Controls:
+
+- **W**: Move Forward
+
+- **A**: Move Left
+
+- **S**: Move Backwards
+
+- **D**: Move Right
+
+- **Hold Shift**: Duplicate movement speed
+
+- **Right Click**: Orbit around the selected object
+
+    (If an object is not selected) Orbit around the center of the scene
+
+- **Mouse Wheel**: Zoom In/Out
+
+- **F**: Focus the camera around the selected object
+
+    (If an object is not selected) Focus around the center of the scene.
 
 ## Developers
 
