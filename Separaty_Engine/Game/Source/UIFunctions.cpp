@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "UIFunctions.h"
+#include "GameObject.h"
 
 #include "ModuleUI.h"
 
@@ -18,6 +19,8 @@ UIFunctions::~UIFunctions()
 
 update_status UIFunctions::Update(float dt)
 {
+	//PROJECT PREFERENCES
+
 	if (App->ui->showPreferences)
 	{
 		ImGui::Begin("Preferences...", &App->ui->showPreferences);
@@ -32,11 +35,12 @@ update_status UIFunctions::Update(float dt)
 		ImGui::End();
 	}
 
+	//APP DATA 
 	if (App->ui->showApplicationData)
 	{
 		ImGui::Begin("Show Application Data", &App->ui->showApplicationData);
 
-		// Application 
+		
 		if (ImGui::CollapsingHeader("Application"))
 		{
 			//AppNameDisplay
@@ -256,7 +260,66 @@ update_status UIFunctions::Update(float dt)
 		ImGui::End();
 	}
 
+	//CONSOLE 
+	if (App->ui->showOutput)
+	{
+		ImGui::Begin("Console", &App->ui->showOutput);
+
+		App->ui->PrintOutputList();
+
+		ImGui::End();
+	}
+
+
+	//PRIMITIVES
+
+	if (App->ui->createCube)
+	{
+	/*	GameObject* go = CreateNewGameObject();
+
+		go->transform->SetPos(0, 0, go->GetID());
+
+		App->ui->createCube = false;*/
+			
+	}
+	if (App->ui->createSphere)
+	{
+		
+	}
+	if (App->ui->createCapsule)
+	{
+		
+	}
+	if (App->ui->createCylinder)
+	{
+		
+	}
+	if (App->ui->createPlane)
+	{
+		
+	}
+
+	if (App->ui->cleanPrimitives)
+	{
+		App->ui->createCube = false;
+		App->ui->createSphere = false;
+		App->ui->createCapsule = false;
+		App->ui->createCylinder = false;
+		App->ui->createPlane = false;
+
+		App->ui->cleanPrimitives = false;
+	}
+
 	return UPDATE_CONTINUE;
 
 
 }
+
+//GameObject* UIFunctions::CreateNewGameObject()
+//{
+//	GameObject* go = App->engineSystem->CreateNewGameObject();
+//
+//	gameObjects.push_back(go);
+//
+//	return go;
+//}

@@ -2,13 +2,10 @@
 
 #include "ModuleUI.h"
 #include "Globals.h"
+#include "GameObject.h"
 
-#include <vector>
-
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_internal.h"
+class EngineSystem;
+class GameObject;
 
 //class ModuleUI;
 class Module;
@@ -23,6 +20,10 @@ public:
 
 	update_status Update(float dt) override;
 	
+	/*GameObject* CreateNewGameObject();*/
 private:
+
+	std::vector<GameObject*> gameObjects;
+	EngineSystem* engineSystem;
 
 };

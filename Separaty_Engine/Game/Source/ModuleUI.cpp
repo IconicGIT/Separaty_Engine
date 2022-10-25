@@ -517,28 +517,12 @@ update_status ModuleUI::Update(float dt)
 		
 		ImGui::EndMainMenuBar();
 	}
-	//////////////////////
-
-
-	//WINDOWS FROM THE DIFFERENT MEUNS 
-
-	//EDIT
-	// 
-		//PREFERENCES
+	
+	//Calling Functions & Windows
 
 	uiFunctions->Update(dt);
 
-		//APP DATA
-	
-
-	if (showOutput)
-	{
-		ImGui::Begin("Console", &showOutput);
-
-		PrintOutputList();
-
-		ImGui::End();
-	}
+	/////	
 
 	ImGui::End();
 	ImGui::Render();
@@ -546,45 +530,6 @@ update_status ModuleUI::Update(float dt)
 	ImGui::UpdatePlatformWindows();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	//PRIMITIVES
-
-	/*if (createCube)
-	{
-		gameObject->Update(dt);
-		gameObject->PostUpdate(dt);
-	}
-	if (createSphere)
-	{
-		gameObject->Update(dt);
-		gameObject->PostUpdate(dt);
-	}
-	if (createCapsule)
-	{
-		gameObject->Update(dt);
-		gameObject->PostUpdate(dt);
-	}
-	if (createCylinder)
-	{
-		gameObject->Update(dt);
-		gameObject->PostUpdate(dt);
-	}
-	if (createPlane)
-	{
-		gameObject->Update(dt);
-		gameObject->PostUpdate(dt);
-	}*/
-
-	if (cleanPrimitives)
-	{
-		createCube = false;
-		createSphere = false;
-		createCapsule = false;
-		createCylinder = false;
-		createPlane = false;
-
-		cleanPrimitives = false;
-	}
 
 	return UPDATE_CONTINUE;
 }

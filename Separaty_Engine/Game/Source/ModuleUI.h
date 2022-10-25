@@ -52,6 +52,14 @@ public:
 		outputList.insert(firstPlace, text);
 	}
 
+	void PrintOutputList()
+	{
+		for (char* listElement : outputList)
+		{
+			ImGui::Text(listElement);
+		}
+	}
+
 	char inputs[20];
 	/*GameObject* gameObject;*/
 
@@ -61,12 +69,4 @@ public:
 
 private:
 	
-	void PrintOutputList()
-	{
-		for (char* listElement : outputList)
-		{
-			ImGui::Text(listElement);
-		}
-	}
-
 };

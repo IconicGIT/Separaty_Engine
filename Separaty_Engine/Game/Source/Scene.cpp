@@ -111,10 +111,10 @@ update_status Scene::Update(float dt)
 		}
 	}
 
-	//if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
-	//{
-	//	App->ui->AppendToOutput(DEBUG_LOG(name.c_str()));
-	//}
+	/*if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
+	{
+		App->ui->AppendToOutput(DEBUG_LOG(name.c_str()));
+	}*/
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
