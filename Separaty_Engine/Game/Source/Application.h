@@ -12,11 +12,11 @@
 #include "ModuleCamera3D.h"
 #include "ModuleUI.h"
 #include "ModuleImport.h"
-#include "SceneManager.h"
+#include "EngineSystem.h"
 
 #include "parson.h"
 
-class SceneManager;
+class EngineSystem;
 
 class Application
 {
@@ -28,7 +28,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleUI* ui;
-	SceneManager* scene_manager;
+	EngineSystem* engineSystem;
 
 	bool debug;
 private:

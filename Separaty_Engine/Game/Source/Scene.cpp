@@ -2,15 +2,18 @@
 
 
 
-Scene::Scene(bool active)
+Scene::Scene(EngineSystem *system, bool active)
 {
 	name = "_";
+	this->engineSystem = system;
 }
 
-Scene::Scene(std::string name, uint id, bool active)
+Scene::Scene(std::string name, uint id, EngineSystem* system, bool active)
 {
 	this->name = name;
 	this->sceneID = id;
+	this->engineSystem = system;
+
 }
 
 Scene::~Scene()
@@ -115,7 +118,11 @@ update_status Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
-		CreateNewGameObject();
+		GameObject* go = CreateNewGameObject();
+
+		go->transform->SetPos(0, 0, go->GetID());
+
+		
 	}
 
 	return UPDATE_CONTINUE;
@@ -123,19 +130,13 @@ update_status Scene::Update(float dt)
 }
 
 
-bool Scene::CreateNewGameObject()
+GameObject* Scene::CreateNewGameObject()
 {
-	std::string gameobject_name = "GameObject  " + std::to_string(gameObjects.size());
+	GameObject* go = engineSystem->CreateNewGameObject();
 
-	GameObject* go = new GameObject(gameObjects.size());
-	go->name = gameobject_name;
-	go->Init();
-	go->Start();
 	gameObjects.push_back(go);
 
-	App->ui->AppendToOutput(DEBUG_LOG("Created GameObject, id: %i", go->GetID()));
-
-	return true;
+	return go;
 }
 
 bool Scene::CleanUp()

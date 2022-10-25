@@ -4,14 +4,16 @@
 #include "Module.h"
 
 #include "Scene.h"
+#include "GameObject.h"
+#include "GameObjComponent.h"
 
 class Scene;
 
-class SceneManager : public Module
+class EngineSystem : public Module
 {
 public:
-	SceneManager();
-	~SceneManager();
+	EngineSystem();
+	~EngineSystem();
 
 
 	bool Start();
@@ -29,13 +31,15 @@ public:
 	bool LoadState(JSON_Value* file) override;
 	bool SaveState(JSON_Value* file) const override;
 
-
-
+	GameObject* CreateNewGameObject();
+	GameObjectComponent* CreateNewGOC(GameObject* goAttached, GOC_Type type);
 private:
 	
 	int scenes_id = 0;
 
 	std::vector<Scene*> scenes;
+	std::vector<GameObject*> AllGameObjects;
+	std::vector<GameObjectComponent*> AllGameObjecComponents;
 
 
 };

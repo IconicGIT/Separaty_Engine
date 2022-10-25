@@ -1,9 +1,10 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject(uint id, bool start_enabled)
+GameObject::GameObject(uint id, EngineSystem* system, bool start_enabled)
 {
 	this->id = id;
+	this->engineSystem = system;
 }
 
 GameObject::~GameObject()
@@ -110,6 +111,7 @@ bool GameObject::SaveState(JSON_Value* file) const
 
 void GameObject::AddComponent(GOC_Type type)
 {
+
 	for (auto component : components)
 	{
 		if (component->GetGOC_Type() == type)
@@ -117,20 +119,12 @@ void GameObject::AddComponent(GOC_Type type)
 			App->ui->AppendToOutput(DEBUG_LOG("There already exists a component of that type in %s!", name));
 			return;
 		}
+		else
+		{
+			components.push_back(engineSystem->CreateNewGOC(this, type));
+		}
 	}
-	
 
-	switch (type)
-	{
-	case GOC_Type::GOC_MESH_RENDERER:
-	{
-		GOC_MeshRenderer* comp = new GOC_MeshRenderer(this, transform->Get4x4Matrix());
-		components.push_back(comp);
-	}
-		break;
-	default:
-		break;
-	}
 }
 
 GameObjectComponent* GameObject::GetComponent(GOC_Type type)
@@ -142,10 +136,9 @@ GameObjectComponent* GameObject::GetComponent(GOC_Type type)
 			
 			return component;
 		}
-		else
-		{
-			App->ui->AppendToOutput(DEBUG_LOG("There is not any component of that type in %s!", name));
-		}
 	}
+
+	App->ui->AppendToOutput(DEBUG_LOG("There is not any component of that type in %s!", name));
+
 }
 

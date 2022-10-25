@@ -228,7 +228,7 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneManager.cpp">
+    <ClCompile Include="Source\EngineSystem.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
@@ -560,7 +560,7 @@
     <ClInclude Include="Source\Scene.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneManager.h">
+    <ClInclude Include="Source\EngineSystem.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObjComponent.h">

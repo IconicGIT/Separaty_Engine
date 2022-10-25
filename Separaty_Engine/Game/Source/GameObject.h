@@ -7,6 +7,7 @@
 #include "GOC_MeshRenderer.h"
 #include "GOC_Transform.h"
 
+class EngineSystem;
 enum class GOC_Type;
 //class GameObjectComponent;
 class GOC_MeshRenderer;
@@ -15,7 +16,7 @@ class GOC_Transform;
 class GameObject : public Module
 {
 public:
-	GameObject(uint id, bool start_enabled = true);
+	GameObject(uint id, EngineSystem* system, bool start_enabled = true);
 	~GameObject();
 
 	bool Init();
@@ -38,6 +39,7 @@ public:
 	GOC_Transform* transform;
 
 private:
+	EngineSystem* engineSystem;
 	uint id;
 	GameObject* parent;
 	std::vector<GameObject*> children;
