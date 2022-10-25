@@ -240,6 +240,9 @@
     <ClCompile Include="Source\GOC_Transform.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UIFunctions.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -258,9 +261,6 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Module.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleAudio.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleCamera3D.h">
@@ -571,6 +571,12 @@
     </ClInclude>
     <ClInclude Include="Source\GOC_Transform.h">
       <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleAudio.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIFunctions.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

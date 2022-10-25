@@ -233,6 +233,7 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\EngineSystem.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\UIFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\EngineSystem.h" />
     <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\UIFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\External\MathGeoLib\Geometry\KDTree.inl" />

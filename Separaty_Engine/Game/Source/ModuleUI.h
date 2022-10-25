@@ -7,12 +7,15 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_internal.h"
 
+#include "UIFunctions.h"
+
 class ModuleUI : public Module
 {
 public:
 	ModuleUI(bool start_enabled = true);
 	~ModuleUI();
 
+	bool Init();
 	bool Start();
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
@@ -54,7 +57,7 @@ public:
 
 	//TODO 9: Create an "OnCollision" method specific for this module
 
-
+	UIFunctions* uiFunctions;
 
 private:
 	
