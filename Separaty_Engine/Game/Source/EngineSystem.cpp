@@ -11,9 +11,9 @@ EngineSystem::~EngineSystem()
 
 bool EngineSystem::Start()
 {
+	CreateNewScene();
 
 	return true;
-
 }
 
 bool EngineSystem::Init()
@@ -98,23 +98,30 @@ bool EngineSystem::CreateNewScene()
 {
 	std::string scene_name = "scene " + std::to_string(scenes.size() + 1);
 
-
 	Scene* scene = new Scene(scene_name, scenes_id, this);
 	scene->Start();
 	scenes.push_back(scene);
 
+	currentScene = scene;
+
 	return true;
+}
+
+
+Scene* EngineSystem::GetCurrentScene() const
+{
+	return currentScene;
 }
 
 GameObject* EngineSystem::CreateNewGameObject()
 {
-	std::string gameobject_name = "GameObject " + std::to_string(AllGameObjects.size());
+	std::string gameobject_name = "GameObject " + std::to_string(allGameObjects.size());
 
-	GameObject* go = new GameObject(AllGameObjects.size(), this);
+	GameObject* go = new GameObject(allGameObjects.size(), this);
 	go->name = gameobject_name;
 	go->Init();
 	go->Start();
-	AllGameObjects.push_back(go);
+	allGameObjects.push_back(go);
 
 	App->ui->AppendToOutput(DEBUG_LOG("Created GameObject, id: %i", go->GetID()));
 
@@ -129,7 +136,7 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	case GOC_Type::GOC_MESH_RENDERER:
 	{
 		GOC_MeshRenderer* comp = new GOC_MeshRenderer(goAttached, goAttached->transform->Get4x4Matrix());
-		AllGameObjecComponents.push_back(comp);
+		allGameObjecComponents.push_back(comp);
 		return comp;
 	}
 	break;

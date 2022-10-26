@@ -19,8 +19,7 @@ public:
 	~UIFunctions();
 
 	update_status Update(float dt) override;
-	
-	/*GameObject* CreateNewGameObject();*/
+
 private:
 
 	std::vector<GameObject*> gameObjects;

@@ -26,6 +26,7 @@ public:
 	bool LoadScene();
 	bool CreateNewScene();
 
+	Scene* GetCurrentScene() const;
 
 
 	bool LoadState(JSON_Value* file) override;
@@ -38,8 +39,10 @@ private:
 	int scenes_id = 0;
 
 	std::vector<Scene*> scenes;
-	std::vector<GameObject*> AllGameObjects;
-	std::vector<GameObjectComponent*> AllGameObjecComponents;
+	std::vector<GameObject*> allGameObjects;
+	std::vector<GameObjectComponent*> allGameObjecComponents;
+
+	Scene* currentScene;
 
 
 };

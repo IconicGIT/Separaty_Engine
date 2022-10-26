@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include "ModuleUI.h"
+
 
 
 Scene::Scene(EngineSystem *system, bool active)
@@ -116,14 +118,13 @@ update_status Scene::Update(float dt)
 		App->ui->AppendToOutput(DEBUG_LOG(name.c_str()));
 	}*/
 
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	/*if (App->ui->createCube == true)
 	{
 		GameObject* go = CreateNewGameObject();
 
 		go->transform->SetPos(0, 0, go->GetID());
 
-		
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 

@@ -3,6 +3,8 @@
 #include "UIFunctions.h"
 #include "GameObject.h"
 
+#include "EngineSystem.h"
+
 #include "ModuleUI.h"
 
 
@@ -275,11 +277,9 @@ update_status UIFunctions::Update(float dt)
 
 	if (App->ui->createCube)
 	{
-	/*	GameObject* go = CreateNewGameObject();
+		App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 
-		go->transform->SetPos(0, 0, go->GetID());
-
-		App->ui->createCube = false;*/
+		App->ui->createCube = false;
 			
 	}
 	if (App->ui->createSphere)
