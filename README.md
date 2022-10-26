@@ -47,13 +47,17 @@ On the File Tab, you will find all the things related with the Scene and Project
 On this part you can find all the Edit functionalities available in the Engine along with their shortcuts. As well as the buttons for the Project settings and Data.  
 - Photo 
 
+- **Basic Editors**: All basic functionalities for editing. With their respective Shortcut. (Shortcuts are defined below) 
 
+- **Project Settings...**: Opens the Project Settings
 
-**Show Application Data**: Opens the Project data
+- **Preferences**: Opens the Engine Customitzation Window
 
-**Show Output**: Opens the debug console
+- **Show Application Data**: Opens the Project Data
 
-**Controls**: Link to the controls of the engine / Opens a windows with the basic controls of the Engine
+- **Show Output**: Opens the Debug Console
+
+- **Controls**: Link to the controls of the engine / Opens a windows with the basic controls of the Engine
 
 
 ### Game Objects Inspector Actions:
