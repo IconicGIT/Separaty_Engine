@@ -99,7 +99,7 @@ update_status ModuleUI::Update(float dt)
 			{
 
 			}
-			if (ImGui::MenuItem("Open Scene", "CTRL + O"))
+			if (ImGui::MenuItem("Open Scene", "CTRL + O", false, false))
 			{
 
 			}
@@ -109,25 +109,25 @@ update_status ModuleUI::Update(float dt)
 
 				App->SaveGameRequest();
 			}
-			if (ImGui::MenuItem("Save As", "CTRL + SHIFT + S"))
+			if (ImGui::MenuItem("Save As", "CTRL + SHIFT + S", false, false))
 			{
 
 			}
 
-			if (ImGui::MenuItem("Load", "CTRL + L"))
+			if (ImGui::MenuItem("Load", "CTRL + L", false, false))
 			{
 				App->LoadGameRequest();
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("New Project"))
+			if (ImGui::MenuItem("New Project","", false, false))
 			{
 
 			}
-			if (ImGui::MenuItem("Open Project"))
+			if (ImGui::MenuItem("Open Project", "", false, false))
 			{
 
 			}
-			if (ImGui::MenuItem("Save Project"))
+			if (ImGui::MenuItem("Save Project", "", false, false))
 			{
 
 			}
@@ -143,7 +143,7 @@ update_status ModuleUI::Update(float dt)
 		// EDIT
 		if (ImGui::BeginMenu("Edit"))
 		{
-			if (ImGui::MenuItem("Undo", "CTRL + Z"))
+			if (ImGui::MenuItem("Undo", "CTRL + Z", false, false))
 			{
 
 			}
@@ -152,11 +152,11 @@ update_status ModuleUI::Update(float dt)
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Select All", "SHIFT + A"))
+			if (ImGui::MenuItem("Select All", "SHIFT + A", false, false))
 			{
 
 			}
-			if (ImGui::MenuItem("Deselect All", "SHIFT + D"))
+			if (ImGui::MenuItem("Deselect All", "SHIFT + D", false, false))
 			{
 
 			}
@@ -165,42 +165,42 @@ update_status ModuleUI::Update(float dt)
 
 			}*/
 			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL + X"))
+			if (ImGui::MenuItem("Cut", "CTRL + X", false, false))
 			{
 
 			}
-			if (ImGui::MenuItem("Copy", "CTRL + C"))
+			if (ImGui::MenuItem("Copy", "CTRL + C", false, false))
 			{
 
 			}
-			if (ImGui::MenuItem("Paste", "CTRL + V"))
-			{
-
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Duplicate", "CTRL + D"))
-			{
-
-			}
-			if (ImGui::MenuItem("Rename", "SHIFT + R"))
-			{
-
-			}
-			if (ImGui::MenuItem("Delete", "SUPR"))
+			if (ImGui::MenuItem("Paste", "CTRL + V", false, false))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Frame Selected", "F"))
+			if (ImGui::MenuItem("Duplicate", "CTRL + D", false, false))
 			{
 
 			}
-			if (ImGui::MenuItem("Lock View to Selected", "SHIFT + F"))
+			if (ImGui::MenuItem("Rename", "SHIFT + R", false, false))
+			{
+
+			}
+			if (ImGui::MenuItem("Delete", "SUPR", false, false))
 			{
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Project Settings..."))
+			if (ImGui::MenuItem("Frame Selected", "F", false, false))
+			{
+
+			}
+			if (ImGui::MenuItem("Lock View to Selected", "SHIFT + F", false, false))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Project Settings...","", false, false))
 			{
 
 			}
@@ -218,7 +218,7 @@ update_status ModuleUI::Update(float dt)
 				showOutput = !showOutput;
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Controls"))
+			if (ImGui::MenuItem("Controls", "", false, false))
 			{
 
 			}
@@ -261,7 +261,7 @@ update_status ModuleUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::TreeNode("Effects"))
 			{
-				if (ImGui::MenuItem("Particles"))
+				if (ImGui::MenuItem("Particles", "", false, false))
 				{
 
 				}
@@ -271,19 +271,19 @@ update_status ModuleUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::TreeNode("Light"))
 			{
-				if (ImGui::MenuItem("Directional Light"))
+				if (ImGui::MenuItem("Directional Light", "", false, false))
 				{
 
 				}
-				if (ImGui::MenuItem("Point Light"))
+				if (ImGui::MenuItem("Point Light", "", false, false))
 				{
 
 				}
-				if (ImGui::MenuItem("Spotlight"))
+				if (ImGui::MenuItem("Spotlight", "", false, false))
 				{
 
 				}
-				if (ImGui::MenuItem("Area Light"))
+				if (ImGui::MenuItem("Area Light", "", false, false))
 				{
 
 				}
@@ -292,18 +292,18 @@ update_status ModuleUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::TreeNode("Audio"))
 			{
-				if (ImGui::MenuItem("Audio Source"))
+				if (ImGui::MenuItem("Audio Source", "", false, false))
 				{
 
 				}
-				if (ImGui::MenuItem("Audio Reverb Zone"))
+				if (ImGui::MenuItem("Audio Reverb Zone", "", false, false))
 				{
 
 				}
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Camera"))
+			if (ImGui::MenuItem("Camera", "", false, false))
 			{
 
 			}
