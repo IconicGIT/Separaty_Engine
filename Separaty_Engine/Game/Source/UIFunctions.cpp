@@ -315,7 +315,29 @@ update_status UIFunctions::Update(float dt)
 		ImGui::End();
 	}
 
-	//CONSOLE 
+	//WINDOWS 
+	
+	if (App->ui->hierarchy)
+	{
+		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
+
+		ImGui::End();
+	}
+
+	if (App->ui->inspector)
+	{
+		ImGui::Begin("Inspector", &App->ui->inspector);
+
+		ImGui::End();
+	}
+
+	if (App->ui->assets)
+	{
+		ImGui::Begin("Assets", &App->ui->assets);
+
+		ImGui::End();
+	}
+
 	if (App->ui->showOutput)
 	{
 		ImGui::Begin("Output", &App->ui->showOutput);
@@ -324,7 +346,6 @@ update_status UIFunctions::Update(float dt)
 
 		ImGui::End();
 	}
-
 
 	//PRIMITIVES
 

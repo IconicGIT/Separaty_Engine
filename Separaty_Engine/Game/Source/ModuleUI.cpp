@@ -354,19 +354,19 @@ update_status ModuleUI::Update(float dt)
 		{
 			if (ImGui::MenuItem("Hierarchy"))
 			{
-				
+				hierarchy = !hierarchy;
 			}
 			ImGui::Separator();
 
 			if (ImGui::MenuItem("Inspector"))
 			{
-				
+				inspector = !inspector;
 			}
 			ImGui::Separator();
 			
 			if (ImGui::MenuItem("Assets"))
 			{
-				
+				assets = !assets;
 			}
 			ImGui::Separator();
 			

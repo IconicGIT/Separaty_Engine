@@ -30,7 +30,15 @@ public:
 
 	bool showApplicationData = false;
 	bool showPreferences = false;
+
+	bool hierarchy = true;
+	bool inspector = true;
+	bool assets = true;
 	bool showOutput = true;
+
+
+
+
 	std::vector<char*> outputList;
 
 	//PRIMITIVEs
