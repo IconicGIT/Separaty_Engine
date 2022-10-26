@@ -61,13 +61,23 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 ### Game Objetcs
 
-In Game Objects you find the different lists of all the creatable objects. In them you can select the object to create
+In Game Objects you find the different lists of all the creatable objects. In them you can select the object to create.
 
 - Photo 
 
 - **Create 3D Objects**: List of all available primitives
 
 - Photo 
+
+**Cube**: Create a cube game object
+
+**Sphere**: Create a sphere game object
+
+**Capsule**: Create a capsule game object
+
+**Cylinder**: Create a cylinder game object
+
+**Plane**: Create a plane game object
 
 - **Effects**: List of all available effects
 
@@ -82,7 +92,63 @@ In Game Objects you find the different lists of all the creatable objects. In th
 - Photo 
 
 - **Camera**: Creates a camera 
-    
+
+### View
+
+On the View Tab, you will find all the things related with the visualitzation of the Scene. Since you have the render options.
+
+- Photo 
+
+- **Render Options**: 
+
+- Photo 
+
+**Ambient Oclussion**: 
+
+**Color Material**: 
+
+**Cull Face**:
+
+**Depth Test**: 
+
+**Front**: 
+
+**Lightning**:
+
+**Wireframe**: 
+
+### Window
+
+In the windows section you can find all the settings of the generated window for the project.
+
+- Photo 
+
+- **Brightness**: Adjust screen brightness
+
+- Photo 
+
+- **Window Size**:  Edit the size of the window & full screen mode
+
+- Photo 
+
+- **Vsync**: Opens a quick view visualitzation of fps and vsync
+
+- Photo 
+
+### Help
+
+Here you can find all the information about the Engine. In addition to direct links to contact us, report any bug or have a look to the Separaty Manual.
+
+- Photo 
+
+**About us**: Opens the documentation of the engine
+
+**Separaty Manual**: Opens the tutorial/how to use the engine github page
+
+**Make any comment**: Opens the contact github page
+
+**Report a Bug**: Opens the issues github page
+
 ## Controls
 
 ### Camera Controls:
