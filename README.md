@@ -8,7 +8,7 @@ This project has been created by UPC-CITM students with the objective of improvi
 
 It is important to highlight that our engine is free to use and everyone can give us feedback to continue improving it!
 
-Obviously, we believe that this is not necessary to emphasize, but we will say it anyway: **This Engine will be Better than Unity one day!**
+Obviously, we believe that this is not necessary to emphasize, but we will say it anyway:                   **This Engine will be Better than Unity one day!**
 
 ---
 
@@ -36,7 +36,7 @@ On the File Tab, you will find all the things related with the Scene and Project
 
 - **New Project**: Create new project
 
-- **Open PRoject**: Open an existing scene 
+- **Open Project**: Open an existing scene 
 
 - **Save Project**: Save the current project
 
@@ -49,9 +49,9 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 - **Basic Editors**: All basic functionalities for editing. With their respective Shortcut. (Shortcuts are defined below) 
 
-- **Project Settings...**: Opens the Project Settings
+- **Project Settings...**: Opens the current Project Settings
 
-- **Preferences**: Opens the Engine Customitzation Window
+- **Preferences**: Opens the Engine General Settings
 
 - **Show Application Data**: Opens the Project Data
 
