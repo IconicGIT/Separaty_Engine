@@ -354,7 +354,7 @@ update_status ModuleUI::Update(float dt)
 
 			}
 			ImGui::Separator();
-			if (ImGui::TreeNode("Windows Size"))
+			if (ImGui::TreeNode("Window Size"))
 			{
 				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) //FUNCIONA
 				{
@@ -465,7 +465,7 @@ update_status ModuleUI::Update(float dt)
 				//ImGui::NewLine();
 				ImGui::Text("MIT License");
 				ImGui::NewLine();
-				ImGui::Text("Copyright (c) 2012 - 2021 Krzysztof Gabis");
+				ImGui::Text("Copyright (c) 2022 Brandon Arandia & Gerard Martinez");
 				ImGui::NewLine();
 				ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a");
 				ImGui::Text("copy of this software and associated documentation files(the 'Software'),");
@@ -495,10 +495,6 @@ update_status ModuleUI::Update(float dt)
 				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");   
 			}
 			
-			if (ImGui::MenuItem("Engine Uses & Examples"))
-			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
-			}
 			ImGui::Separator();
 
 			if (ImGui::MenuItem("Make Any Comment"))
