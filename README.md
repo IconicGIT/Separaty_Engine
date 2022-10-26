@@ -59,19 +59,29 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 - **Controls**: Link to the controls of the engine / Opens a windows with the basic controls of the Engine
 
+### Game Objetcs
 
-### Game Objects Inspector Actions:
+In Game Objects you find the different lists of all the creatable objects. In them you can select the object to create
 
-- **Transform**: Translate, Rotate and Scale the object
+- Photo 
 
-- **Mesh**: Toggle the view of the vertex and face normals
+- **Create 3D Objects**: List of all available primitives
 
-- **Material**:
+- Photo 
 
-    Toggle the checkers image
-    
-    Remove the current texture
-    
+- **Effects**: List of all available effects
+
+- Photo 
+
+- **Light**: List of all available lights
+
+- Photo 
+
+- **Audio**: List of all available audios
+
+- Photo 
+
+- **Camera**: Creates a camera 
     
 ## Controls
 
