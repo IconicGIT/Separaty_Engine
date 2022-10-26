@@ -8,7 +8,7 @@ This project has been created by UPC-CITM students with the objective of improvi
 
 It is important to highlight that our engine is free to use and everyone can give us feedback to continue improving it!
 
-Obviously, we believe that this is not necessary to emphasize, but we will say it anyway: **This Engine will be Better than Unity one day!**
+Obviously, we believe that this is not necessary to emphasize, but we will say it anyway:                   **This Engine will be Better than Unity one day!**
 
 ---
 
