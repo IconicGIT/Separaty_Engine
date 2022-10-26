@@ -14,7 +14,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 
 Visit github page for detailed information regarding code and functionalities:
 
-## How to use it / Quick Engine View
+## Separaty Manual (Quick Engine View)
 
 Our engine has a Main Menu Bar that allows you to quickly access all the functions of the engine, beeing able have a lot of ways to navigate through it. Here you can see of it:
 
