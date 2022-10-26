@@ -55,8 +55,6 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 - **Show Application Data**: Opens the Project Data
 
-- **Show Output**: Opens the Debug Console
-
 - **Controls**: Link to the controls of the engine / Opens a windows with the basic controls of the Engine
 
 ### Game Objetcs
@@ -119,21 +117,17 @@ On the View Tab, you will find all the things related with the visualitzation of
 
 ### Window
 
-In the windows section you can find all the settings of the generated window for the project.
+In the windows section you can find all the Editor Windows that can be used to working in the Project.  
 
 - Photo 
 
-- **Brightness**: Adjust screen brightness
+- **Hierarchy**: 
 
-- Photo 
+- **Inspector**:
 
-- **Window Size**:  Edit the size of the window & full screen mode
+- **Assets*:
 
-- Photo 
-
-- **Vsync**: Opens a quick view visualitzation of fps and vsync
-
-- Photo 
+- **Show Output**: Opens the Debug Console
 
 ### Help
 
