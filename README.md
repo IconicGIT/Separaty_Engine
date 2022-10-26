@@ -20,9 +20,41 @@ Our engine has a Main Menu Bar that allows you to quickly access all the functio
 
 - Photo 
 
-On the File Tab, you will find the following things:
+### File
+
+On the File Tab, you will find all the things related with the Scene and Project Creation. In addition to an Exit button.
 
 - Photo 
+
+- **New Scene**: Create new scene 
+
+- **Open Scene**: Open an existing scene 
+
+- **Save**: Save Scene
+
+- **Load**: Load Scene
+
+- **New Project**: Create new project
+
+- **Open PRoject**: Open an existing scene 
+
+- **Save Project**: Save the current project
+
+- **Exit**: Close the engine
+
+### Edit
+
+On this part you can find all the Edit functionalities available in the Engine along with their shortcuts. As well as the buttons for the Project settings and Data.  
+- Photo 
+
+
+
+**Show Application Data**: Opens the Project data
+
+**Show Output**: Opens the debug console
+
+**Controls**: Link to the controls of the engine / Opens a windows with the basic controls of the Engine
+
 
 ### Game Objects Inspector Actions:
 
