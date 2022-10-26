@@ -15,12 +15,10 @@ GOC_MeshRenderer::~GOC_MeshRenderer()
 void GOC_MeshRenderer::SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
 {
 
-	//for (size_t i = 0; i < vertices.size(); i += 3)
-	//{
-	//	vertices[i] += transform.translation().x;
-	//	vertices[i + 1] += transform.translation().y;
-	//	vertices[i + 2] += transform.translation().z;
-	//}
+	lightColor = (1.0f, 1.0f, 1.0f);
+	toyColor = (1.0f, 0.5f, 0.31f);
+	result = lightColor * toyColor;
+
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);

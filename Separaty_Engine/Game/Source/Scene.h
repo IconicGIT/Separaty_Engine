@@ -24,6 +24,11 @@ public:
 	bool SaveState(JSON_Value* file) const override;
 	
 	GameObject* CreateNewGameObject();
+
+	std::vector<GameObject*> GetGameObjectList() const
+	{
+		return gameObjects;
+	}
 private:
 
 	std::string sceneName;

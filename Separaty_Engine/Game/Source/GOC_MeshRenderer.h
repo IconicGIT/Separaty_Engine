@@ -17,6 +17,7 @@ public:
 	GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform);
 	~GOC_MeshRenderer();
 
+
 	void Render();
 	bool Execute();
 
@@ -44,6 +45,10 @@ private:
 	unsigned int shaderProgram;
 
 private:
+
+	vec3 lightColor;
+	vec3 toyColor;
+	vec3 result;
 
 };
 

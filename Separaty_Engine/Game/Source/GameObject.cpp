@@ -62,11 +62,6 @@ update_status GameObject::Update(float dt)
 	if (id == 0)
 	{
 		
-		//App->ui->AppendToOutput(DEBUG_LOG("Created GameObject, pos: %f %f %f", pos.x, pos.y, pos.z));
-
-		a += 0.05f;
-		float pos = sinf(a);
-		transform->SetPos(pos, 0, 0);
 	}
 
 	return UPDATE_CONTINUE;

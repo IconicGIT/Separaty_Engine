@@ -26,6 +26,13 @@ public:
 	bool LoadScene();
 	bool CreateNewScene();
 
+	std::vector<Scene*> GetSceneList() const
+	{
+		return scenes;
+	}
+
+
+
 	Scene* GetCurrentScene() const;
 
 
