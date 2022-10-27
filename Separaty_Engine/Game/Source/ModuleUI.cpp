@@ -30,23 +30,16 @@ ModuleUI::~ModuleUI()
 bool ModuleUI::Init()
 {
 
-	uiFunctions = new UIFunctions();
-
-	return true;
-}
-
-bool ModuleUI::Start()
-{
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; 
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 
-	ImGuiStyle & style = ImGui::GetStyle();
-	
+	ImGuiStyle& style = ImGui::GetStyle();
+
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		style.WindowRounding = 0.0f;
@@ -61,6 +54,15 @@ bool ModuleUI::Start()
 	/*gameObject = new GameObject();
 	gameObject->Init();
 	gameObject->Start();*/
+
+	uiFunctions = new UIFunctions();
+
+	return true;
+}
+
+bool ModuleUI::Start()
+{
+	
 
 	return true;
 }
