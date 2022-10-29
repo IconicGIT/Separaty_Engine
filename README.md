@@ -99,19 +99,21 @@ In Game Objects you find the different lists of all the creatable objects. In th
 
 - **Audio**: List of all available audios
 
-- Photo 
+![Audio](https://user-images.githubusercontent.com/73245381/198845256-b57ba284-5f32-43e6-841b-506ce11a1513.png)
 
 - **Camera**: Creates a camera 
+- 
+![Camera)](https://user-images.githubusercontent.com/73245381/198845331-07f12eeb-d717-4b5b-ab6c-4ee39081a916.png)
 
 ### View
 
 On the View Tab, you will find all the things related with the visualitzation of the Scene. Since you have the render options.
 
-- Photo 
+![View)](https://user-images.githubusercontent.com/73245381/198845521-335ba559-11fa-45b3-84cb-d94e06e2a366.png)
 
 - **Render Options**: List of all available render options
 
-- Photo 
+![Render Options](https://user-images.githubusercontent.com/73245381/198845569-5daa69a8-208f-4949-8bc1-25e61613cdca.png)
 
 **Ambient Oclussion**: Calculate how exposed each point in a scene is to ambient lighting
 
@@ -128,6 +130,8 @@ On the View Tab, you will find all the things related with the visualitzation of
 **Wireframe**: Creates an edge or skeletal representation of the object
 
 - **Shaders**: List of all available shaders
+
+![Shaders](https://user-images.githubusercontent.com/73245381/198845700-fd7a78db-91f8-40d4-b9ce-a94bf5bd07fb.png)
 
 ### Window
 
