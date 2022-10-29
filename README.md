@@ -97,7 +97,7 @@ On the View Tab, you will find all the things related with the visualitzation of
 
 - Photo 
 
-- **Render Options**: 
+- **Render Options**: List of all available render options
 
 - Photo 
 
@@ -115,17 +115,19 @@ On the View Tab, you will find all the things related with the visualitzation of
 
 **Wireframe**: 
 
+- **Shaders**: List of all available shaders
+
 ### Window
 
 In the windows section you can find all the Editor Windows that can be used to working in the Project.  
 
 - Photo 
 
-- **Hierarchy**: 
+- **Hierarchy**: Opens the Hierarchy Windows
 
-- **Inspector**:
+- **Inspector**: Opens the Inspector Windows
 
-- **Assets*:
+- **Assets*: Opens the Assets Windows
 
 - **Show Output**: Opens the Debug Console
 
