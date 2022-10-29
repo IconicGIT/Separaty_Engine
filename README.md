@@ -67,7 +67,7 @@ In Game Objects you find the different lists of all the creatable objects. In th
 
 - **Create 3D Objects**: List of all available primitives
 
-- Photo 
+![3D Objects](https://user-images.githubusercontent.com/73245381/198844498-cda2e911-0641-4e70-a0ec-721062d1f59a.png) 
 
 **Cube**: Create a cube game object
 
@@ -81,11 +81,21 @@ In Game Objects you find the different lists of all the creatable objects. In th
 
 - **Effects**: List of all available effects
 
-- Photo 
+![Effects)](https://user-images.githubusercontent.com/73245381/198844616-dd3aaa63-ba58-4005-a87f-0ca079e2f16c.png)
+
+**Particles**
 
 - **Light**: List of all available lights
 
-- Photo 
+![Light](https://user-images.githubusercontent.com/73245381/198844792-860cb6f7-3fd8-47ef-b577-28c72ca8ebe7.png)
+
+**Directional Light**: Light that gets emitted in a specific direction
+
+**Point Light**: Light that gets emitted from a single point in all directions
+
+**Spot Light**: Light that gets emitted to produce intense illumination in a well-defined area
+
+**Area Light**: Light that gets emitted in a specific direction from within a set boundary, either a rectangle or circle
 
 - **Audio**: List of all available audios
 
