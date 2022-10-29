@@ -102,7 +102,7 @@ In Game Objects you find the different lists of all the creatable objects. In th
 ![Audio](https://user-images.githubusercontent.com/73245381/198845256-b57ba284-5f32-43e6-841b-506ce11a1513.png)
 
 - **Camera**: Creates a camera 
-- 
+
 ![Camera)](https://user-images.githubusercontent.com/73245381/198845331-07f12eeb-d717-4b5b-ab6c-4ee39081a916.png)
 
 ### View
@@ -137,7 +137,7 @@ On the View Tab, you will find all the things related with the visualitzation of
 
 In the windows section you can find all the Editor Windows that can be used to working in the Project.  
 
-- Photo 
+![Window](https://user-images.githubusercontent.com/73245381/198846172-5d45aaa9-ee9a-4e73-91fe-7eb0c1d51e19.png)
 
 - **Hierarchy**: Opens the Hierarchy Windows
 
@@ -151,7 +151,7 @@ In the windows section you can find all the Editor Windows that can be used to w
 
 Here you can find all the information about the Engine. In addition to direct links to contact us, report any bug or have a look to the Separaty Manual.
 
-- Photo 
+![Help](https://user-images.githubusercontent.com/73245381/198846310-b95a4c0f-641e-4f24-888f-ba1b0d3a9b90.png)
 
 - **About us**: Opens the documentation of the engine
 
