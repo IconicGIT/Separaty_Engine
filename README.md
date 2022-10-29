@@ -101,19 +101,19 @@ On the View Tab, you will find all the things related with the visualitzation of
 
 - Photo 
 
-**Ambient Oclussion**: 
+**Ambient Oclussion**: Calculate how exposed each point in a scene is to ambient lighting
 
-**Color Material**: 
+**Color Material**: Specifies which material parameters track the current color
 
-**Cull Face**:
+**Cull Face**: Allows non-visible triangles of closed surfaces to be removed
 
-**Depth Test**: 
+**Depth Test**: Tests the depth value of the fragment against the content of the depth buffer
 
-**Front**: 
+**Front**: Defines front-facing and back-facing polygons
 
-**Lightning**:
+**Lightning**: Simulates the bright spot of a light that appears on shiny objects
 
-**Wireframe**: 
+**Wireframe**: Creates an edge or skeletal representation of the object
 
 - **Shaders**: List of all available shaders
 
@@ -127,7 +127,7 @@ In the windows section you can find all the Editor Windows that can be used to w
 
 - **Inspector**: Opens the Inspector Windows
 
-- **Assets*: Opens the Assets Windows
+- **Assets**: Opens the Assets Windows
 
 - **Show Output**: Opens the Debug Console
 
