@@ -18,13 +18,13 @@ Visit github page for detailed information regarding code and functionalities:
 
 Our engine has a Main Menu Bar that allows you to quickly access all the functions of the engine, beeing able have a lot of ways to navigate through it. Here you can see of it:
 
-- Photo 
+![Menu Bar](https://user-images.githubusercontent.com/73245381/198843251-b2b32e84-2060-4a4d-b6c2-6c5e747ffd7d.png)
 
 ### File
 
 On the File Tab, you will find all the things related with the Scene and Project Creation. In addition to an Exit button.
 
-- Photo 
+![File](https://user-images.githubusercontent.com/73245381/198843165-52ad4904-8b7b-4944-b480-f52d53319da9.png)
 
 - **New Scene**: Create new scene 
 
@@ -45,7 +45,9 @@ On the File Tab, you will find all the things related with the Scene and Project
 ### Edit
 
 On this part you can find all the Edit functionalities available in the Engine along with their shortcuts. As well as the buttons for the Project settings and Data.  
-- Photo 
+
+![Edit](https://user-images.githubusercontent.com/73245381/198843807-eb1c1d6c-4d46-4df6-b564-e38b66f48a2a.png)
+
 
 - **Basic Editors**: All basic functionalities for editing. With their respective Shortcut. (Shortcuts are defined below) 
 
@@ -61,7 +63,7 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 In Game Objects you find the different lists of all the creatable objects. In them you can select the object to create.
 
-- Photo 
+![GameObjects List](https://user-images.githubusercontent.com/73245381/198844039-76b7b75b-762f-46ff-9172-70343522dda0.png)
 
 - **Create 3D Objects**: List of all available primitives
 
