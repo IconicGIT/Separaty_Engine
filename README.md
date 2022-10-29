@@ -137,13 +137,13 @@ Here you can find all the information about the Engine. In addition to direct li
 
 - Photo 
 
-**About us**: Opens the documentation of the engine
+- **About us**: Opens the documentation of the engine
 
-**Separaty Manual**: Opens the tutorial/how to use the engine github page
+- **Separaty Manual**: Opens the tutorial/how to use the engine github page
 
-**Make any comment**: Opens the contact github page
+- **Make any comment**: Opens the contact github page
 
-**Report a Bug**: Opens the issues github page
+- **Report a Bug**: Opens the issues github page
 
 ## Controls
 
