@@ -14,7 +14,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 
 ---
 
-Visit github page for detailed information regarding code and functionalities:
+Visit github page for detailed information regarding code and functionalities: https://iconicgit.github.io/Separaty_Engine/ 
 
 ## Separaty Manual (Quick Engine View)
 
