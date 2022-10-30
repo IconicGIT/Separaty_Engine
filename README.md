@@ -1,5 +1,7 @@
 # Separaty Engine
 
+![Separaty-WORD](https://user-images.githubusercontent.com/73245381/198894291-2466b7b4-0d6c-4ee8-8536-7dc6e690152b.png)
+
 ## Description
 
 Separaty Engine is a game engine made in C++ for learning purposes. 
