@@ -10,8 +10,8 @@ struct Gl_Attributes
 {
 	bool AmbientOclussion;
 	bool Color_Materials;
-	bool Cull_Face;
-	bool Depth_test;
+	bool Cull_Face = true;
+	bool Depth_test = true;
 	bool Front;	
 	bool Lightning;
 	bool Wireframe;

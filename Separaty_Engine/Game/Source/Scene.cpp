@@ -48,10 +48,6 @@ bool Scene::Init()
 
 bool Scene::Start()
 {
-
-
-	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
-
 	bool ret = true;
 
 
@@ -71,6 +67,13 @@ bool Scene::Start()
 			item_it++;
 		}
 	}
+
+	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
+
+	GameObject* go = engineSystem->CreateNewGameObject();
+
+	gameObjects.push_back(go);
+
 	return ret;
 }
 
