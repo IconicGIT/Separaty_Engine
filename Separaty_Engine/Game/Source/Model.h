@@ -1,0 +1,52 @@
+#pragma once
+
+#include "Mesh.h"
+#include "Shader.h"
+
+#include <Assimp/include/Importer.hpp>
+#include <Assimp/include/scene.h>
+#include <Assimp/include/postprocess.h>
+
+#include "Stb/stb_image.h"
+#include "TextureLoader.h"
+
+#include "glmath.h"
+
+class Model
+{
+public:
+    Model() {};
+    Model(const char* path);
+    
+    void Draw(Shader& shader);
+
+    bool Set(const char* path);
+
+    bool Set(Model model);
+
+private:
+    std::vector<Texture> textures_loaded;
+
+    // model data
+    std::vector<Mesh> meshes;
+    std::string directory = "";
+
+    std::vector<Mesh> GetMeshes() const
+    {
+        return meshes;
+    }
+
+    std::string GetDirectory() const
+    {
+        return directory;  
+    }
+
+    bool LoadModel(std::string path);
+
+    void ProcessNode(aiNode* node, const aiScene* scene);
+
+    Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+
+    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+
+};

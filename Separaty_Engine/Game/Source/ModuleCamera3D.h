@@ -20,12 +20,19 @@ public:
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
 	void Move(const vec3 &Movement);
-	float* GetViewMatrix();
+	mat4x4 GetViewMatrix();
+	bool GetZoom() const
+	{
+		return zoomSpeed;
+	}
 
 private:
 
 	void CalculateViewMatrix();
 	void Zoom(const float& zoom_speed);
+
+	
+
 	//void SetZoomSpeed(const float& zoom_speed);
 	//float GetZoomSpeed() const;
 

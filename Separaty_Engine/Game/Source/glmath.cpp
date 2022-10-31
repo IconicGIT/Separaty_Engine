@@ -679,6 +679,11 @@ vec3 mat4x4::translation() const
 	return(vec3(M[12], M[13], M[14]));
 }
 
+vec3 mat4x4::scaling() const
+{
+	return (vec3(M[0], M[5], M[10]));
+}
+
 
 mat4x4 inverse(const mat4x4 &Matrix)
 {

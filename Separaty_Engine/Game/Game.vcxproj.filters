@@ -22,6 +22,15 @@
     <Filter Include="Source\Components">
       <UniqueIdentifier>{491f45fb-b12a-457a-a5db-9b8878bdd4c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Model Loading">
+      <UniqueIdentifier>{4b5354c0-94bf-4869-870d-47eae1cb7c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics">
+      <UniqueIdentifier>{1aff6c57-1db2-4d06-8b82-76d2f20ba793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Shaders">
+      <UniqueIdentifier>{93c74bf0-a6cb-4008-acf2-036e5867c052}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -242,6 +251,18 @@
     </ClCompile>
     <ClCompile Include="Source\UIFunctions.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Source\Model Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Source\Model Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureLoader.cpp">
+      <Filter>Source\Model Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -578,6 +599,18 @@
     <ClInclude Include="Source\UIFunctions.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Source\Model Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Source\Model Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureLoader.h">
+      <Filter>Source\Model Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\External\MathGeoLib\Geometry\KDTree.inl">
@@ -600,6 +633,12 @@
     </None>
     <None Include="Source\External\MathGeoLib\Math\Matrix.inl">
       <Filter>Source\External\MathGeoLib</Filter>
+    </None>
+    <None Include="..\Output\Assets\Project_1\Assets\Shaders\default.fragment">
+      <Filter>Source\Graphics\Shaders</Filter>
+    </None>
+    <None Include="..\Output\Assets\Project_1\Assets\Shaders\default.vertex">
+      <Filter>Source\Graphics\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,16 +1,31 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Globals.h"
 #include <vector>
+
 
 #include "Glew/include/GL/glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "glmath.h"
 
+#include "Mesh.h"
+#include "Model.h"
+#include "Shader.h"
+
+
+
+
+
+
 class GameObjectComponent;
 class GameObject;
- 
+class Mesh;
+class Model;
+class Shader;
+
+
 class GOC_MeshRenderer : public GameObjectComponent
 {
 public:
@@ -44,11 +59,12 @@ private:
 
 	unsigned int shaderProgram;
 
+	
+
 private:
 
-	vec3 lightColor;
-	vec3 toyColor;
-	vec3 result;
-
+	bool modelLoadSuccess = false;
+	Shader myShader;
+	Model myModel;
 };
 

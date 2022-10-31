@@ -22,6 +22,12 @@ public:
 	{
 		return transform.translation();
 	}
+
+	vec3 GetScale() const
+	{
+		return transform.scaling();
+	}
+
 	bool Execute();
 
 	mat4x4 Get4x4Matrix() const
@@ -30,6 +36,5 @@ public:
 	}
 private:
 	mat4x4 transform;
-
 };
 

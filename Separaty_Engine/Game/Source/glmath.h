@@ -498,6 +498,7 @@ public:
 	mat4x4& translate(float x, float y, float z);
 	mat4x4& transpose();
 	vec3  translation() const;
+	vec3  scaling() const;
 };
 
 // ----------------------------------------------------------------------------------------------------------------------------

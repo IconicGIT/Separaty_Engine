@@ -19,6 +19,8 @@
 #define VSYNC true
 #define TITLE "Separaty Engine"
 #define ORGANITZATION "UPC CITM"
+#define PATH_MODELS "Output/Assets/Project_1/Assets/Models"
+#define PATH_SHADERS "Source/Shaders"
 
 
 #define CAP(n) ((n <= 0.0f) ? n=0.0f : (n >= 1.0f) ? n=1.0f : n=n)

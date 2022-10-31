@@ -53,7 +53,7 @@ update_status ModuleCamera3D::Update(float dt)
 		speed = 20.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+	if(App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y -= speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT 
@@ -180,9 +180,9 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 }
 
 // -----------------------------------------------------------------
-float* ModuleCamera3D::GetViewMatrix()
+mat4x4 ModuleCamera3D::GetViewMatrix()
 {
-	return &ViewMatrix;
+	return ViewMatrix;
 }
 
 // -----------------------------------------------------------------
