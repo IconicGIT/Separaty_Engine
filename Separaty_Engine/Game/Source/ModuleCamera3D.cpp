@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 
+#include "Scene.h"
+
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
@@ -42,24 +44,6 @@ bool ModuleCamera3D::CleanUp()
 update_status ModuleCamera3D::Update(float dt)
 {
 
-
-
-
-
-
-	//if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
-	//{
-	//	float numBetween1And10 = lcg.Float(1.f, 10.f);
-	//	DEBUG_LOG("random number: %f", numBetween1And10);
-	//}
-	//
-
-	
-
-
-
-
-
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
@@ -76,9 +60,24 @@ update_status ModuleCamera3D::Update(float dt)
 	&& !(App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN))
 		newPos += Z * speed;
 
-
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		//if (/*gameObjectSelect*/ != nullptr)
+		//{
+		//	LookAt(gameObjectSelect);
+		//}
+		if (zoomSpeed == 0) //de prueba para que funcione el else
+		{
+
+		}
+		else
+		{
+			LookAt(0);
+		}
+	}
 
 	Position += newPos;
 	Reference += newPos;
@@ -118,6 +117,19 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 
 		Position = Reference + Z * length(Position);
+	}
+
+	//zoomSpeed = App->camera->GetZoomSpeed();
+	//App->camera->GetZoomSpeed(zoomSpeed);
+	
+	/*if (App->input->GetMouseZ() != 0)
+	{
+		Zoom();
+	}*/
+
+	if (App->input->GetMouseZ() != 0)
+	{
+		Zoom(zoomSpeed);
 	}
 
 	// Recalculate matrix -------------
@@ -179,6 +191,27 @@ void ModuleCamera3D::CalculateViewMatrix()
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
+
+void ModuleCamera3D::Zoom(const float& zoom_speed)
+{
+	Position -= Z * App->input->GetMouseZ() * zoomSpeed;
+	this->zoomSpeed = zoom_speed;
+}
+
+//void ModuleCamera3D::Zoom()
+//{
+//	Position -= Z * App->input->GetMouseZ() * zoomSpeed;
+//}
+
+//void ModuleCamera3D::SetZoomSpeed(const float& zoom_speed)
+//{
+//	this->zoomSpeed = zoom_speed;
+//}
+
+//float ModuleCamera3D::GetZoomSpeed() const
+//{
+//	return zoomSpeed;
+//}
 
 bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 {

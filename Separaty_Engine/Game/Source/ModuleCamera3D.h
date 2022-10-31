@@ -25,6 +25,11 @@ public:
 private:
 
 	void CalculateViewMatrix();
+	void Zoom(const float& zoom_speed);
+	//void SetZoomSpeed(const float& zoom_speed);
+	//float GetZoomSpeed() const;
+
+	float zoomSpeed = 0.5f;
 
 public:
 	
