@@ -16,8 +16,10 @@ GOC_MeshRenderer::~GOC_MeshRenderer()
 void GOC_MeshRenderer::SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
 {
 
-
-	myShader.Set("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
+	myShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
 
 	modelLoadSuccess = myModel.Set("Assets/Project_1/Assets/Models/baker_house.fbx");
 
@@ -67,21 +69,21 @@ void GOC_MeshRenderer::Render()
 
 		GOC_Transform* GoTransform = (GOC_Transform*)gameObject->GetComponent(GOC_Type::GOC_TRANSFORM);
 
-		myShader.Use();
+		myShader->Use();
 
-		mat4x4 projection = perspective(DEGTORAD * App->camera->GetZoom(), (float)App->window->width / (float)App->window->height, 0.1f, 100.0f);
+		mat4x4 projection = App->renderer3D->ProjectionMatrix;
 		mat4x4 view = App->camera->GetViewMatrix();
-		myShader.SetMat4x4("projection", App->renderer3D->ProjectionMatrix);
-		myShader.SetMat4x4("view", view);
+		myShader->SetMat4x4("projection", projection);
+		myShader->SetMat4x4("view", view);
 
 		// render the loaded model
 		mat4x4 model = IdentityMatrix;
 		model.translate(gameObject->transform->GetPosition().x, gameObject->transform->GetPosition().y, gameObject->transform->GetPosition().z); // translate it down so it's at the center of the scene
 		model.scale(gameObject->transform->GetScale().x, gameObject->transform->GetScale().y, gameObject->transform->GetScale().z);	// it's a bit too big for our scene, so scale it down
 
-		myShader.SetMat4x4("model", model);
+		myShader->SetMat4x4("model", model);
 
-		myModel.Draw(myShader);
+		myModel.Draw(*myShader);
 	}
 
 	RenderAxis();
