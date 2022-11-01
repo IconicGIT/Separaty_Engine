@@ -23,16 +23,16 @@ bool GameObject::Start()
 {
 	AddComponent(GOC_Type::GOC_MESH_RENDERER);
 
-	std::vector<GLfloat> vertices = {
-		1.0,	1.0,	1.0,
-		0.0f,	1.0,	1.0,
-		1.0,	1.0,	0.0f,
-		0.0f,	1.0,	0.0f,
-		1.0,	0.0f,	1.0,
-		0.0f,	0.0f,	1.0,
-		0.0f,	0.0f,	0.0f,
-		1.0,	0.0f,	0.0f
-	};
+	std::vector<Vertex> vertices;
+	vertices.push_back((Vertex)(vec3(1.0, 1.0, 1.0)));
+	vertices.push_back((Vertex)(vec3(0.0f, 1.0, 1.0)));
+	vertices.push_back((Vertex)(vec3(1.0, 1.0, 0.0f)));
+	vertices.push_back((Vertex)(vec3(0.0f, 1.0, 0.0f)));
+	vertices.push_back((Vertex)(vec3(1.0, 0.0f, 1.0)));
+	vertices.push_back((Vertex)(vec3(0.0f, 0.0f, 1.0)));
+	vertices.push_back((Vertex)(vec3(0.0f, 0.0f, 0.0f)));
+	vertices.push_back((Vertex)(vec3(1.0, 0.0f, 0.0f)));
+	
 
 	std::vector<uint> indices = {  // note that we start from 0!
 		3, 2, 6, 7, 4, 2, 0,
@@ -41,7 +41,10 @@ bool GameObject::Start()
 
 	GOC_MeshRenderer* meshRenderer =  (GOC_MeshRenderer*)GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
-	/*meshRenderer->SetMesh(vertices, indices);*/
+	Mesh* mesh = new Mesh(vertices, indices);
+
+
+	meshRenderer->SetMesh(mesh);
 	return true;
 }
 

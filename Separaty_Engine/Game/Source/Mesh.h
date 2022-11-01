@@ -10,9 +10,19 @@
 #include "Texture.h"
 
 struct Vertex {
+
+    Vertex(){}
+
     vec3 Position;
     vec3 Normal;
     vec2 TexCoords;
+
+    Vertex(vec3 v)
+    {
+        Position = v;
+    }
+
+    
 };
 
 

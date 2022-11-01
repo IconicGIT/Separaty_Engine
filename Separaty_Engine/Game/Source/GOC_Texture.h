@@ -21,6 +21,12 @@ public:
 		return texture;
 	}
 
+	void UpdateMeshRendererTexture()
+	{
+		GOC_MeshRenderer* renderer = (GOC_MeshRenderer*)gameObject->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		renderer->SetTexture(texture);
+	}
+
 private:
 
 	Texture* texture;
