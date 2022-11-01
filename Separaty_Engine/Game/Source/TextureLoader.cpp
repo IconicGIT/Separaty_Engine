@@ -1,9 +1,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Stb/stb_image.h"
-
 #include "TextureLoader.h"
 
-unsigned int LoadTexture(std::string file_path)
+Texture LoadTexture(std::string file_path)
 {
 	
 
@@ -36,7 +35,15 @@ unsigned int LoadTexture(std::string file_path)
 	}
 
 	stbi_image_free(data);
+	
+	Texture tex;
+	tex.id = texture;
+	tex.path = file_path;
+	tex.type = "null";
+	tex.width = width;
+	tex.height = height;
+	tex.nrChannels = nrChannels;
 
 
-return texture;
+return tex;
 }

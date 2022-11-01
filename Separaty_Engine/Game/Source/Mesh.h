@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include "Shader.h"
+#include "Texture.h"
 
 struct Vertex {
     vec3 Position;
@@ -14,11 +15,7 @@ struct Vertex {
     vec2 TexCoords;
 };
 
-struct Texture {
-    unsigned int id;
-    std::string type;
-    std::string path;
-};
+
 
 class Mesh {
 public:
@@ -28,10 +25,11 @@ public:
     std::vector<Texture>      textures;
 
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 
     void Set(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
 
-    void Draw(Shader& shader);
+    void Draw(Shader& shader/*, std::vector<Texture*> textures*/);
 private:
     //  render data
     unsigned int VAO, VBO, EBO;

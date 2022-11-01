@@ -335,6 +335,7 @@
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\GOC_MeshRenderer.h" />
+    <ClInclude Include="Source\GOC_Texture.h" />
     <ClInclude Include="Source\GOC_Transform.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Log.h" />
@@ -352,6 +353,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\EngineSystem.h" />
     <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureLoader.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\UIFunctions.h" />

@@ -12,6 +12,21 @@ bool Model::Set(const char* path)
     return LoadModel(path);
 }
 
+void Model::Set(Model *model)
+{
+    for (Mesh m : model->meshes)
+    {
+        meshes.push_back(m);
+    }
+
+    for (Texture  t : model->textures_loaded)
+    {
+        textures_loaded.push_back(t);
+    }
+
+    directory = model->directory;
+}
+
 bool Model::Set(Model otherModel)
 {
     bool ret = true;
@@ -156,10 +171,8 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
         }
         if (!skip)
         {   // if texture hasn't been loaded already, load it
-            Texture texture;
-            texture.id = LoadTexture("Assets/Project_1/Assets/Textures/baker_house.png");
+            Texture texture = LoadTexture("Assets/Project_1/Assets/Textures/baker_house.png");
             texture.type = typeName;
-            texture.path = str.C_Str();
             textures.push_back(texture);
             textures_loaded.push_back(texture); // add to loaded textures
         }

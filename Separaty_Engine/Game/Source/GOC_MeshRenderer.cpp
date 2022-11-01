@@ -7,66 +7,36 @@ GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transf
 	this->transform = transform;
 	gameObject = gameObjectAttached;
 	GOC_type = GOC_Type::GOC_MESH_RENDERER;
+
+	myShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
+	selctedShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
 }
 
 GOC_MeshRenderer::~GOC_MeshRenderer()
 {
 }
 
-void GOC_MeshRenderer::SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
+void GOC_MeshRenderer::SetMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
+	myMesh = new Mesh(vertices, indices);
+}
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CW);
+void GOC_MeshRenderer::SetMesh(Mesh* mesh)
+{
+	myMesh = mesh;
+}
 
-	myShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
-	selctedShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
-
-	modelLoadSuccess = myModel.Set("Assets/Project_1/Assets/Models/baker_house.fbx");
-
-	//int  success;
-	//char infoLog[512];
-	//glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	//if (!success)
-	//{
-	//	glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-	//	std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	//}
-
-
-
-
-	//// ..:: Initialization code :: ..
-	//// 1. bind Vertex Array Object
-	//glGenVertexArrays(1, &VAO);
-	//glBindVertexArray(VAO);
-	//// 2. copy our vertices array in a vertex buffer for OpenGL to use
-	//glGenBuffers(1, &VBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-	//// 3. copy our index array in a element buffer for OpenGL to use
-	//glGenBuffers(1, &EBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-	//// 4. then set the vertex attributes pointers
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
+void GOC_MeshRenderer::SetTexture(Texture* texture)
+{
+	myMesh->textures.clear();
+	myMesh->textures.push_back(*texture);
 
 }
 
 void GOC_MeshRenderer::Render()
 {
-	/*glPushMatrix();
-	glMultMatrixf(transform.M);
 
-	glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);*/
-
-	if (modelLoadSuccess)
+	if (myMesh != nullptr)
 	{
 
 		GOC_Transform* GoTransform = (GOC_Transform*)gameObject->GetComponent(GOC_Type::GOC_TRANSFORM);
@@ -86,13 +56,13 @@ void GOC_MeshRenderer::Render()
 		myShader->SetMat4x4("view", view);
 
 		// render the loaded model
-		mat4x4 model = IdentityMatrix;
-		model.translate(gameObject->transform->GetPosition().x, gameObject->transform->GetPosition().y, gameObject->transform->GetPosition().z); // translate it down so it's at the center of the scene
-		model.scale(gameObject->transform->GetScale().x, gameObject->transform->GetScale().y, gameObject->transform->GetScale().z);	// it's a bit too big for our scene, so scale it down
+		mat4x4 modelState = IdentityMatrix;
+		modelState.translate(gameObject->transform->GetPosition().x, gameObject->transform->GetPosition().y, gameObject->transform->GetPosition().z); // translate it down so it's at the center of the scene
+		modelState.scale(gameObject->transform->GetScale().x, gameObject->transform->GetScale().y, gameObject->transform->GetScale().z);	// it's a bit too big for our scene, so scale it down
 
-		myShader->SetMat4x4("model", model);
+		myShader->SetMat4x4("model", modelState);
 
-		myModel.Draw(*myShader);
+		myMesh->Draw(*myShader);
 
 		myShader->Unuse();
 	}

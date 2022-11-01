@@ -4,8 +4,10 @@
 
 #include <iostream>
 #include "Glew/include/GL/glew.h"
+#include "Texture.h"
 
-unsigned int LoadTexture(std::string file_path);
+
+Texture LoadTexture(std::string file_path);
 
 #endif // !__TEXTURE_LOADER_H__
 

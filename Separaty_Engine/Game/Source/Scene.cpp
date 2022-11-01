@@ -72,6 +72,8 @@ bool Scene::Start()
 
 	GameObject* go = CreateNewGameObject();
 
+	goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+
 	return ret;
 }
 
@@ -114,10 +116,31 @@ update_status Scene::Update(float dt)
 		}
 	}
 
-	/*if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
+	if (!App->engineSystem->allMeshes.empty())
 	{
-		App->ui->AppendToOutput(DEBUG_LOG(name.c_str()));
-	}*/
+		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
+		{
+			goRenderer->SetMesh(&App->engineSystem->allMeshes[0]);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
+		{
+			goRenderer->SetMesh(&App->engineSystem->allMeshes[1]);
+		}
+	}
+
+	if (!App->engineSystem->allTextures.empty())
+	{
+		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
+		{
+			goRenderer->SetTexture(&App->engineSystem->allTextures[0]);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+		{
+			goRenderer->SetTexture(&App->engineSystem->allTextures[2]);
+		}
+	}
 
 	/*if (App->ui->createCube == true)
 	{

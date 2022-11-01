@@ -7,6 +7,10 @@
 class EngineSystem;
 class GameObject;
 
+//test
+class GameObjComponent;
+class GOC_MeshRenderer;
+
 class Scene : public Module
 {
 public:
@@ -34,7 +38,8 @@ public:
 	GameObject* GetSelectedGameObject();
 	
 
-	GameObject* rootGo = nullptr;
+	GOC_MeshRenderer* goRenderer;
+
 	std::vector<GameObject*> gameObjects;
 	uint sceneID;
 private:

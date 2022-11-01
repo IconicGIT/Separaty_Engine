@@ -21,8 +21,8 @@ public:
     void Draw(Shader& shader);
 
     bool Set(const char* path);
-
     bool Set(Model model);
+    void Set(Model* model);
 
     std::vector<Mesh> GetMeshes() const
     {
@@ -32,6 +32,11 @@ public:
     std::string GetDirectory() const
     {
         return directory;
+    }
+
+    std::vector<Texture> GetTextures() const
+    {
+        return textures_loaded;
     }
 
 private:

@@ -36,7 +36,9 @@ public:
 	void Render();
 	bool Execute();
 
-	void SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
+	void SetMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+	void SetMesh(Mesh* mesh);
+	void SetTexture(Texture* texture);
 
 	void RenderAxis();
 
@@ -66,6 +68,6 @@ private:
 	bool modelLoadSuccess = false;
 	Shader* myShader;
 	Shader *selctedShader;
-	Model myModel;
+	Mesh* myMesh = nullptr;
 };
 

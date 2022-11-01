@@ -41,7 +41,7 @@ bool GameObject::Start()
 
 	GOC_MeshRenderer* meshRenderer =  (GOC_MeshRenderer*)GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
-	meshRenderer->SetMesh(vertices, indices);
+	/*meshRenderer->SetMesh(vertices, indices);*/
 	return true;
 }
 

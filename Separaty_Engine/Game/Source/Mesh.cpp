@@ -2,14 +2,17 @@
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
 {
-    Set(vertices, indices, textures);
-}
-
-void Mesh::Set(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
-{
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;
+
+    SetupMesh();
+}
+
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+{
+    this->vertices = vertices;
+    this->indices = indices;
 
     SetupMesh();
 }
@@ -43,25 +46,32 @@ void Mesh::SetupMesh()
     glBindVertexArray(0);
 }
 
-void Mesh::Draw(Shader& shader)
+void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
 {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
-    for (unsigned int i = 0; i < textures.size(); i++)
-    {
-        glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
-        // retrieve texture number (the N in diffuse_textureN)
-        std::string number;
-        std::string name = textures[i].type;
-        if (name == "texture_diffuse")
-            number = std::to_string(diffuseNr++);
-        else if (name == "texture_specular")
-            number = std::to_string(specularNr++);
 
-        //shader.SetInt(("material." + name + number).c_str(), i);
-        glUniform1i(glGetUniformLocation(shader.ID, ("material." + name + number).c_str()), i);
-        glBindTexture(GL_TEXTURE_2D, textures[i].id);
+     
+    if (!textures.empty())
+    {
+        for (unsigned int i = 0; i < textures.size(); i++)
+        {
+            glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+            // retrieve texture number (the N in diffuse_textureN)
+            std::string number;
+            std::string name = textures[i].type;
+            if (name == "texture_diffuse")
+                number = std::to_string(diffuseNr++);
+            else if (name == "texture_specular")
+                number = std::to_string(specularNr++);
+
+            //shader.SetInt(("material." + name + number).c_str(), i);
+            glUniform1i(glGetUniformLocation(shader.ID, ("material." + name + number).c_str()), i);
+            glBindTexture(GL_TEXTURE_2D, textures[i].id);
+        }
     }
+    
+    
     glActiveTexture(GL_TEXTURE0);
 
     // draw mesh

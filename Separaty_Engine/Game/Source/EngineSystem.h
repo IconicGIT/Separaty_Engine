@@ -53,7 +53,7 @@ public:
 
 	bool LoadFromDraggedData(char* draggedFileDir);
 
-private:
+//private:
 	
 	bool LoadModel(char* path);
 
@@ -63,8 +63,9 @@ private:
 	std::vector<Scene*> scenes;
 	std::vector<GameObject*> allGameObjects;
 	std::vector<GameObjectComponent*> allGameObjectComponents;
-	std::vector<Model*> allModels;
-	std::vector<int> allTextures;
+	std::vector<Model*> allModels; //delete
+	std::vector<Mesh> allMeshes;
+	std::vector<Texture> allTextures;
 
 	std::vector<std::string> modelExtensionsAccepted;
 	std::vector<std::string> imageExtensionsAccepted;

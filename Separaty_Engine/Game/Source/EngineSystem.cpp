@@ -24,6 +24,7 @@ bool EngineSystem::Init()
 
 	imageExtensionsAccepted.push_back("png");
 	imageExtensionsAccepted.push_back("jpg");
+	imageExtensionsAccepted.push_back("bmp");
 
 	return true;
 
@@ -32,6 +33,21 @@ bool EngineSystem::Init()
 
 update_status EngineSystem::PreUpdate(float dt)
 {
+	update_status ret = UPDATE_CONTINUE;
+
+	if (!scenes.empty())
+	{
+
+		Module* item = scenes.front();
+		int item_it = 0;
+
+		while (item_it < scenes.size() && ret == UPDATE_CONTINUE)
+		{
+			item = scenes[item_it];
+			ret = item->PreUpdate(dt);
+			item_it++;
+		}
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -42,36 +58,16 @@ update_status EngineSystem::Update(float dt)
 
 	if (!scenes.empty())
 	{
-
 		Module* item = scenes.front();
 		int item_it = 0;
 
-		while (item_it < scenes.size() && ret == true)
-		{
-			item = scenes[item_it];
-			ret = item->PreUpdate(dt);
-			item_it++;
-		}
-
-		item = scenes.front();
-		item_it = 0;
-
-		while (item_it < scenes.size() && ret == true)
+		while (item_it < scenes.size() && ret == UPDATE_CONTINUE)
 		{
 			item = scenes[item_it];
 			ret = item->Update(dt);
 			item_it++;
 		}
 
-		item = scenes.front();
-		item_it = 0;
-
-		while (item_it < scenes.size() && ret == true)
-		{
-			item = scenes[item_it];
-			ret = item->PostUpdate(dt);
-			item_it++;
-		}
 	}
 
 	if (App->input->FileJustDropped())
@@ -83,6 +79,23 @@ update_status EngineSystem::Update(float dt)
 }
 update_status EngineSystem::PostUpdate(float dt)
 {
+
+	update_status ret = UPDATE_CONTINUE;
+
+	if (!scenes.empty())
+	{
+
+		Module* item = scenes.front();
+		int item_it = 0;
+
+		while (item_it < scenes.size() && ret == UPDATE_CONTINUE)
+		{
+			item = scenes[item_it];
+			ret = item->PostUpdate(dt);
+			item_it++;
+		}
+
+	}
 
 	return UPDATE_CONTINUE;
 
@@ -155,18 +168,25 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 bool EngineSystem::LoadModel(char* path)
 {
 	Model* modelToAdd = new Model(path);
-	allModels.push_back(modelToAdd);
+
+	for (Mesh m : modelToAdd->GetMeshes())
+	{
+		allMeshes.push_back(m);
+	}
+
+	for (Texture t : modelToAdd->GetTextures())
+	{
+		allTextures.push_back(t);
+	}
 
 	App->ui->AppendToOutput(DEBUG_LOG("Loaded Model (%s)", path));
 
+	delete modelToAdd;
 
 	//make gameobject when loading model
 
 	return true;
 }
-
-
-
 
 
 bool EngineSystem::LoadFromDraggedData(char* draggedFileDir)
@@ -197,8 +217,7 @@ bool EngineSystem::LoadFromDraggedData(char* draggedFileDir)
 		a = strncmp(fileExtension.c_str(), imageExtensionsAccepted[i].c_str(), fileExtension.length());
 		if (a == 0)
 		{
-			int texToAdd = LoadTexture(draggedFileDir);
-			allTextures.push_back(texToAdd);
+			allTextures.push_back(LoadTexture(draggedFileDir));
 
 			ret = true;
 
