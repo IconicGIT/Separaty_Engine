@@ -26,7 +26,7 @@ void GOC_Transform::SetRotation(float angle, const vec3& u)
 }
 
 // ------------------------------------------------------------
-void GOC_Transform::Scale(float x, float y, float z)
+void GOC_Transform::SetScale(float x, float y, float z)
 {
 	transform.scale(x, y, z);
 }

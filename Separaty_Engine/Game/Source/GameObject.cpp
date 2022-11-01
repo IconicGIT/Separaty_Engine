@@ -137,6 +137,16 @@ GameObjectComponent* GameObject::GetComponent(GOC_Type type)
 
 }
 
+GameObject* GameObject::CreateChildren()
+{
+	GameObject* go = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+
+	children.push_back(go);
+
+	return go;
+}
+
+
 void GameObject::AttachChild(GameObject* child)
 {
 	if (child->parent != nullptr)

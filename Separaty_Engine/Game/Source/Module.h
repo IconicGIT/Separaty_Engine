@@ -8,7 +8,7 @@ class  PhysBody3D;
 class Module
 {
 private :
-	bool enabled;
+	
 	
 public:
 
@@ -60,5 +60,6 @@ public:
 		return true;
 	}
 
+	bool enabled;
 	//TODO 7: Create virtual method "On Collision", that recieves the two colliding PhysBodies
 };

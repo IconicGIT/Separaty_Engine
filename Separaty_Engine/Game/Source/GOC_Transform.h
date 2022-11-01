@@ -17,7 +17,7 @@ public:
 
 	void SetPos(float x, float y, float z);
 	void SetRotation(float angle, const vec3& u);
-	void Scale(float x, float y, float z);
+	void SetScale(float x, float y, float z);
 	vec3 GetPosition() const
 	{
 		return transform.translation();

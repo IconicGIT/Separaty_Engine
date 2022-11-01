@@ -2,7 +2,11 @@
 #include "Application.h"
 #include "UIFunctions.h"
 #include "GameObject.h"
+#include "GameObjComponent.h"
+#include "GOC_Transform.h"
+#include "GOC_MeshRenderer.h"
 
+#include "imgui_stdlib.h"
 #include "scene.h"
 
 #include "EngineSystem.h"
@@ -376,10 +380,13 @@ update_status UIFunctions::Update(float dt)
 
 		if (gameObject!= nullptr && gameObject->selected)
 		{
-			if(ImGui::TreeNode("Information"))
+			if(ImGui::CollapsingHeader("Information"))
 			{
-
-				ImGui::TreePop();
+				
+				ImGui::Text("Name:");
+				ImGui::SameLine();
+				ImGui::InputText("##Name", &gameObject->name);
+				ImGui::Checkbox("Active", &gameObject->enabled);
 			}
 			// Current game object (the one we have selected at the moment)
 			for (GameObjectComponent* component : gameObject->GetComponents())
@@ -390,7 +397,30 @@ update_status UIFunctions::Update(float dt)
 					
 				case GOC_Type:: GOC_TRANSFORM:
 				{
-					
+					if (ImGui::CollapsingHeader("Transform"))
+					{
+						float newPositionX = gameObject->transform->GetPosition().x;
+						float newPositionY = gameObject->transform->GetPosition().y;
+						float newPositionZ = gameObject->transform->GetPosition().z;
+
+						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
+
+						if (ImGui::DragFloat3("Location", &newPosition[0]))
+						{
+							SetPosition(newPosition);
+						}
+
+						float newScaleX = gameObject->transform->GetScale().x;
+						float newScaleY = gameObject->transform->GetScale().y;
+						float newScaleZ = gameObject->transform->GetScale().z;
+
+						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
+						if (ImGui::DragFloat3("Scale", &(newScale[0])))
+						{
+							SetScale(newScale);
+						}
+						
+					}
 				}
 				break;
 				case GOC_Type::GOC_MESH_RENDERER:
@@ -468,31 +498,33 @@ update_status UIFunctions::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+// Hierarchy
 void UIFunctions::DisplayTree(GameObject* go, int flags)
 {
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
 	DragAndDrop(go);
 
-	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0, 1, 0, 1));
+	Scene* currentScene = App->engineSystem->GetCurrentScene();
 
-	/*ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0,1,0,1));*/
+	/*ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0, 1, 0, 1));*/
+
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
+		for (size_t i = 0; i < currentScene->gameObjects.size(); i++)
+		{
+			currentScene->gameObjects[i]->selected = false;
+			/*if (currentScene->gameObjects[i] != gameObject)
+			{
+				ImGui::TreePop();
+			}*/
+		}
 		gameObject = go;
 		go->selected = true;
-
-		/*if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
-		{
-			gameObject = nullptr;;
-
-			go->selected = false;
-		}*/
-
 		
 		if (ImGui::MenuItem("Create Empty Child"))
 		{
-			GameObject* child = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+			GameObject* child = gameObject->CreateChildren();
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
 
@@ -522,12 +554,12 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 		gameObject = nullptr;
 		go->selected = false;
 	}
-	ImGui::PopStyleColor();
+	/*ImGui::PopStyleColor();*/
 	
 
 	for (int i = 0; i < go->GetChildren().size(); i++)
 	{
-		DisplayTree(App->engineSystem->GetCurrentScene()->gameObjects[i], flags);
+		DisplayTree(go->GetChildren()[i], flags);
 	}
 
 	
@@ -561,3 +593,15 @@ void UIFunctions::DragAndDrop(GameObject* go)
 		ImGui::EndDragDropTarget();
 	}
 }
+
+//Inspector
+void UIFunctions::SetPosition(const float3& newPosition)
+{
+	gameObject->transform->SetPos(newPosition.x, newPosition.y, newPosition.z);
+}
+
+void UIFunctions::SetScale(const float3& newScale)
+{
+	gameObject->transform->SetScale(newScale.x, newScale.y, newScale.z);
+}
+

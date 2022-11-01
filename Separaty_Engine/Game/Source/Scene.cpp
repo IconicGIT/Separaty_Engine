@@ -86,7 +86,7 @@ update_status Scene::Update(float dt)
 		Module* item = gameObjects.front();
 		int item_it = 0;
 
-		while (item_it < gameObjects.size() && ret == true)
+		while (item_it < gameObjects.size() && ret == true && item->enabled)
 		{
 			item = gameObjects[item_it];
 			ret = item->PreUpdate(dt);
@@ -96,7 +96,7 @@ update_status Scene::Update(float dt)
 		item = gameObjects.front();
 		item_it = 0;
 
-		while (item_it < gameObjects.size() && ret == true)
+		while (item_it < gameObjects.size() && ret == true && item->enabled)
 		{
 			item = gameObjects[item_it];
 			ret = item->Update(dt);
@@ -106,7 +106,7 @@ update_status Scene::Update(float dt)
 		item = gameObjects.front();
 		item_it = 0;
 
-		while (item_it < gameObjects.size() && ret == true)
+		while (item_it < gameObjects.size() && ret == true && item->enabled)
 		{
 			item = gameObjects[item_it];
 			ret = item->PostUpdate(dt);

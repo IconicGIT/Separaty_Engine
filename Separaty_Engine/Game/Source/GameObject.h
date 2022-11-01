@@ -39,6 +39,9 @@ public:
 		return id;
 	}
 
+	GameObject* CreateChildren();
+	
+
 	std::vector<GameObject*> GetChildren() const
 	{
 		return children;
@@ -49,14 +52,14 @@ public:
 		return name;
 	}
 
+	void ChangeName(const char* changeName) 
+	{
+		this->name = changeName;
+	}
+
 	std::vector<GameObjectComponent*> GetComponents() const
 	{
 		return components;
-	}
-
-	virtual bool InspectorDraw(GameObject* gameObject)
-	{
-		return true; 
 	}
 
 	void AddComponent(GOC_Type type);
