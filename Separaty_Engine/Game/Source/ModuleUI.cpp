@@ -34,6 +34,7 @@ bool ModuleUI::Init()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
+
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; 
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
@@ -85,6 +86,10 @@ update_status ModuleUI::Update(float dt)
 	ImGui::ShowDemoWindow();
 	ImGui::Begin("Separaty Engine");
 	ImGui::SetWindowSize({ 400, 400 }, 0);
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	screenX = io.DisplaySize.x;
+	screenY = io.DisplaySize.y;
 
 	/*if (ImGui::Button("Example2", { 250, 150 }))
 	{
@@ -360,6 +365,14 @@ update_status ModuleUI::Update(float dt)
 			}
 			ImGui::Separator();
 
+			if (hierarchy)
+			{
+				/*ImVec2 textSize = ImGui::CalcTextSize("Hierarchy");
+				ImVec2 windowSize = ImVec2(screenX / 4, screenY);
+				ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.5f, (io.DisplaySize.y - windowSize.y)));
+				ImGui::SetNextWindowSize(windowSize);*/
+			}
+
 			if (ImGui::MenuItem("Inspector"))
 			{
 				inspector = !inspector;
@@ -379,6 +392,13 @@ update_status ModuleUI::Update(float dt)
 			}
 			ImGui::Separator();
 
+			if (showOutput)
+			{
+				/*ImVec2 textSize = ImGui::CalcTextSize("Console");
+				ImVec2 windowSize = ImVec2(screenX, screenY / 4);
+				ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.5f, (io.DisplaySize.y - windowSize.y)));
+				ImGui::SetNextWindowSize(windowSize);*/
+			}
 			ImGui::EndMenu();
 		}
 
@@ -404,7 +424,7 @@ update_status ModuleUI::Update(float dt)
 				ImGui::Text("Visit github page for detailed information regarding code and functionalities:");
 				if (ImGui::Button("Github Web Page"))
 				{
-					App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+					App->RequestBrowser("https://iconicgit.github.io/Separaty_Engine/");
 				}
 				ImGui::NewLine();
 
@@ -422,18 +442,55 @@ update_status ModuleUI::Update(float dt)
 				//ImGui::NewLine();
 
 				ImGui::Text("3rd parties libraries used:");
-				//LIBRERIAS UTILIZADAS DURANTE EL PROYECTO (faltan)
-				ImGui::BulletText("SDL 2.0.4");
-				ImGui::BulletText("MathGeoLib 1.5");
-				ImGui::BulletText("Json 1.2.1");
-				ImGui::BulletText("ImGui 1.89");
+				//Used Libraries
+				ImGui::BulletText("Assimp 5.0.1");
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> http://www.assimp.org/"))
+				{
+					App->RequestBrowser("http://www.assimp.org/");
+				}*/
+				ImGui::BulletText("DevIL 1.8.0");
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> http://openil.sourceforge.net/"))
+				{
+					App->RequestBrowser("http://openil.sourceforge.net/");
+				}*/
 				ImGui::BulletText("Glew 2.2.0");
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> http://glew.sourceforge.net/"))
+				{
+					App->RequestBrowser("http://glew.sourceforge.net/");
+				}*/
+				ImGui::BulletText("ImGui 1.89");
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> https://github.com/ocornut/imgui"))
+				{
+					App->RequestBrowser("https://github.com/ocornut/imgui");
+				}*/
+				ImGui::BulletText("Json 1.2.1");
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> https://github.com/nlohmann/json"))
+				{
+					App->RequestBrowser("https://github.com/nlohmann/json");
+				}*/
+				ImGui::BulletText("MathGeoLib 1.5");
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> https://github.com/juj/MathGeoLib"))
+				{
+					App->RequestBrowser("https://github.com/juj/MathGeoLib");
+				}*/
+				ImGui::BulletText("SDL 2.0.4"); 
+				/*ImGui::SameLine();
+				if (ImGui::MenuItem("--> https://www.libsdl.org/"))
+				{
+					App->RequestBrowser("https://www.libsdl.org/");
+				}*/
 				ImGui::BulletText("OpenGL 2.0");
-
-
-
-
-
+			/*	ImGui::SameLine();
+				if (ImGui::MenuItem("--> https://www.khronos.org/registry/OpenGL-Refpages/es3.0/"))
+				{
+					App->RequestBrowser("https://www.khronos.org/registry/OpenGL-Refpages/es3.0/");
+				}*/
 
 				/////////////////////////
 
@@ -476,12 +533,12 @@ update_status ModuleUI::Update(float dt)
 
 			if (ImGui::MenuItem("Make Any Comment"))
 			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine/pulls");
 			}
 
 			if (ImGui::MenuItem("Report Bugs"))
 			{
-				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine");
+				App->RequestBrowser("https://github.com/IconicGIT/Separaty_Engine/issues");
 			}
 		
 			ImGui::EndMenu();

@@ -36,10 +36,9 @@ public:
 	bool assets = true;
 	bool showOutput = true;
 
-
-
-
 	std::vector<char*> outputList;
+	float screenX;
+	float screenY;
 
 	//PRIMITIVEs
 

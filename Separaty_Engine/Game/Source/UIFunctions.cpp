@@ -23,6 +23,7 @@ UIFunctions::~UIFunctions()
 
 update_status UIFunctions::Update(float dt)
 {
+	ImVec2 windowSize = ImVec2(0,0);
 	//PROJECT PREFERENCES
 
 	if (App->ui->showPreferences)
@@ -318,11 +319,13 @@ update_status UIFunctions::Update(float dt)
 	}
 
 	//WINDOWS 
-	
+	ImGuiIO& io = ImGui::GetIO();
 	if (App->ui->hierarchy)
 	{
 		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
-
+		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
+		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.0f, 18.9f));
+		ImGui::SetWindowSize(windowSize);
 		if (!App->engineSystem->GetCurrentScene()->gameObjects.empty())
 		{
 			/*gameObject->Markdown("# Game Objects");*/
@@ -335,9 +338,6 @@ update_status UIFunctions::Update(float dt)
 			if (alignLabelWithCurrentXPosition)
 				ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 
-			/*ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
-
-			DisplayTree(App->engineSystem->GetCurrentScene()->gameObjects[0], flags);*/
 			
 			for (int i = 0; i < App->engineSystem->GetCurrentScene()->gameObjects.size(); i++)
 			{
@@ -356,7 +356,45 @@ update_status UIFunctions::Update(float dt)
 
 	if (App->ui->inspector)
 	{
+
+		/*WindowGameObjectInfo WindowGameObjectInfo = gameObject->WindowGameObjectInfo;*/
 		ImGui::Begin("Inspector", &App->ui->inspector);
+		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
+		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f , 18.9f));
+		ImGui::SetWindowSize(windowSize);
+	//	if (WindowGameObjectInfo.selectedGameObjectID != -1)
+	//	{
+	//		// Current game object (the one we have selected at the moment)
+	//		GameObject* currentGameObject = App->engineSystem->GetCurrentScene()->gameObjects->WindowGameObjectInfo.selectedGameObjectID;
+	//		for (GameObjectComponent* component : currentGameObject->GetComponent())
+	//		{
+	//			component->InspectorDraw(gameObject);
+	//		}
+
+	//		ImGui::Separator();
+	//		//const char* items[] = { "Material Component", "Mesh Component"};
+	//		const char* items[] = { "" };
+	//		static const char* current_item = NULL;
+
+	//		if (ImGui::BeginCombo("##combo", "Add Component")) // The second parameter is the label previewed before opening the combo.
+	//		{
+	//			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+	//			{
+	//				if (ImGui::Selectable(items[n]))
+	//				{
+	//					current_item = items[n];
+	//					if (current_item == "Material Component") {
+	//						bool alreadyExists = currentGameObject->GetComponent<ComponentMaterial>();
+	//						if (!alreadyExists)
+	//							currentGameObject->AddComponent<ComponentMaterial>();
+	//					}
+
+	//				}
+
+	//			}
+	//			ImGui::EndCombo();
+	//		}
+	//	}
 
 		ImGui::End();
 	}
@@ -367,11 +405,13 @@ update_status UIFunctions::Update(float dt)
 
 		ImGui::End();
 	}
-
+	
 	if (App->ui->showOutput)
 	{
 		ImGui::Begin("Output", &App->ui->showOutput);
-
+		windowSize = ImVec2(App->ui->screenX, App->ui->screenY / 4);
+		ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.5f, (io.DisplaySize.y - windowSize.y)));
+		ImGui::SetNextWindowSize(windowSize);
 		App->ui->PrintOutputList();
 
 		ImGui::End();
@@ -424,12 +464,15 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 	
 	if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
 	{
-		/*go->panelGameObjectInfo.selectedGameObjectID = go->id;*/
+		/*go->WindowGameObjectInfo.selectedGameObjectID = go->id;*/
 		
 		go->selected = true;
 	}
-		
 	
+	
+	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0, 1, 0, 1));
+	
+	/*ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0,1,0,1));*/
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
 		if (ImGui::MenuItem("Create Empty Child"))
@@ -437,7 +480,7 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 			GameObject* child = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
-				if (go->GetID() == gameObject->panelGameObjectInfo.selectedGameObjectID)
+				if (go->GetID() == gameObject->WindowGameObjectInfo.selectedGameObjectID)
 					go->AttachChild(child);
 			}
 		}
@@ -445,16 +488,20 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 		{
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
-				if (go->GetID() == gameObject->panelGameObjectInfo.selectedGameObjectID && go->GetID() != -1)
+				if (go->GetID() == gameObject->WindowGameObjectInfo.selectedGameObjectID && go->GetID() != -1)
 				{
 					/*App->engineSystem->GetCurrentScene()->DeleteGameObject(go);*/
-					gameObject->panelGameObjectInfo.selectedGameObjectID = -1;
+					gameObject->WindowGameObjectInfo.selectedGameObjectID = -1;
 				}
 
 			}
 		}
 		ImGui::TreePop();
+		
 	}
+	ImGui::PopStyleColor();
+	
+
 	for (int i = 0; i < go->GetChildren().size(); i++)
 	{
 		DisplayTree(gameObjects[i], flags);
