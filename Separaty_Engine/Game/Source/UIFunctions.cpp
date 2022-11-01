@@ -451,13 +451,9 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 	
 	if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
 	{
-<<<<<<< Updated upstream
-		/*go->WindowGameObjectInfo.selectedGameObjectID = go->id;*/
 
-=======
 		/*go->windowGameObjectInfo.selectedGameObjectID = go->id;*/
-		
->>>>>>> Stashed changes
+
 		go->selected = true;
 	}
 	
@@ -472,33 +468,22 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 			GameObject* child = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
-<<<<<<< Updated upstream
 
-				if (go->GetID() == gameObject->windowGameObjectInfo.selectedGameObjectID);
-
-=======
 				if (go->GetID() == go->selected)
 					go->AttachChild(child);
->>>>>>> Stashed changes
+
 			}
 		}
 		if (ImGui::MenuItem("Delete"))
 		{
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
-<<<<<<< Updated upstream
 
-				if (go->GetID() == gameObject->windowGameObjectInfo.selectedGameObjectID && go->GetID() != -1)
-				{
-					/*App->engineSystem->GetCurrentScene()->DeleteGameObject(go);*/
-					gameObject->windowGameObjectInfo.selectedGameObjectID = -1;
-
-=======
 				if (go->GetID() == go->selected && go->GetID() != -1)
 				{
 					/*App->engineSystem->GetCurrentScene()->DeleteGameObject(go);*/
 					gameObject->selected = -1;
->>>>>>> Stashed changes
+
 				}
 
 			}
