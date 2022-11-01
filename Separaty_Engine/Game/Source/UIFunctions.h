@@ -25,7 +25,6 @@ public:
 
 private:
 
-	std::vector<GameObject*> gameObjects;
 	EngineSystem* engineSystem;
 
 	Application* app = nullptr;

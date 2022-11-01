@@ -334,7 +334,10 @@ update_status UIFunctions::Update(float dt)
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.0f, 18.9f));
 		ImGui::SetWindowSize(windowSize);
-		if (!App->engineSystem->GetCurrentScene()->gameObjects.empty())
+
+		Scene* currentScene = App->engineSystem->GetCurrentScene();
+
+		if (!currentScene->gameObjects.empty())
 		{
 			/*gameObject->Markdown("# Game Objects");*/
 			/*ImGui::SameLine();
@@ -347,7 +350,7 @@ update_status UIFunctions::Update(float dt)
 				ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 
 			
-			for (int i = 0; i < App->engineSystem->GetCurrentScene()->gameObjects.size(); i++)
+			for (int i = 0; i < currentScene->gameObjects.size(); i++)
 			{
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
@@ -371,22 +374,38 @@ update_status UIFunctions::Update(float dt)
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f , 18.9f));
 		ImGui::SetWindowSize(windowSize);
 
-		//if (gameObject->selected)
-		//{
-		//	// Current game object (the one we have selected at the moment)
-		//	for (GameObjectComponent* component : gameObject->GetComponents())
-		//	{
+		if (gameObject!= nullptr && gameObject->selected)
+		{
+			if(ImGui::TreeNode("Information"))
+			{
 
+				ImGui::TreePop();
+			}
+			// Current game object (the one we have selected at the moment)
+			for (GameObjectComponent* component : gameObject->GetComponents())
+			{
 
+				switch (component->GetGOC_Type())
+				{
+					
+				case GOC_Type:: GOC_TRANSFORM:
+				{
+					
+				}
+				break;
+				case GOC_Type::GOC_MESH_RENDERER:
+				{
 
+				}
+				break;
+				
+				}
 
+						/*component->InspectorDraw(gameObject);*/
+			}
+			ImGui::Separator();
 
-
-		//		/*		component->InspectorDraw(gameObject);*/
-		//	}
-		//	ImGui::Separator();
-
-		//}
+		}
 
 		ImGui::End();
 	}
@@ -455,20 +474,22 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 
 	DragAndDrop(go);
 
-	if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
-	{
-
-		/*go->windowGameObjectInfo.selectedGameObjectID = go->id;*/
-
-		go->selected = true;
-	}
-	
-	
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0, 1, 0, 1));
-	
+
 	/*ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0,1,0,1));*/
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
+		gameObject = go;
+		go->selected = true;
+
+		/*if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
+		{
+			gameObject = nullptr;;
+
+			go->selected = false;
+		}*/
+
+		
 		if (ImGui::MenuItem("Create Empty Child"))
 		{
 			GameObject* child = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
@@ -496,12 +517,17 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 		ImGui::TreePop();
 		
 	}
+	else
+	{
+		gameObject = nullptr;
+		go->selected = false;
+	}
 	ImGui::PopStyleColor();
 	
 
 	for (int i = 0; i < go->GetChildren().size(); i++)
 	{
-		DisplayTree(gameObjects[i], flags);
+		DisplayTree(App->engineSystem->GetCurrentScene()->gameObjects[i], flags);
 	}
 
 	

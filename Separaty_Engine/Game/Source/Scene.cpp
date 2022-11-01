@@ -70,9 +70,7 @@ bool Scene::Start()
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
 
-	GameObject* go = engineSystem->CreateNewGameObject();
-
-	gameObjects.push_back(go);
+	GameObject* go = CreateNewGameObject();
 
 	return ret;
 }
