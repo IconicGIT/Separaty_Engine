@@ -137,3 +137,23 @@ GameObjectComponent* GameObject::GetComponent(GOC_Type type)
 
 }
 
+void GameObject::AttachChild(GameObject* child)
+{
+	if (child->parent != nullptr)
+		child->parent->RemoveChild(child);
+
+	child->parent = this;
+	children.push_back(child);
+	//child->transform->NewAttachment();
+	//child->PropagateTransform();
+}
+
+void GameObject::RemoveChild(GameObject* child)
+{
+	auto it = std::find(children.begin(), children.end(), child);
+	if (it != children.end())
+	{
+		children.erase(it);
+	}
+}
+

@@ -3,6 +3,8 @@
 #include "UIFunctions.h"
 #include "GameObject.h"
 
+#include "scene.h"
+
 #include "EngineSystem.h"
 
 #include "ModuleUI.h"
@@ -321,6 +323,34 @@ update_status UIFunctions::Update(float dt)
 	{
 		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
 
+		if (!App->engineSystem->GetCurrentScene()->gameObjects.empty())
+		{
+			/*gameObject->Markdown("# Game Objects");*/
+			/*ImGui::SameLine();
+			ImGui::Text("Here you can manage your game objects.");
+			ImGui::SameLine();*/
+
+			static bool alignLabelWithCurrentXPosition = false;
+
+			if (alignLabelWithCurrentXPosition)
+				ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
+
+			/*ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+
+			DisplayTree(App->engineSystem->GetCurrentScene()->gameObjects[0], flags);*/
+			
+			for (int i = 0; i < App->engineSystem->GetCurrentScene()->gameObjects.size(); i++)
+			{
+				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+
+				DisplayTree(App->engineSystem->GetCurrentScene()->gameObjects[i], flags);
+
+			}
+			
+			if (alignLabelWithCurrentXPosition)
+				ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+		}
+		
 		ImGui::End();
 	}
 
@@ -385,7 +415,51 @@ update_status UIFunctions::Update(float dt)
 	}
 
 	return UPDATE_CONTINUE;
+}
 
+void UIFunctions::DisplayTree(GameObject* go, int flags)
+{
+	flags |= ImGuiTreeNodeFlags_Leaf;
 
+	
+	if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
+	{
+		/*go->panelGameObjectInfo.selectedGameObjectID = go->id;*/
+		
+		go->selected = true;
+	}
+		
+	
+	if (ImGui::TreeNode(go->name.c_str()))
+	{
+		if (ImGui::MenuItem("Create Empty Child"))
+		{
+			GameObject* child = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+			{
+				if (go->GetID() == gameObject->panelGameObjectInfo.selectedGameObjectID)
+					go->AttachChild(child);
+			}
+		}
+		if (ImGui::MenuItem("Delete"))
+		{
+			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+			{
+				if (go->GetID() == gameObject->panelGameObjectInfo.selectedGameObjectID && go->GetID() != -1)
+				{
+					/*App->engineSystem->GetCurrentScene()->DeleteGameObject(go);*/
+					gameObject->panelGameObjectInfo.selectedGameObjectID = -1;
+				}
+
+			}
+		}
+		ImGui::TreePop();
+	}
+	for (int i = 0; i < go->GetChildren().size(); i++)
+	{
+		DisplayTree(gameObjects[i], flags);
+	}
+
+	
 }
 

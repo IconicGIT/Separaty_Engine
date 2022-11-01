@@ -29,12 +29,14 @@ public:
 	{
 		return gameObjects;
 	}
+
+	GameObject* rootGo = nullptr;
+	std::vector<GameObject*> gameObjects;
+	uint sceneID;
 private:
 
 	std::string sceneName;
 	bool active;
-	std::vector<GameObject*> gameObjects;
-	uint sceneID;
 	EngineSystem * engineSystem;
 };
 

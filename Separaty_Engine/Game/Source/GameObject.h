@@ -7,11 +7,17 @@
 #include "GOC_MeshRenderer.h"
 #include "GOC_Transform.h"
 
+
 class EngineSystem;
 enum class GOC_Type;
 //class GameObjectComponent;
 class GOC_MeshRenderer;
 class GOC_Transform;
+
+struct PanelGameObjectInfo
+{
+	int selectedGameObjectID = -1;
+};
 
 class GameObject : public Module
 {
@@ -32,17 +38,33 @@ public:
 		return id;
 	}
 
+	std::vector<GameObject*> GetChildren() const
+	{
+		return children;
+	}
+
+	std::string GetName()
+	{
+		return name;
+	}
+
 	void AddComponent(GOC_Type type);
 	GameObjectComponent* GetComponent(GOC_Type type);
 	bool selected;
 
+	void AttachChild(GameObject* child);
+	void RemoveChild(GameObject* child);
+
 	GOC_Transform* transform;
+	PanelGameObjectInfo panelGameObjectInfo = {};
+	uint id;
+	GameObject* parent = nullptr;
+	std::vector<GameObject*> children;
+	std::string name;
 
 private:
 	EngineSystem* engineSystem;
-	uint id;
-	GameObject* parent;
-	std::vector<GameObject*> children;
+
 
 	//This should not be here... but where???
 	//double pointers??

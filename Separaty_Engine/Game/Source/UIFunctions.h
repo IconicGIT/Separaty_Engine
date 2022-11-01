@@ -20,9 +20,17 @@ public:
 
 	update_status Update(float dt) override;
 
+	void DisplayTree(GameObject* go, int flags);
+
 private:
 
 	std::vector<GameObject*> gameObjects;
 	EngineSystem* engineSystem;
+
+	Application* app = nullptr;
+	GameObject* gameObject = nullptr;
+	GameObject* selectedGameObject = nullptr;
+	GameObject* destinationGameObject = nullptr;
+	bool is_selected = false;
 
 };

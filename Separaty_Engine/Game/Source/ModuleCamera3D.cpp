@@ -65,18 +65,18 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		//if (/*gameObjectSelect*/ != nullptr)
-		//{
-		//	LookAt(gameObjectSelect);
-		//}
-		if (zoomSpeed == 0) //de prueba para que funcione el else
+		for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 		{
-
+			if (go->selected)
+			{
+				LookAt(go->transform->GetPosition());
+			}
+			else
+			{
+				LookAt(0);
+			}
 		}
-		else
-		{
-			LookAt(0);
-		}
+		
 	}
 
 	Position += newPos;
