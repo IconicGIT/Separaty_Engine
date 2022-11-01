@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
+
 #include <iostream>
 #include "Application.h"
 #include "GameObjComponent.h"
@@ -14,7 +15,7 @@ enum class GOC_Type;
 class GOC_MeshRenderer;
 class GOC_Transform;
 
-struct windowGameObjectInfo
+struct WindowGameObjectInfo
 {
 	int selectedGameObjectID = -1;
 };
@@ -48,6 +49,16 @@ public:
 		return name;
 	}
 
+	std::vector<GameObjectComponent*> GetComponents() const
+	{
+		return components;
+	}
+
+	virtual bool InspectorDraw(GameObject* gameObject)
+	{
+		return true; 
+	}
+
 	void AddComponent(GOC_Type type);
 	GameObjectComponent* GetComponent(GOC_Type type);
 	bool selected = false;
@@ -56,7 +67,7 @@ public:
 	void RemoveChild(GameObject* child);
 
 	GOC_Transform* transform;
-	windowGameObjectInfo windowGameObjectInfo = {};
+	WindowGameObjectInfo windowGameObjectInfo = {};
 	uint id;
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;

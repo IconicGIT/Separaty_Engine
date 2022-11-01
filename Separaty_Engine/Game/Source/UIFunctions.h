@@ -21,6 +21,7 @@ public:
 	update_status Update(float dt) override;
 
 	void DisplayTree(GameObject* go, int flags);
+	void DragAndDrop(GameObject* go);
 
 private:
 

@@ -25,7 +25,7 @@ update_status UIFunctions::Update(float dt)
 {
 	ImVec2 windowSize = ImVec2(0,0);
 
-	//for (gameObject->)
+	//for (gameObject->selected)
 	//{
 
 	//}
@@ -365,22 +365,27 @@ update_status UIFunctions::Update(float dt)
 	if (App->ui->inspector)
 	{
 
-		/*windowGameObjectInfo windowGameObjectInfo = gameObject->windowGameObjectInfo;*/
+		/*WindowGameObjectInfo windowGameObjectInfo = gameObject->windowGameObjectInfo;*/
 		ImGui::Begin("Inspector", &App->ui->inspector);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f , 18.9f));
 		ImGui::SetWindowSize(windowSize);
 
-		//if (gameObject->windowGameObjectInfo.selectedGameObjectID != -1)
+		//if (gameObject->selected)
 		//{
 		//	// Current game object (the one we have selected at the moment)
-		//	GameObject* currentGameObject = App->engineSystem->GetCurrentScene()->gameObjects->windowGameObjectInfo.selectedGameObjectID;
-		//	for (GameObjectComponent* component : GetComponents())
+		//	for (GameObjectComponent* component : gameObject->GetComponents())
 		//	{
-		//		component->InspectorDraw(gameObject);
-		//	}
 
-		//	
+
+
+
+
+
+		//		/*		component->InspectorDraw(gameObject);*/
+		//	}
+		//	ImGui::Separator();
+
 		//}
 
 		ImGui::End();
@@ -448,7 +453,8 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 {
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
-	
+	DragAndDrop(go);
+
 	if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
 	{
 
@@ -471,7 +477,6 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 
 				if (go->GetID() == go->selected)
 					go->AttachChild(child);
-
 			}
 		}
 		if (ImGui::MenuItem("Delete"))
@@ -502,3 +507,31 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 	
 }
 
+void UIFunctions::DragAndDrop(GameObject* go)
+{
+	if (ImGui::BeginDragDropSource())
+	{
+		ImGui::SetDragDropPayload("Hierarchy", go, sizeof(GameObject));
+		selectedGameObject = go;
+		ImGui::Text(go->name.c_str());
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy");
+		if (payload != nullptr)
+		{
+			if (selectedGameObject != nullptr)
+			{
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly))
+				{
+					destinationGameObject = go;
+					destinationGameObject->AttachChild(selectedGameObject);
+					selectedGameObject = nullptr;
+					destinationGameObject = nullptr;
+				}
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+}

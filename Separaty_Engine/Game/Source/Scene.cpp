@@ -143,6 +143,19 @@ GameObject* Scene::CreateNewGameObject()
 	return go;
 }
 
+GameObject* Scene::GetSelectedGameObject()
+{
+	for (GameObject* go : gameObjects)
+	{
+		if (go->selected)
+		{
+			return go;
+		}
+	}
+
+	return nullptr;
+}
+
 bool Scene::CleanUp()
 {
 	return true;

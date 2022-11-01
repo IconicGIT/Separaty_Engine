@@ -30,6 +30,10 @@ public:
 		return gameObjects;
 	}
 
+
+	GameObject* GetSelectedGameObject();
+	
+
 	GameObject* rootGo = nullptr;
 	std::vector<GameObject*> gameObjects;
 	uint sceneID;
