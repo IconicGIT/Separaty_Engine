@@ -24,13 +24,6 @@ public:
 
     bool Set(Model model);
 
-private:
-    std::vector<Texture> textures_loaded;
-
-    // model data
-    std::vector<Mesh> meshes;
-    std::string directory = "";
-
     std::vector<Mesh> GetMeshes() const
     {
         return meshes;
@@ -38,8 +31,17 @@ private:
 
     std::string GetDirectory() const
     {
-        return directory;  
+        return directory;
     }
+
+private:
+    std::vector<Texture> textures_loaded;
+
+    // model data
+    std::vector<Mesh> meshes;
+    std::string directory = "";
+
+   
 
     bool LoadModel(std::string path);
 

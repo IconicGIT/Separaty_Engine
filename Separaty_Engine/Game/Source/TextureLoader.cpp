@@ -3,9 +3,9 @@
 
 #include "TextureLoader.h"
 
-unsigned int LoadTexture(std::string file_path, std::string directory)
+unsigned int LoadTexture(std::string file_path)
 {
-	std::string full_path = directory + "/" + file_path;
+	
 
 	unsigned int texture;
 
@@ -24,7 +24,7 @@ unsigned int LoadTexture(std::string file_path, std::string directory)
 	stbi_set_flip_vertically_on_load(true);
 
 	// load and generate the texture
-	unsigned char* data = stbi_load(full_path.c_str(), &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(file_path.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -32,7 +32,7 @@ unsigned int LoadTexture(std::string file_path, std::string directory)
 	}
 	else
 	{
-		std::cout << "Failed to load texture " << full_path << std::endl;
+		std::cout << "Failed to load texture " << file_path << std::endl;
 	}
 
 	stbi_image_free(data);

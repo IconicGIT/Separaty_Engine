@@ -14,7 +14,7 @@ enum class GOC_Type;
 class GOC_MeshRenderer;
 class GOC_Transform;
 
-struct PanelGameObjectInfo
+struct windowGameObjectInfo
 {
 	int selectedGameObjectID = -1;
 };
@@ -50,13 +50,13 @@ public:
 
 	void AddComponent(GOC_Type type);
 	GameObjectComponent* GetComponent(GOC_Type type);
-	bool selected;
+	bool selected = false;
 
 	void AttachChild(GameObject* child);
 	void RemoveChild(GameObject* child);
 
 	GOC_Transform* transform;
-	PanelGameObjectInfo panelGameObjectInfo = {};
+	windowGameObjectInfo windowGameObjectInfo = {};
 	uint id;
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;

@@ -359,6 +359,7 @@
   <ItemGroup>
     <None Include="..\Output\Assets\Project_1\Assets\Shaders\default.fragment" />
     <None Include="..\Output\Assets\Project_1\Assets\Shaders\default.vertex" />
+    <None Include="..\Output\Assets\Project_1\Assets\Shaders\selected.fragment" />
     <None Include="Source\External\MathGeoLib\Geometry\KDTree.inl" />
     <None Include="Source\External\MathGeoLib\Geometry\QuadTree.inl" />
     <None Include="Source\External\MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl" />

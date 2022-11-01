@@ -39,7 +39,9 @@ update_status ModuleInput::PreUpdate(float dt)
 {
 	SDL_PumpEvents();
 
-	const Uint8* keys = SDL_GetKeyboardState(NULL);
+	fileJustDropped = false;
+
+	const Uint8* keys = SDL_GetKeyboardState(NULL); 
 	
 	for(int i = 0; i < MAX_KEYS; ++i)
 	{
@@ -114,6 +116,12 @@ update_status ModuleInput::PreUpdate(float dt)
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
+			break;
+
+			case (SDL_DROPFILE): {      // In case if dropped file
+				dropped_filedir = e.drop.file;
+				fileJustDropped = true;
+			}
 		}
 	}
 
@@ -136,5 +144,6 @@ bool ModuleInput::CleanUp()
 {
 	DEBUG_LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+	SDL_free(dropped_filedir);
 	return true;
 }

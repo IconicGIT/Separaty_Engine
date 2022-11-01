@@ -64,7 +64,8 @@ private:
 private:
 
 	bool modelLoadSuccess = false;
-	Shader *myShader;
+	Shader* myShader;
+	Shader *selctedShader;
 	Model myModel;
 };
 

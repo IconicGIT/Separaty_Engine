@@ -465,7 +465,7 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 	if ((ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1)))
 	{
 		/*go->WindowGameObjectInfo.selectedGameObjectID = go->id;*/
-		
+
 		go->selected = true;
 	}
 	
@@ -480,18 +480,21 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 			GameObject* child = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
-				if (go->GetID() == gameObject->WindowGameObjectInfo.selectedGameObjectID)
-					go->AttachChild(child);
+
+				if (go->GetID() == gameObject->windowGameObjectInfo.selectedGameObjectID);
+
 			}
 		}
 		if (ImGui::MenuItem("Delete"))
 		{
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 			{
-				if (go->GetID() == gameObject->WindowGameObjectInfo.selectedGameObjectID && go->GetID() != -1)
+
+				if (go->GetID() == gameObject->windowGameObjectInfo.selectedGameObjectID && go->GetID() != -1)
 				{
 					/*App->engineSystem->GetCurrentScene()->DeleteGameObject(go);*/
-					gameObject->WindowGameObjectInfo.selectedGameObjectID = -1;
+					gameObject->windowGameObjectInfo.selectedGameObjectID = -1;
+
 				}
 
 			}

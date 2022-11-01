@@ -95,6 +95,10 @@ void Shader::Use()
 {
     glUseProgram(ID);
 }
+void Shader::Unuse()
+{
+    glUseProgram(0);
+}
 
 void Shader::SetBool(const std::string& name, bool value) const
 {

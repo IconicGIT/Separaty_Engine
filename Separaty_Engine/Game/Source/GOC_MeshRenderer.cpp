@@ -19,7 +19,9 @@ void GOC_MeshRenderer::SetMesh(std::vector<GLfloat> vertices, std::vector<GLuint
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 	glFrontFace(GL_CW);
+
 	myShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
+	selctedShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
 
 	modelLoadSuccess = myModel.Set("Assets/Project_1/Assets/Models/baker_house.fbx");
 
@@ -69,7 +71,14 @@ void GOC_MeshRenderer::Render()
 
 		GOC_Transform* GoTransform = (GOC_Transform*)gameObject->GetComponent(GOC_Type::GOC_TRANSFORM);
 
-		myShader->Use();
+		if (gameObject->selected)
+		{
+			selctedShader->Use();
+		}
+		else
+		{
+			myShader->Use();
+		}
 
 		mat4x4 projection = App->renderer3D->ProjectionMatrix;
 		mat4x4 view = App->camera->GetViewMatrix();
@@ -84,6 +93,8 @@ void GOC_MeshRenderer::Render()
 		myShader->SetMat4x4("model", model);
 
 		myModel.Draw(*myShader);
+
+		myShader->Unuse();
 	}
 
 	RenderAxis();

@@ -640,5 +640,8 @@
     <None Include="..\Output\Assets\Project_1\Assets\Shaders\default.vertex">
       <Filter>Source\Graphics\Shaders</Filter>
     </None>
+    <None Include="..\Output\Assets\Project_1\Assets\Shaders\selected.fragment">
+      <Filter>Source\Graphics\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

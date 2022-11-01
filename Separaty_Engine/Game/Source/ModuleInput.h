@@ -59,6 +59,16 @@ public:
 		return mouse_y_motion;
 	}
 
+	char* GetDroppedFileDir() const
+	{
+		return dropped_filedir;
+	}
+
+	bool FileJustDropped() const
+	{
+		return fileJustDropped;
+	}
+
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
@@ -67,5 +77,7 @@ private:
 	int mouse_z;
 	int mouse_x_motion;
 	int mouse_y_motion;
+	char* dropped_filedir;
+	bool fileJustDropped = false;
 	//int mouse_z_motion;
 };
