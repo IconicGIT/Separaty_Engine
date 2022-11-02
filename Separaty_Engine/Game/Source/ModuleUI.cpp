@@ -83,9 +83,9 @@ update_status ModuleUI::Update(float dt)
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow();
+	/*ImGui::ShowDemoWindow();
 	ImGui::Begin("Separaty Engine");
-	ImGui::SetWindowSize({ 400, 400 }, 0);
+	ImGui::SetWindowSize({ 400, 400 }, 0);*/
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	screenX = io.DisplaySize.x;
@@ -233,34 +233,57 @@ update_status ModuleUI::Update(float dt)
 		{
 			if (ImGui::TreeNode("Create 3D Object"))
 			{
-				if (ImGui::MenuItem("Cube"))
+				if (ImGui::MenuItem("Create Empty GameObject"))
 				{
 					createCube = true;
 				}
-				if (ImGui::MenuItem("Sphere"))
+				if (ImGui::MenuItem("Sphere", "", false,false))
 				{
 					createSphere = true;
 				}
-				if (ImGui::MenuItem("Capsule"))
+				if (ImGui::MenuItem("Capsule", "", false, false))
 				{
 					createCapsule = true;
 				}
-				if (ImGui::MenuItem("Cylinder"))
+				if (ImGui::MenuItem("Cylinder", "", false, false))
 				{
 					createCylinder = true;
 				}
-				if (ImGui::MenuItem("Plane"))
+				if (ImGui::MenuItem("Plane", "", false, false))
 				{
 					createPlane = true;
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Clean Primitives"))
+				if (ImGui::MenuItem("Clean Primitives", "", false, false))
 				{
 					cleanPrimitives = true;
 				}
 				ImGui::TreePop();
 
 			}
+			/*ImGui::Separator();
+
+			if (ImGui::TreeNode("Import Models"))
+			{
+				if (ImGui::MenuItem("House"))
+				{
+					createHouse = true;
+				}
+				if (ImGui::MenuItem("Gyarados"))
+				{
+					createGyarados = true;
+				}
+				if (ImGui::MenuItem("Jolteon"))
+				{
+					createHouse = true;
+				}
+				if (ImGui::MenuItem("Car_1"))
+				{
+					createGyarados = true;
+				}
+				ImGui::TreePop();
+
+			}*/
 			ImGui::Separator();
 			if (ImGui::TreeNode("Effects"))
 			{

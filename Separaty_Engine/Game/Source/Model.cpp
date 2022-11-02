@@ -86,6 +86,8 @@ void Model::ProcessNode(aiNode* node, const aiScene* scene)
 
 Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
+    App->ui->AppendToOutput(DEBUG_LOG("Loading Meshes..."));
+
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
@@ -129,6 +131,8 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
+
+    App->ui->AppendToOutput(DEBUG_LOG("Loading Textures..."));
 
     // process material
     if (mesh->mMaterialIndex >= 0)

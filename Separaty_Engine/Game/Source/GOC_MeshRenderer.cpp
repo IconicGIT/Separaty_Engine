@@ -10,6 +10,9 @@ GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transf
 
 	myShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
 	selctedShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
+
+	
+
 }
 
 GOC_MeshRenderer::~GOC_MeshRenderer()
@@ -18,25 +21,26 @@ GOC_MeshRenderer::~GOC_MeshRenderer()
 
 void GOC_MeshRenderer::SetMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
-	myMesh = new Mesh(vertices, indices);
+	myMesh.vertices = vertices;
+	myMesh.indices = indices;
 }
 
 void GOC_MeshRenderer::SetMesh(Mesh* mesh)
 {
-	myMesh = mesh;
+	myMesh = *mesh;
 }
 
 void GOC_MeshRenderer::SetTexture(Texture* texture)
 {
-	myMesh->textures.clear();
-	myMesh->textures.push_back(*texture);
+	myMesh.textures.clear();
+	myMesh.textures.push_back(*texture);
 
 }
 
 void GOC_MeshRenderer::Render()
 {
 
-	if (myMesh != nullptr)
+	if (!myMesh.vertices.empty())
 	{
 
 		GOC_Transform* GoTransform = (GOC_Transform*)gameObject->GetComponent(GOC_Type::GOC_TRANSFORM);
@@ -62,7 +66,7 @@ void GOC_MeshRenderer::Render()
 
 		myShader->SetMat4x4("model", modelState);
 
-		myMesh->Draw(*myShader);
+		myMesh.Draw(*myShader);
 
 		myShader->Unuse();
 	}

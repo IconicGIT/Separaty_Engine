@@ -47,5 +47,7 @@ private:
 	std::string sceneName;
 	bool active;
 	EngineSystem * engineSystem;
+
+	bool loadedBasics = false;
 };
 

@@ -264,6 +264,9 @@
     <ClCompile Include="Source\TextureLoader.cpp">
       <Filter>Source\Model Loading</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GOC_Texture.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">

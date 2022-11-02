@@ -11,13 +11,45 @@ EngineSystem::~EngineSystem()
 
 bool EngineSystem::Start()
 {
-	CreateNewScene();
+	bool ret = UPDATE_CONTINUE;
+
+	if (!scenes.empty())
+	{
+
+		Module* item = scenes.front();
+		int item_it = 0;
+
+		while (item_it < scenes.size() && ret == UPDATE_CONTINUE)
+		{
+			item = scenes[item_it];
+			ret = item->Start();
+			item_it++;
+		}
+	}
+
+	currentScene = CreateNewScene();
+	currentScene->Start();
 
 	return true;
 }
 
 bool EngineSystem::Init()
 {
+	bool ret = UPDATE_CONTINUE;
+
+	if (!scenes.empty())
+	{
+
+		Module* item = scenes.front();
+		int item_it = 0;
+
+		while (item_it < scenes.size() && ret == UPDATE_CONTINUE)
+		{
+			item = scenes[item_it];
+			ret = item->Init();
+			item_it++;
+		}
+	}
 
 	modelExtensionsAccepted.push_back("fbx");
 	modelExtensionsAccepted.push_back("obj");
@@ -26,7 +58,11 @@ bool EngineSystem::Init()
 	imageExtensionsAccepted.push_back("jpg");
 	imageExtensionsAccepted.push_back("bmp");
 
-	return true;
+
+	
+
+
+	return ret;
 
 }
 
@@ -72,7 +108,7 @@ update_status EngineSystem::Update(float dt)
 
 	if (App->input->FileJustDropped())
 	{
-		LoadFromDraggedData(App->input->GetDroppedFileDir());
+		LoadFromPath(App->input->GetDroppedFileDir());
 	}
 
 	return ret;
@@ -112,17 +148,16 @@ bool EngineSystem::LoadScene()
 	return true;
 }
 
-bool EngineSystem::CreateNewScene()
+Scene* EngineSystem::CreateNewScene()
 {
 	std::string scene_name = "scene " + std::to_string(scenes.size() + 1);
 
 	Scene* scene = new Scene(scene_name, scenes_id, this);
-	scene->Start();
+	scene->Init();
 	scenes.push_back(scene);
 
-	currentScene = scene;
 
-	return true;
+	return scene;
 }
 
 
@@ -158,6 +193,13 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 		return comp;
 	}
 	break;
+	case GOC_Type::GOC_TEXTURE:
+	{
+		GOC_Texture* comp = new GOC_Texture(goAttached);
+		allGameObjectComponents.push_back(comp);
+		return comp;
+	}
+	break;
 	default:
 		break;
 	}
@@ -167,16 +209,31 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 
 bool EngineSystem::LoadModel(char* path)
 {
+	std::string path_s = path;
+	int lastBar = path_s.find_last_of("\\\"");
+	std::string name = path_s.substr(lastBar + 1);
+
+
 	Model* modelToAdd = new Model(path);
 
+	int meshNr = 0;
 	for (Mesh m : modelToAdd->GetMeshes())
 	{
+		m.name = name + std::to_string(meshNr);
+		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", m.name.c_str()));
+
 		allMeshes.push_back(m);
+		meshNr++;
 	}
+	meshNr = 0;
 
 	for (Texture t : modelToAdd->GetTextures())
 	{
+		t.name = name + std::to_string(meshNr);
+		App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture %s", t.name.c_str()));
 		allTextures.push_back(t);
+		meshNr++;
+
 	}
 
 	App->ui->AppendToOutput(DEBUG_LOG("Loaded Model (%s)", path));
@@ -189,7 +246,7 @@ bool EngineSystem::LoadModel(char* path)
 }
 
 
-bool EngineSystem::LoadFromDraggedData(char* draggedFileDir)
+bool EngineSystem::LoadFromPath(char* draggedFileDir)
 {
 	bool ret = false;
 	std::string sDraggedFileDir = draggedFileDir;
@@ -217,7 +274,15 @@ bool EngineSystem::LoadFromDraggedData(char* draggedFileDir)
 		a = strncmp(fileExtension.c_str(), imageExtensionsAccepted[i].c_str(), fileExtension.length());
 		if (a == 0)
 		{
-			allTextures.push_back(LoadTexture(draggedFileDir));
+			std::string path_s = draggedFileDir;
+			int lastBar = path_s.find_last_of("\\\"");
+			std::string name = path_s.substr(lastBar + 1);
+
+			Texture tex = LoadTexture(draggedFileDir);
+
+			tex.name = name;
+
+			allTextures.push_back(tex);
 
 			ret = true;
 

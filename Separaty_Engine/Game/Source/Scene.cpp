@@ -70,9 +70,56 @@ bool Scene::Start()
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
 
-	GameObject* go = CreateNewGameObject();
 
-	goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+	Model model("Assets/Project_1/Assets/Models/baker_house.fbx");
+	
+	std::string path_s = "Assets/Project_1/Assets/Models/baker_house.fbx";
+	int lastBar = path_s.find_last_of("/");
+	std::string meshName = path_s.substr(lastBar + 1);
+
+	int meshNr = 0;
+
+	for (Mesh m : model.GetMeshes())
+	{
+		m.name = meshName + std::to_string(meshNr);
+		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", m.name.c_str()));
+
+		App->engineSystem->GetAllMeshes().push_back(m);
+		meshNr++;
+		
+	}
+
+	meshNr = 0;
+
+	for (Texture t : model.GetTextures())
+	{
+		t.name = meshName + std::to_string(meshNr);
+		App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture from %s", t.name.c_str()));
+		App->engineSystem->GetAllTextures().push_back(t);
+	}
+
+	
+
+	GameObject* houseAll = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+	houseAll->name = "House All";
+	GameObject* house = houseAll->CreateChildren();
+	GameObject* chimney = houseAll->CreateChildren();
+
+	//GameObject* Jolteon = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+
+	goRenderer = (GOC_MeshRenderer*)house->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+	goRenderer->GetGameObject()->name = "House";
+	goRenderer->SetMesh(&model.GetMeshes()[1]);
+	goRenderer->SetTexture(&model.GetTextures()[0]);
+
+	goRenderer = (GOC_MeshRenderer*)chimney->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+	goRenderer->GetGameObject()->name = "Chimney";
+	goRenderer->SetMesh(&model.GetMeshes()[0]);
+	goRenderer->SetTexture(&model.GetTextures()[1]);
+
+
+
+
 
 	return ret;
 }
@@ -116,31 +163,74 @@ update_status Scene::Update(float dt)
 		}
 	}
 
-	if (!App->engineSystem->allMeshes.empty())
+	if (!App->engineSystem->GetAllMeshes().empty())
 	{
 		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
 		{
-			goRenderer->SetMesh(&App->engineSystem->allMeshes[0]);
+			//Mesh* m( &App->engineSystem->GetAllMeshes()[0]);
+
+			goRenderer->SetMesh(&App->engineSystem->GetAllMeshes()[0]);
+
+			int a = 0;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
 		{
-			goRenderer->SetMesh(&App->engineSystem->allMeshes[1]);
+			goRenderer->SetMesh(&App->engineSystem->GetAllMeshes()[1]);
 		}
 	}
 
-	if (!App->engineSystem->allTextures.empty())
+	if (!App->engineSystem->GetAllTextures().empty())
 	{
 		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
 		{
-			goRenderer->SetTexture(&App->engineSystem->allTextures[0]);
+			goRenderer->SetTexture(&App->engineSystem->GetAllTextures()[0]);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
 		{
-			goRenderer->SetTexture(&App->engineSystem->allTextures[2]);
+			goRenderer->SetTexture(&App->engineSystem->GetAllTextures()[2]);
 		}
 	}
+
+	//if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
+	//{
+
+
+	//	std::string path = "C:\\Users\\Brandon AM\\Documents\\GitHub\\Separaty_Engine\\Separaty_Engine\\Output\\Assets\\Project_1\\Assets\\Models\\baker_house.fbx";
+
+	//	char* path_c = new char(path.length() + 1);
+
+	//	strncpy_s(path_c, 512, path.c_str(), path.length());
+
+	//	//load baker_house and its textures
+	//	App->engineSystem->LoadFromPath(path_c);
+
+	//	path = "Assets/Project_1/Assets/Textures/checker_pattern.png";
+	//	strncpy_s(path_c, 512, path.c_str(), path.length());
+
+	//	//load checker_pattern
+	//	App->engineSystem->LoadFromPath(path_c);
+
+
+	//	GameObject* houseAll = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+	//	GameObject* house = houseAll->CreateChildren();
+	//	GameObject* chimney = houseAll->CreateChildren();
+
+
+	//	goRenderer = (GOC_MeshRenderer*)house->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+
+	//	goRenderer->SetMesh(&App->engineSystem->GetAllMeshes()[1]);
+	//	goRenderer->SetTexture(&App->engineSystem->GetAllTextures()[0]);
+
+	//	goRenderer = (GOC_MeshRenderer*)chimney->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+
+	//	goRenderer->SetMesh(&App->engineSystem->GetAllMeshes()[0]);
+	//	goRenderer->SetTexture(&App->engineSystem->GetAllTextures()[1]);
+
+	//	delete path_c;
+	//	loadedBasics = true;
+	//}
 
 	/*if (App->ui->createCube == true)
 	{

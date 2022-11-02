@@ -7,6 +7,7 @@
 #include "GameObjComponent.h"
 #include "GOC_MeshRenderer.h"
 #include "GOC_Transform.h"
+#include "GOC_Texture.h"
 
 
 class EngineSystem;
@@ -14,6 +15,7 @@ enum class GOC_Type;
 //class GameObjectComponent;
 class GOC_MeshRenderer;
 class GOC_Transform;
+//class GOC_Texture;
 
 struct WindowGameObjectInfo
 {
@@ -47,6 +49,7 @@ public:
 		return children;
 	}
 
+	void Delete();
 
 
 	std::string GetName()

@@ -42,6 +42,12 @@ public:
 
 	//PRIMITIVEs
 
+	bool createHouse = false;
+	bool createGyarados = false;
+	bool createJolteon = false;
+	bool createCar_1 = false;
+
+
 	bool createCube = false;
 	bool createSphere = false;
 	bool createCapsule = false;

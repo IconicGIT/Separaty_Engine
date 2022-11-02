@@ -34,7 +34,12 @@ public:
 	{
 		return transform;
 	}
+	mat4x4 Get4x4MatrixLocal() const
+	{
+		return transform;
+	}
 private:
 	mat4x4 transform;
+	mat4x4 transformLocal;
 };
 

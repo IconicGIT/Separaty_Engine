@@ -6,6 +6,7 @@
 #include <Assimp/include/Importer.hpp>
 #include <Assimp/include/scene.h>
 #include <Assimp/include/postprocess.h>
+#include <Assimp/include/cimport.h>
 
 #include "Stb/stb_image.h"
 #include "TextureLoader.h"

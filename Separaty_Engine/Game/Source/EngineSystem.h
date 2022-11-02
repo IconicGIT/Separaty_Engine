@@ -11,6 +11,11 @@
 #include "Shader.h"
 #include "TextureLoader.h"
 
+#include <Assimp/include/Importer.hpp>
+#include <Assimp/include/scene.h>
+#include <Assimp/include/postprocess.h>
+
+
 class Scene;
 class Mesh;
 class Model;
@@ -32,7 +37,7 @@ public:
 	bool CleanUp();
 
 	bool LoadScene();
-	bool CreateNewScene();
+	Scene* CreateNewScene();
 
 	std::vector<Scene*> GetSceneList() const
 	{
@@ -50,10 +55,32 @@ public:
 	GameObject* CreateNewGameObject();
 	GameObjectComponent* CreateNewGOC(GameObject* goAttached, GOC_Type type);
 
+	bool LoadFromPath(char* draggedFileDir);
 
-	bool LoadFromDraggedData(char* draggedFileDir);
+	std::vector<Mesh> GetAllMeshes() const
+	{
+		return allMeshes;
+	}
 
-//private:
+	std::vector<Texture> GetAllTextures() const
+	{
+		return allTextures;
+	}
+
+	std::vector<GameObject*> GetAllGameObjects() const
+	{
+		return allGameObjects;
+	}
+
+	std::vector<GameObjectComponent*> GetAllGameObjectComponents() const
+	{
+		return allGameObjectComponents;
+	}
+
+	Assimp::Importer importer;
+
+
+private:
 	
 	bool LoadModel(char* path);
 

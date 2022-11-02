@@ -6,12 +6,14 @@
 class GameObject;
 class GOC_MeshRenderer;
 class GOC_Transform;
+class GOC_Texture;
 
 enum class GOC_Type
 {
 	GOC_NULL = -4,
 	GOC_TRANSFORM = 0,
 	GOC_MESH_RENDERER = 1,
+	GOC_TEXTURE = 2,
 };
 
 
@@ -64,6 +66,11 @@ public:
 	{
 		enabled = false;
 		return enabled;
+	}
+
+	GameObject* GetGameObject() const
+	{
+		return gameObject;
 	}
 
 };

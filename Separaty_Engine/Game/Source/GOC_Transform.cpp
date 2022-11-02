@@ -5,8 +5,9 @@
 GOC_Transform::GOC_Transform(GameObject* gameObjectAttached)
 {
 	transform = IdentityMatrix;
+	transformLocal = IdentityMatrix;
 	GOC_type = GOC_Type::GOC_TRANSFORM;
-
+	gameObject = gameObjectAttached;
 }
 
 GOC_Transform::~GOC_Transform()

@@ -42,6 +42,11 @@ public:
 
 	void RenderAxis();
 
+	Mesh GetMesh() const
+	{
+		return  myMesh;
+	}
+
 private:
 
 	mat4x4 transform;
@@ -63,11 +68,9 @@ private:
 
 	
 
-private:
-
 	bool modelLoadSuccess = false;
 	Shader* myShader;
 	Shader *selctedShader;
-	Mesh* myMesh = nullptr;
+	Mesh myMesh;
 };
 

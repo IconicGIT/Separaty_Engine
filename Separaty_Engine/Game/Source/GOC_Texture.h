@@ -1,15 +1,28 @@
+#pragma once
 #include "GameObject.h"
 #include "GameObjComponent.h"
 #include "Model.h"
+#include "Texture.h"
 
 class GameObjectComponent;
 class GameObject;
+class GOC_MeshRenderer;
+class Texture;
 
 class GOC_Texture : public GameObjectComponent
 {
 public:
-	GOC_Texture() {}
+	GOC_Texture(GameObject* gameObjectAttached) 
+	{
+		GOC_type = GOC_Type::GOC_TEXTURE;
+		gameObject = gameObjectAttached;
+	}
 	~GOC_Texture(){}
+
+	bool Execute()
+	{
+		return true;
+	}
 
 	void SetTexture(Texture* texture)
 	{
@@ -21,11 +34,7 @@ public:
 		return texture;
 	}
 
-	void UpdateMeshRendererTexture()
-	{
-		GOC_MeshRenderer* renderer = (GOC_MeshRenderer*)gameObject->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-		renderer->SetTexture(texture);
-	}
+	void UpdateMeshRendererTexture();
 
 private:
 

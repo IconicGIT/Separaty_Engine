@@ -22,6 +22,7 @@ bool GameObject::Init()
 bool GameObject::Start()
 {
 	AddComponent(GOC_Type::GOC_MESH_RENDERER);
+	AddComponent(GOC_Type::GOC_TEXTURE);
 
 	std::vector<Vertex> vertices;
 	vertices.push_back((Vertex)(vec3(1.0, 1.0, 1.0)));
@@ -43,8 +44,8 @@ bool GameObject::Start()
 
 	Mesh* mesh = new Mesh(vertices, indices);
 
+	//meshRenderer->SetMesh(mesh);
 
-	meshRenderer->SetMesh(mesh);
 	return true;
 }
 
@@ -62,10 +63,32 @@ update_status GameObject::Update(float dt)
 		item_it++;
 	}
 
-	if (id == 0)
+	/*if (parent != nullptr)
 	{
-		
-	}
+		transform->SetPos(parent->transform->GetPosition().x + transform->GetPosition().x,
+			parent->transform->GetPosition().y + transform->GetPosition().y,
+			parent->transform->GetPosition().z + transform->GetPosition().z);
+
+		transform->SetScale(parent->transform->GetScale().x * transform->GetScale().x,
+			parent->transform->GetScale().y * transform->GetScale().y,
+			parent->transform->GetScale().z * transform->GetScale().z);
+
+	}*/
+
+	/*if (!children.empty())
+	{
+		for (GameObject* child : children)
+		{
+			child->transform->SetPos(transform->GetPosition().x + child->transform->GetPosition().x,
+				transform->GetPosition().y + child->transform->GetPosition().y,
+				transform->GetPosition().z + child->transform->GetPosition().z);
+
+			child->transform->SetScale(transform->GetScale().x * child->transform->GetScale().x,
+				transform->GetScale().y * child->transform->GetScale().y,
+				transform->GetScale().z * child->transform->GetScale().z);
+		}
+	}*/
+
 
 	return UPDATE_CONTINUE;
 }
@@ -120,6 +143,8 @@ void GameObject::AddComponent(GOC_Type type)
 		else
 		{
 			components.push_back(engineSystem->CreateNewGOC(this, type));
+			return;
+
 		}
 	}
 
@@ -143,7 +168,7 @@ GameObjectComponent* GameObject::GetComponent(GOC_Type type)
 GameObject* GameObject::CreateChildren()
 {
 	GameObject* go = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
-
+	go->parent = this;
 	children.push_back(go);
 
 	return go;
@@ -170,3 +195,53 @@ void GameObject::RemoveChild(GameObject* child)
 	}
 }
 
+void GameObject::Delete()
+{
+	//erase children
+	for (GameObject* child : children)
+	{
+		child->Delete();
+	}
+	children.clear();
+
+
+
+	for (GameObjectComponent* component : components)
+	{
+		std::vector<GameObjectComponent*>::iterator posGoc;
+		for (GameObjectComponent* goc : App->engineSystem->GetAllGameObjectComponents())
+		{
+			if (goc->GetGameObject()->id == id)
+			{
+				App->engineSystem->GetAllGameObjectComponents().erase(posGoc);
+			}
+			posGoc++;
+		}
+
+		delete component;
+	}
+	components.clear();
+
+
+
+	std::vector<GameObject*>::iterator pos;
+	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+	{
+		if (go->id == id)
+		{
+			App->engineSystem->GetCurrentScene()->gameObjects.erase(pos);
+		}
+		pos++;
+	}
+
+	std::vector<GameObject*>::iterator pos1;
+	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+	{
+		if (go->id == id)
+		{
+			App->engineSystem->GetAllGameObjects().erase(pos1);
+		}
+		pos++;
+	}
+
+}
