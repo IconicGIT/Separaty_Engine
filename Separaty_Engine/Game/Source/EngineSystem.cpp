@@ -238,6 +238,25 @@ bool EngineSystem::LoadModel(char* path)
 
 	App->ui->AppendToOutput(DEBUG_LOG("Loaded Model (%s)", path));
 
+
+	GameObject* go = App->engineSystem->currentScene->CreateNewGameObject();
+
+	GOC_MeshRenderer* renderer = nullptr;
+
+	int a = 0;
+
+	for (Mesh mesh : modelToAdd->GetMeshes())
+	{
+		GameObject* meshGo = go->CreateChildren();
+		renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		renderer->SetMesh(&mesh);
+		std::string meshGoName = mesh.name + std::to_string(a);
+		meshGo->name = meshGoName;
+
+		a++;
+	}
+
+
 	delete modelToAdd;
 
 	//make gameobject when loading model

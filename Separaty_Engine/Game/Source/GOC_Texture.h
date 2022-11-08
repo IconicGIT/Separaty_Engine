@@ -35,6 +35,7 @@ public:
 	}
 
 	void UpdateMeshRendererTexture();
+	void SetGoChildrenTexture(Texture* texture);
 
 private:
 

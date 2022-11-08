@@ -344,10 +344,6 @@ update_status UIFunctions::Update(float dt)
 
 		if (!currentScene->gameObjects.empty())
 		{
-			/*gameObject->Markdown("# Game Objects");*/
-			/*ImGui::SameLine();
-			ImGui::Text("Here you can manage your game objects.");
-			ImGui::SameLine();*/
 
 			static bool alignLabelWithCurrentXPosition = false;
 
@@ -359,23 +355,7 @@ update_status UIFunctions::Update(float dt)
 			{
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
-				bool showGo = true;
-				
-				/*if (!go->children.empty())
-				{
-					for (GameObject* child : go->children)
-					{
-						for (GameObject* goToCompare : currentScene->gameObjects)
-						{
-							if (child->id == goToCompare->id)
-							{
-								showGo = true;
-							}
-						}
-					}
-				}*/
-
-				if (showGo) DisplayTree(go, flags, true);
+				if (go->parent == nullptr) DisplayTree(go, flags, true);
 			}
 			
 			if (alignLabelWithCurrentXPosition)
@@ -541,6 +521,7 @@ update_status UIFunctions::Update(float dt)
 								{
 									texture->SetTexture(&t);
 									texture->UpdateMeshRendererTexture();
+									texture->SetGoChildrenTexture(&t);
 								}
 							}
 							ImGui::TreePop();
@@ -639,8 +620,6 @@ void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
 
 	Scene* currentScene = App->engineSystem->GetCurrentScene();
 
-	/*ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0, 1, 0, 1));*/
-
 	bool check = true;
 
 	if (ImGui::TreeNode(go->name.c_str()))
@@ -666,23 +645,6 @@ void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
 		gameObject = go;
 		go->selected = true;
 
-		/*if (ImGui::MenuItem("House"))
-		{
-			go->selected = false;
-			go = go->GetChildren()[0];
-			go->selected = true;
-		}*/
-
-		/*if (ImGui::MenuItem("Create Empty Child"))
-		{
-			GameObject* child = gameObject->CreateChildren();
-			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
-			{
-
-				if (go->GetID() == go->selected)
-					go->AttachChild(child);
-			}
-		}*/
 		if (ImGui::MenuItem("Delete", "", false, false))
 		{
 			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
@@ -707,7 +669,6 @@ void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
 		go->selected = false;
 		
 	}
-	/*ImGui::PopStyleColor();*/
 	
 	for (int i = 0; i < go->GetChildren().size(); i++)
 	{

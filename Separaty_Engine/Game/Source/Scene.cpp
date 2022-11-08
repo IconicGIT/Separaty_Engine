@@ -68,56 +68,11 @@ bool Scene::Start()
 		}
 	}
 
+
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");
+
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
-
-
-	Model model("Assets/Project_1/Assets/Models/baker_house.fbx");
-	
-	std::string path_s = "Assets/Project_1/Assets/Models/baker_house.fbx";
-	int lastBar = path_s.find_last_of("/");
-	std::string meshName = path_s.substr(lastBar + 1);
-
-	int meshNr = 0;
-
-	for (Mesh m : model.GetMeshes())
-	{
-		m.name = meshName + std::to_string(meshNr);
-		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", m.name.c_str()));
-
-		App->engineSystem->GetAllMeshes().push_back(m);
-		meshNr++;
-		
-	}
-
-	meshNr = 0;
-
-	for (Texture t : model.GetTextures())
-	{
-		t.name = meshName + std::to_string(meshNr);
-		App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture from %s", t.name.c_str()));
-		App->engineSystem->GetAllTextures().push_back(t);
-	}
-
-	
-
-	GameObject* houseAll = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
-	houseAll->name = "House All";
-	GameObject* house = houseAll->CreateChildren();
-	GameObject* chimney = houseAll->CreateChildren();
-
-	//GameObject* Jolteon = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
-
-	goRenderer = (GOC_MeshRenderer*)house->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-	goRenderer->GetGameObject()->name = "House";
-	goRenderer->SetMesh(&model.GetMeshes()[1]);
-	goRenderer->SetTexture(&model.GetTextures()[0]);
-
-	goRenderer = (GOC_MeshRenderer*)chimney->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-	goRenderer->GetGameObject()->name = "Chimney";
-	goRenderer->SetMesh(&model.GetMeshes()[0]);
-	goRenderer->SetTexture(&model.GetTextures()[1]);
-
-
 
 
 

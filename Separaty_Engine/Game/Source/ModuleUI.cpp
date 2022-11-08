@@ -575,9 +575,7 @@ update_status ModuleUI::Update(float dt)
 
 	uiFunctions->Update(dt);
 
-	/////	
-
-	ImGui::End();
+	/////
 	ImGui::Render();
 	//ImGui::EndFrame();
 	ImGui::UpdatePlatformWindows();
