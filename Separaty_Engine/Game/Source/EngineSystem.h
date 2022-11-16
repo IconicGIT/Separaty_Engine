@@ -79,6 +79,16 @@ public:
 
 	Assimp::Importer importer;
 
+	void AddToGameObjectsSelected(GameObject* toAdd)
+	{
+		selectedGameObjects.push_back(toAdd);
+	}
+
+	std::vector<GameObject*> GetselectedGameObjects() const
+	{
+		return selectedGameObjects;
+	}
+
 
 private:
 	
@@ -99,6 +109,7 @@ private:
 
 	Scene* currentScene;
 
+	std::vector<GameObject*> selectedGameObjects;
 
 };
 

@@ -106,7 +106,7 @@ update_status UIFunctions::Update(float dt)
 		ImGui::End();
 	}
 
-	//APP DATA 
+	//App DATA 
 	if (App->ui->showApplicationData)
 	{
 		ImGui::Begin("Show Application Data", &App->ui->showApplicationData);
@@ -335,6 +335,10 @@ update_status UIFunctions::Update(float dt)
 	ImGuiIO& io = ImGui::GetIO();
 	if (App->ui->hierarchy)
 	{
+		if (!selectedGameObjects.empty() && !App->engineSystem->GetselectedGameObjects().empty())
+		{
+			selectedGameObjects = App->engineSystem->GetselectedGameObjects();
+		}
 		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.0f, 18.9f));
@@ -355,7 +359,7 @@ update_status UIFunctions::Update(float dt)
 			{
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
-				if (go->parent == nullptr) DisplayTree(go, flags, true);
+				if (go->parent == nullptr) DisplayTree(go, flags);
 			}
 			
 			if (alignLabelWithCurrentXPosition)
@@ -374,37 +378,43 @@ update_status UIFunctions::Update(float dt)
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f , 18.9f));
 		ImGui::SetWindowSize(windowSize);
 
-		if (gameObject!= nullptr && gameObject->selected)
+
+
+		
+		
+
+		if (!selectedGameObjects.empty())
 		{
-			if(ImGui::CollapsingHeader("Information"))
+			GameObject* go = selectedGameObjects[0];
+			if (ImGui::CollapsingHeader("Information"))
 			{
-				
+
 				ImGui::Text("Name:");
 				ImGui::SameLine();
-				ImGui::InputText("##Name", &gameObject->name);
-				ImGui::Checkbox("Active", &gameObject->enabled);
+				ImGui::InputText("##Name", &go->name);
+				ImGui::Checkbox("Active", &go->enabled);
 			}
 			// Current game object (the one we have selected at the moment)
-			for (GameObjectComponent* component : gameObject->GetComponents())
+			for (GameObjectComponent* component : go->GetComponents())
 			{
 				float multiplier = 0.5f;
 
 				switch (component->GetGOC_Type())
 				{
-					
-				case GOC_Type:: GOC_TRANSFORM:
+
+				case GOC_Type::GOC_TRANSFORM:
 				{
 					if (ImGui::CollapsingHeader("Transform"))
 					{
-						float newPositionX = gameObject->transform->GetPosition().x;
-						float newPositionY = gameObject->transform->GetPosition().y;
-						float newPositionZ = gameObject->transform->GetPosition().z;
+						float newPositionX = go->transform->GetPosition().x;
+						float newPositionY = go->transform->GetPosition().y;
+						float newPositionZ = go->transform->GetPosition().z;
 
 						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
 
 						if (ImGui::DragFloat3("Location", &newPosition[0]))
 						{
-							SetPosition(newPosition);
+							go->transform->SetPos(go->transform->GetPosition().x + newPosition.x, go->transform->GetPosition().y + newPosition.y, go->transform->GetPosition().z + newPosition.z);
 						}
 						float3 newRotationEuler(0, 0, 0);
 
@@ -417,20 +427,21 @@ update_status UIFunctions::Update(float dt)
 							/*newRotationEuler.x = DEGTORAD * newRotationEuler.x;
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
 							newRotationEuler.z = DEGTORAD * newRotationEuler.z;*/
-							SetRotation(newRotationEuler);
+							//SetRotation(newRotationEuler);
 						}
 
-						float newScaleX = gameObject->transform->GetScale().x;
-						float newScaleY = gameObject->transform->GetScale().y;
-						float newScaleZ = gameObject->transform->GetScale().z;
+						float newScaleX = go->transform->GetScale().x;
+						float newScaleY = go->transform->GetScale().y;
+						float newScaleZ = go->transform->GetScale().z;
 
 						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
 						if (ImGui::DragFloat3("Scale", &(newScale[0])))
 						{
-							SetScale(newScale);
+							//SetScale(newScale);
+							go->transform->SetScale(go->transform->GetScale().x + newScale.x, go->transform->GetScale().y + newScale.y, go->transform->GetScale().z + newScale.z);
 						}
 
-						
+
 					}
 				}
 				break;
@@ -487,7 +498,7 @@ update_status UIFunctions::Update(float dt)
 						if (ImGui::Button("Change Shader")) {
 							panelChooser->OpenPanel("ChangeShader","glsl");
 						}
-						
+
 						*/
 
 					}
@@ -501,7 +512,7 @@ update_status UIFunctions::Update(float dt)
 					{
 						ImGui::Text("Texture Name:");
 						ImGui::SameLine();
-						
+
 						if (texture->GetTexture() != nullptr)
 						{
 							/*ImGui::Text(texture->GetTexture()->name.c_str());
@@ -526,7 +537,7 @@ update_status UIFunctions::Update(float dt)
 							}
 							ImGui::TreePop();
 						}
-						
+
 						ImGui::Separator();
 
 
@@ -536,7 +547,7 @@ update_status UIFunctions::Update(float dt)
 							ImGui::Text("Width:  1024");
 							ImGui::Text("Height: 1024");
 						}
-						
+
 
 
 					}
@@ -544,11 +555,12 @@ update_status UIFunctions::Update(float dt)
 				break;
 				}
 
-						/*component->InspectorDraw(gameObject);*/
+				/*component->InspectorDraw(gameObject);*/
 			}
 			ImGui::Separator();
 
 		}
+
 
 		ImGui::End();
 	}
@@ -612,7 +624,7 @@ update_status UIFunctions::Update(float dt)
 }
 
 // Hierarchy
-void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
+void UIFunctions::DisplayTree(GameObject* go, int flags)
 {
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
@@ -620,29 +632,15 @@ void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
 
 	Scene* currentScene = App->engineSystem->GetCurrentScene();
 
-	bool check = true;
-
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
-		for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
-		{
-			sceneGo->selected = false;
-		}
+		//for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
+		//{
+		//	sceneGo->selected = false;
+		//}
 
-		for (GameObject* child : go->children)
-		{
-			child->selected = false;
-
-		}
 		
-
-		if (checkInChildren)
-		{
-			
-		}
-		
-		check = false;
-		gameObject = go;
+		selectedGameObjects.push_back(go);
 		go->selected = true;
 
 		if (ImGui::MenuItem("Delete", "", false, false))
@@ -653,7 +651,7 @@ void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
 				if (go->GetID() == go->selected && go->GetID() != -1)
 				{
 					/*go->Delete();*/
-					gameObject->selected = -1;
+					go->selected = 0;
 
 				}
 
@@ -688,7 +686,7 @@ void UIFunctions::DisplayTree(GameObject* go, int flags, bool checkInChildren)
 			}
 		}
 
-		if (showGo) DisplayTree(go->GetChildren()[i], flags, check);
+		if (showGo) DisplayTree(go->GetChildren()[i], flags);
 	}
 }
 	
@@ -724,21 +722,21 @@ void UIFunctions::DragAndDrop(GameObject* go)
 }
 
 //Inspector
-void UIFunctions::SetPosition(const float3& newPosition)
-{
-	gameObject->transform->SetPos(newPosition.x, newPosition.y, newPosition.z);
-}
-
-void UIFunctions::SetRotation(const float3& newRotation)
-{
-	/*Quat rotationDelta = Quat::FromEulerXYZ(newRotation.x - rotationEuler.x, newRotation.y - rotationEuler.y, newRotation.z - rotationEuler.z);
-	rotation = rotation * rotationDelta;
-	rotationEuler = newRotation;
-	isDirty = true;*/
-}
-
-void UIFunctions::SetScale(const float3& newScale)
-{
-	gameObject->transform->SetScale(newScale.x, newScale.y, newScale.z);
-}
-
+//void UIFunctions::SetPosition(const float3& newPosition)
+//{
+//	gameObject->transform->SetPos(newPosition.x, newPosition.y, newPosition.z);
+//}
+//
+//void UIFunctions::SetRotation(const float3& newRotation)
+//{
+//	/*Quat rotationDelta = Quat::FromEulerXYZ(newRotation.x - rotationEuler.x, newRotation.y - rotationEuler.y, newRotation.z - rotationEuler.z);
+//	rotation = rotation * rotationDelta;
+//	rotationEuler = newRotation;
+//	isDirty = true;*/
+//}
+//
+//void UIFunctions::SetScale(const float3& newScale)
+//{
+//	gameObject->transform->SetScale(newScale.x, newScale.y, newScale.z);
+//}
+//
