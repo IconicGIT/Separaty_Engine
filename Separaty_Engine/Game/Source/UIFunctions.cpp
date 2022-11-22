@@ -376,12 +376,7 @@ update_status UIFunctions::Update(float dt)
 		ImGui::Begin("Inspector", &App->ui->inspector);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f , 18.9f));
-		ImGui::SetWindowSize(windowSize);
-
-
-
-		
-		
+		ImGui::SetWindowSize(windowSize);		
 
 		if (!selectedGameObjects.empty())
 		{
@@ -522,7 +517,50 @@ update_status UIFunctions::Update(float dt)
 						{
 							ImGui::Text("No texture loaded.");
 						}
+						
+						ImGui::Image((ImTextureID)texture->GetTexture(), ImVec2(85, 85));
+						ImGui::SameLine();
+						ImGui::BeginGroup();
+						/*ImGui::Text(texture->GetTexture()->name.c_str()); 
+						ImGui::PushID(texture->GetTexture()->id << 8);*/
+						if (ImGui::Button("Change Texture")) {
+							/*panelChooser->OpenPanel("ChangeTexture", "png");
+							currentTextureId = tex.GetTexture();*/
+							OPENFILENAME ofn;
+							char fileName[MAX_PATH] = "";
+							ZeroMemory(&ofn, sizeof(ofn));
+							ofn.lStructSize = sizeof(OPENFILENAME);
+							ofn.hwndOwner = NULL;
+							ofn.lpstrFilter = (LPCWSTR) "All Files (*.*)\0*.*\0";
+							ofn.lpstrFile = (LPWSTR)fileName;
+							ofn.nMaxFile = MAX_PATH;
+							ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+							ofn.lpstrDefExt = (LPCWSTR) "";
 
+							GetOpenFileName(&ofn);
+							if (fileName[0] != '\0')
+							{
+								App->engineSystem->LoadFromPath(fileName);
+							}
+								
+
+						}
+						/*ImGui::PopID();*/
+
+						/*ImGui::PushID(texture->GetTexture() << 16);*/
+						ImGui::Dummy(ImVec2(0,0));
+						if (ImGui::Button("Delete Texture")) {
+							/*material.textures.erase(std::remove(material.textures.begin(), material.textures.end(), tex));*/
+						}
+						/*ImGui::PopID();*/
+
+						ImGui::EndGroup();
+
+						
+						if (ImGui::Button("Show Checker Texture")) {
+							/*material.textures.erase(std::remove(material.textures.begin(), material.textures.end(), tex));*/
+						}
+						ImGui::Separator();
 
 						if (ImGui::TreeNode("Change Texture:"))
 						{
