@@ -36,6 +36,7 @@ public:
 	void UpdateBrightness();
 	void UpdateWindowSize();
 
+
 	
 
 	float brightness = 1.0f;
@@ -66,6 +67,7 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+	SDL_Surface* icon;
 };
 
 #endif // __ModuleWindow_H__
