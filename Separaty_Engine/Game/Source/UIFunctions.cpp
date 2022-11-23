@@ -550,7 +550,7 @@ update_status UIFunctions::Update(float dt)
 						/*ImGui::PushID(texture->GetTexture() << 16);*/
 						ImGui::Dummy(ImVec2(0,0));
 						if (ImGui::Button("Delete Texture")) {
-							/*material.textures.erase(std::remove(material.textures.begin(), material.textures.end(), tex));*/
+							App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");
 						}
 						/*ImGui::PopID();*/
 
