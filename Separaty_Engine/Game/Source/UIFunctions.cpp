@@ -505,9 +505,6 @@ update_status UIFunctions::Update(float dt)
 
 					if (ImGui::CollapsingHeader("Texture"))
 					{
-
-						
-						
 						std::string test = "N. textures: " + std::to_string(texture->GetTextures().size());
 						ImGui::Text(test.c_str());
 						if (texture->GetTextures().size() > 0)
@@ -561,7 +558,7 @@ update_status UIFunctions::Update(float dt)
 						/*ImGui::PushID(texture->GetTexture() << 16);*/
 						ImGui::Dummy(ImVec2(0,0));
 						if (ImGui::Button("Delete Texture")) {
-							App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");
+							/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");*/
 						}
 						/*ImGui::PopID();*/
 
@@ -569,7 +566,7 @@ update_status UIFunctions::Update(float dt)
 
 						
 						if (ImGui::Button("Show Checker Texture")) {
-							/*material.textures.erase(std::remove(material.textures.begin(), material.textures.end(), tex));*/
+							/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");*/
 						}
 						ImGui::Separator();
 
@@ -632,29 +629,53 @@ update_status UIFunctions::Update(float dt)
 	}
 
 	//PRIMITIVES
-
-	if (App->ui->createCube)
+	if (App->ui->createEmptyObject)
 	{
 		App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 
+		App->ui->createEmptyObject = false;
+	}
+	if (App->ui->createCube)
+	{
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cube.fbx");
+
 		App->ui->createCube = false;
-			
 	}
 	if (App->ui->createSphere)
 	{
-		
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Sphere.fbx");
+
+		App->ui->createSphere = false;
 	}
 	if (App->ui->createCapsule)
 	{
-		
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Capsule.fbx");
+
+		App->ui->createCapsule = false;
 	}
 	if (App->ui->createCylinder)
 	{
-		
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cylinder.fbx");
+
+		App->ui->createCylinder = false;
+	}
+	if (App->ui->createPyramid)
+	{
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Pyramid.fbx");
+
+		App->ui->createPyramid = false;
+	}
+	if (App->ui->createCone)
+	{
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cone.fbx");
+
+		App->ui->createCone = false;
 	}
 	if (App->ui->createPlane)
 	{
-		
+		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Plane.fbx");
+
+		App->ui->createPlane = false;
 	}
 
 	if (App->ui->cleanPrimitives)

@@ -231,25 +231,38 @@ update_status ModuleUI::Update(float dt)
 		//Game Object
 		if (ImGui::BeginMenu("Game Object"))
 		{
+			if (ImGui::MenuItem("Create Empty"))
+			{
+				createEmptyObject = true;
+			}
+			ImGui::Separator();
 			if (ImGui::TreeNode("Create 3D Object"))
 			{
-				if (ImGui::MenuItem("Create Empty GameObject"))
+				if (ImGui::MenuItem("Cube"))
 				{
 					createCube = true;
 				}
-				if (ImGui::MenuItem("Sphere", "", false,false))
+				if (ImGui::MenuItem("Sphere"))
 				{
 					createSphere = true;
 				}
-				if (ImGui::MenuItem("Capsule", "", false, false))
+				if (ImGui::MenuItem("Capsule"))
 				{
 					createCapsule = true;
 				}
-				if (ImGui::MenuItem("Cylinder", "", false, false))
+				if (ImGui::MenuItem("Cylinder"))
 				{
 					createCylinder = true;
 				}
-				if (ImGui::MenuItem("Plane", "", false, false))
+				if (ImGui::MenuItem("Pyramid"))
+				{
+					createPyramid = true;
+				}
+				if (ImGui::MenuItem("Cone"))
+				{
+					createCone = true;
+				}
+				if (ImGui::MenuItem("Plane"))
 				{
 					createPlane = true;
 				}

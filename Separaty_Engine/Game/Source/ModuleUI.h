@@ -48,11 +48,15 @@ public:
 	bool createCar_1 = false;
 
 
+	bool createEmptyObject = false;
 	bool createCube = false;
 	bool createSphere = false;
 	bool createCapsule = false;
 	bool createCylinder = false;
+	bool createPyramid = false;
+	bool createCone = false;
 	bool createPlane = false;
+
 
 	bool cleanPrimitives = false;
 
