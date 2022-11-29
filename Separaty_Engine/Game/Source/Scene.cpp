@@ -69,7 +69,7 @@ bool Scene::Start()
 	}
 
 
-	/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");*/
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");
 

@@ -24,9 +24,13 @@ Texture LoadTexture(std::string file_path)
 
 	// load and generate the texture
 	unsigned char* data = stbi_load(file_path.c_str(), &width, &height, &nrChannels, 0);
+	int data_size = sizeof(data);
+	int compare_data = width * height * 4;
+
+	bool correct_data_size = !(data_size < compare_data);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
