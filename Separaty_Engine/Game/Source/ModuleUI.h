@@ -67,10 +67,11 @@ public:
 
 	void PrintOutputList()
 	{
-		for (char* listElement : outputList)
+		for (size_t i = 0; i < outputList.size(); i++)
 		{
-			ImGui::Text(listElement);
+			ImGui::Text(outputList[i]);
 		}
+
 	}
 
 	char inputs[20];

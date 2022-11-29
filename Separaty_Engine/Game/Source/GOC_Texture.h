@@ -26,19 +26,50 @@ public:
 
 	void SetTexture(Texture* texture)
 	{
-		this->texture = texture;
+		this->textures.clear();
+		this->textures.push_back(texture);
 	}
 
-	Texture* GetTexture() const
+	void SetTexture(Texture texture)
 	{
-		return texture;
+		this->textures.clear();
+		this->textures.push_back(new Texture(texture));
 	}
 
-	void UpdateMeshRendererTexture();
-	void SetGoChildrenTexture(Texture* texture);
+	void SetTextures(std::vector<Texture*> textures)
+	{
+		this->textures.clear();
+		this->textures = textures;
+	}
+
+	void SetTextures(std::vector<Texture> textures)
+	{
+		std::vector<Texture*> textures_;
+
+		for (Texture tex : textures)
+		{
+			Texture* t = new Texture(tex);
+			textures_.push_back(t);
+		}
+
+		SetTextures(textures_);
+		
+	}
+
+	void AddTexture(Texture texture)
+	{
+		textures.push_back(new Texture(texture));
+	}
+
+	std::vector<Texture*> GetTextures() const
+	{
+		return textures;
+	}
+
+	void UpdateMeshRendererTexture(bool updateInGameObjectChildren = false);
 
 private:
 
-	Texture* texture;
+	std::vector<Texture*> textures;
 
 };

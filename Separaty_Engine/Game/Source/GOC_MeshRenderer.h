@@ -38,7 +38,11 @@ public:
 
 	void SetMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	void SetMesh(Mesh* mesh);
-	void SetTexture(Texture* texture);
+	void SetTextures(std::vector<Texture> textures);
+	void SetTextures(std::vector<Texture*> textures);
+	void AddTextures(std::vector<Texture> textures);
+	void AddTextures(std::vector<Texture*> textures);
+	void AddTexture(Texture textures);
 
 	void RenderAxis();
 

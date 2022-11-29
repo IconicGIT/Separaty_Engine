@@ -38,8 +38,6 @@ public:
 	GameObject* GetSelectedGameObject();
 	
 
-	GOC_MeshRenderer* goRenderer;
-
 	std::vector<GameObject*> gameObjects;
 	uint sceneID;
 private:

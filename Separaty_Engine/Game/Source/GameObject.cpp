@@ -142,7 +142,8 @@ void GameObject::AddComponent(GOC_Type type)
 		}
 		else
 		{
-			components.push_back(engineSystem->CreateNewGOC(this, type));
+			GameObjectComponent* comp = engineSystem->CreateNewGOC(this, type);
+			components.push_back(comp);
 			return;
 
 		}

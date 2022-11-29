@@ -71,6 +71,7 @@ bool Scene::Start()
 
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
 
@@ -118,35 +119,6 @@ update_status Scene::Update(float dt)
 		}
 	}
 
-	if (!App->engineSystem->GetAllMeshes().empty())
-	{
-		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
-		{
-			//Mesh* m( &App->engineSystem->GetAllMeshes()[0]);
-
-			goRenderer->SetMesh(&App->engineSystem->GetAllMeshes()[0]);
-
-			int a = 0;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
-		{
-			goRenderer->SetMesh(&App->engineSystem->GetAllMeshes()[1]);
-		}
-	}
-
-	if (!App->engineSystem->GetAllTextures().empty())
-	{
-		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
-		{
-			goRenderer->SetTexture(&App->engineSystem->GetAllTextures()[0]);
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
-		{
-			goRenderer->SetTexture(&App->engineSystem->GetAllTextures()[2]);
-		}
-	}
 
 	//if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
 	//{

@@ -196,8 +196,8 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	case GOC_Type::GOC_TEXTURE:
 	{
 		GOC_Texture* comp = new GOC_Texture(goAttached);
-		allGameObjectComponents.push_back(comp);
-		return comp;
+		allGameObjectComponents.push_back((GOC_Texture*)comp);
+		return (GOC_Texture*)comp;
 	}
 	break;
 	default:
@@ -210,51 +210,58 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 bool EngineSystem::LoadModel(char* path)
 {
 	std::string path_s = path;
+	
 	int lastBar = path_s.find_last_of("\\\"");
+	if (lastBar == -1)
+	{
+		lastBar = path_s.find_last_of("/");
+	}
+	else
+		return false;
+
 	std::string name = path_s.substr(lastBar + 1);
 
 
 	Model* modelToAdd = new Model(path);
-
-	int meshNr = 0;
-	for (Mesh m : modelToAdd->GetMeshes())
-	{
-		m.name = name + std::to_string(meshNr);
-		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", m.name.c_str()));
-
-		allMeshes.push_back(m);
-		meshNr++;
-	}
-	meshNr = 0;
-
-	for (Texture t : modelToAdd->GetTextures())
-	{
-		t.name = name + std::to_string(meshNr);
-		App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture %s", t.name.c_str()));
-		allTextures.push_back(t);
-		meshNr++;
-
-	}
-
-	App->ui->AppendToOutput(DEBUG_LOG("Loaded Model (%s)", path));
-
-
 	GameObject* go = App->engineSystem->currentScene->CreateNewGameObject();
 
 	GOC_MeshRenderer* renderer = nullptr;
 
-	int a = 0;
-
+	int meshNr = 0;
 	for (Mesh mesh : modelToAdd->GetMeshes())
 	{
+		mesh.name = name;
+
+		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", mesh.name.c_str()));
+
+
 		GameObject* meshGo = go->CreateChildren();
-		renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-		renderer->SetMesh(&mesh);
-		std::string meshGoName = mesh.name + std::to_string(a);
+		std::string meshGoName = mesh.name + std::to_string(meshNr);
 		meshGo->name = meshGoName;
 
-		a++;
+		renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		renderer->SetMesh(&mesh);
+		renderer->SetTextures(mesh.textures);
+
+
+
+		allMeshes.push_back(mesh);
+		meshNr++;
 	}
+	meshNr = 0;
+
+	for (size_t i = 0; i < modelToAdd->GetTextures().size(); i++)
+	{
+		modelToAdd->GetTextures()[i].name = name + " " + std::to_string(meshNr);
+
+		allTextures.push_back(modelToAdd->GetTextures()[i]);
+
+		App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture %s", modelToAdd->GetTextures()[i].name.c_str()));
+		meshNr++;
+	}
+
+
+	App->ui->AppendToOutput(DEBUG_LOG("Loaded Model (%s)", path));
 
 
 	delete modelToAdd;
@@ -295,6 +302,12 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir)
 		{
 			std::string path_s = draggedFileDir;
 			int lastBar = path_s.find_last_of("\\\"");
+			if (lastBar == -1)
+			{
+				lastBar = path_s.find_last_of("/");
+			}
+			else
+				return false;
 			std::string name = path_s.substr(lastBar + 1);
 
 			Texture tex = LoadTexture(draggedFileDir);

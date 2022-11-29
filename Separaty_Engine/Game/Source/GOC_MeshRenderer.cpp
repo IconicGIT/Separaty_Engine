@@ -30,10 +30,71 @@ void GOC_MeshRenderer::SetMesh(Mesh* mesh)
 	myMesh = *mesh;
 }
 
-void GOC_MeshRenderer::SetTexture(Texture* texture)
+
+void GOC_MeshRenderer::SetTextures(std::vector<Texture*> textures)
 {
 	myMesh.textures.clear();
-	myMesh.textures.push_back(*texture);
+	for (Texture* tex : textures)
+	{
+		myMesh.textures.push_back(*tex);
+
+	}
+
+	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	if (tex != nullptr)
+		tex->SetTextures(myMesh.textures);
+
+}
+
+void GOC_MeshRenderer::SetTextures(std::vector<Texture> textures)
+{
+	myMesh.textures.clear();
+	for(Texture tex : textures)
+	{
+		myMesh.textures.push_back(tex);
+
+	}
+	
+	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	if (tex != nullptr)
+		tex->SetTextures(myMesh.textures);
+}
+
+void GOC_MeshRenderer::AddTextures(std::vector<Texture*> textures)
+{
+	for (Texture* tex : textures)
+	{
+		myMesh.textures.push_back(*tex);
+
+	}
+
+	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	if (tex != nullptr)
+		tex->SetTextures(myMesh.textures);
+
+}
+
+void GOC_MeshRenderer::AddTextures(std::vector<Texture> textures)
+{
+	for (Texture tex : textures)
+	{
+		myMesh.textures.push_back(tex);
+
+	}
+
+	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	if (tex != nullptr)
+		tex->SetTextures(myMesh.textures);
+
+}
+
+void GOC_MeshRenderer::AddTexture(Texture texture)
+{
+	myMesh.textures.push_back(texture);
+
+	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	if (tex != nullptr)
+		tex->SetTextures(myMesh.textures);
 
 }
 

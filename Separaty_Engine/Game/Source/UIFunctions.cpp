@@ -505,20 +505,31 @@ update_status UIFunctions::Update(float dt)
 
 					if (ImGui::CollapsingHeader("Texture"))
 					{
-						ImGui::Text("Texture Name:");
-						ImGui::SameLine();
 
-						if (texture->GetTexture() != nullptr)
+						
+						
+						std::string test = "N. textures: " + std::to_string(texture->GetTextures().size());
+						ImGui::Text(test.c_str());
+						if (texture->GetTextures().size() > 0)
 						{
-							/*ImGui::Text(texture->GetTexture()->name.c_str());
-							ImGui::Text(texture->GetTexture()->path.c_str());*/
+							
+							for (Texture* tex : texture->GetTextures())
+							{
+								std::string texName = "Texture name: " + tex->name;
+								ImGui::Text(texName.c_str());
+
+								ImGui::Image((ImTextureID)tex->id, ImVec2(85, 85));
+							}
 						}
 						else
 						{
 							ImGui::Text("No texture loaded.");
 						}
 						
-						ImGui::Image((ImTextureID)texture->GetTexture(), ImVec2(85, 85));
+						
+
+						
+						//ImGui::Image((ImTextureID)texture->GetTexture(), ImVec2(85, 85));
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 						/*ImGui::Text(texture->GetTexture()->name.c_str()); 
@@ -568,9 +579,8 @@ update_status UIFunctions::Update(float dt)
 							{
 								if (ImGui::MenuItem(t.name.c_str()))
 								{
-									texture->SetTexture(&t);
+									texture->SetTexture(t);
 									texture->UpdateMeshRendererTexture();
-									texture->SetGoChildrenTexture(&t);
 								}
 							}
 							ImGui::TreePop();
@@ -579,12 +589,12 @@ update_status UIFunctions::Update(float dt)
 						ImGui::Separator();
 
 
-						if (texture->GetTexture() != nullptr)
+						/*if (texture->GetTexture() != nullptr)
 						{
 							ImGui::Text("Texture data:");
 							ImGui::Text("Width:  1024");
 							ImGui::Text("Height: 1024");
-						}
+						}*/
 
 
 
@@ -658,6 +668,7 @@ update_status UIFunctions::Update(float dt)
 		App->ui->cleanPrimitives = false;
 	}
 
+	//App->ui->AppendToOutput(DEBUG_LOG("selected size: %i", App->engineSystem->GetselectedGameObjects().size()));
 	return UPDATE_CONTINUE;
 }
 
@@ -676,24 +687,24 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 		//{
 		//	sceneGo->selected = false;
 		//}
-
 		
-		selectedGameObjects.push_back(go);
+		//if (selectedGameObjects.)
+			selectedGameObjects.push_back(go);
 		go->selected = true;
 
 		if (ImGui::MenuItem("Delete", "", false, false))
 		{
-			for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
-			{
+		//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+		//	{
 
-				if (go->GetID() == go->selected && go->GetID() != -1)
-				{
-					/*go->Delete();*/
-					go->selected = 0;
+		//		if (go->GetID() == go->selected && go->GetID() != -1)
+		//		{
+		//			/*go->Delete();*/
+		//			go->selected = 0;
 
-				}
+		//		}
 
-			}
+		//	}
 		}
 		ImGui::TreePop();
 		
@@ -701,30 +712,13 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 	else
 	{
 		
-
 		go->selected = false;
 		
 	}
 	
 	for (int i = 0; i < go->GetChildren().size(); i++)
 	{
-		bool showGo = false;
-
-		if (!go->children.empty())
-		{
-			for (GameObject* child : go->children)
-			{
-				for (GameObject* goToCompare : currentScene->gameObjects)
-				{
-					if (child->id == goToCompare->id)
-					{
-						showGo = true;
-					}
-				}
-			}
-		}
-
-		if (showGo) DisplayTree(go->GetChildren()[i], flags);
+		DisplayTree(go->GetChildren()[i], flags);
 	}
 }
 	
