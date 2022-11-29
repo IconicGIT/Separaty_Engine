@@ -175,6 +175,11 @@ GameObject* GameObject::CreateChildren()
 	return go;
 }
 
+void GameObject::CopyFromGameObject(GameObject gameobject)
+{
+	*this = gameobject;
+}
+
 
 void GameObject::AttachChild(GameObject* child)
 {

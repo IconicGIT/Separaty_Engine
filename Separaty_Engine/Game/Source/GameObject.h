@@ -74,6 +74,7 @@ public:
 	void AttachChild(GameObject* child);
 	void RemoveChild(GameObject* child);
 
+	void CopyFromGameObject(GameObject gameobject);
 	GOC_Transform* transform;
 	WindowGameObjectInfo windowGameObjectInfo = {};
 	uint id;

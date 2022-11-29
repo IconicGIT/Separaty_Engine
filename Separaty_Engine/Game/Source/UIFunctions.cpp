@@ -17,7 +17,7 @@
 
 UIFunctions::UIFunctions()
 {
-
+	ghostObject = App->engineSystem->CreateNewGameObject();
 }
 
 UIFunctions::~UIFunctions()
@@ -335,10 +335,9 @@ update_status UIFunctions::Update(float dt)
 	ImGuiIO& io = ImGui::GetIO();
 	if (App->ui->hierarchy)
 	{
-		if (!selectedGameObjects.empty() && !App->engineSystem->GetselectedGameObjects().empty())
-		{
-			selectedGameObjects = App->engineSystem->GetselectedGameObjects();
-		}
+		
+		selectedGameObjects = App->engineSystem->GetselectedGameObjects();
+		
 		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.0f, 18.9f));
@@ -380,20 +379,26 @@ update_status UIFunctions::Update(float dt)
 
 		if (!selectedGameObjects.empty())
 		{
-			GameObject* go = selectedGameObjects[0];
+			GameObject* editorObject = selectedGameObjects[0];
+
+			/*if (selectedGameObjects.size() > 1)
+			{
+				editorObject = ghostObject;
+			
+			}*/
+
 			if (ImGui::CollapsingHeader("Information"))
 			{
 
 				ImGui::Text("Name:");
 				ImGui::SameLine();
-				ImGui::InputText("##Name", &go->name);
-				ImGui::Checkbox("Active", &go->enabled);
+				ImGui::InputText("##Name", &editorObject->name);
+				ImGui::Checkbox("Active", &editorObject->enabled);
 			}
 			// Current game object (the one we have selected at the moment)
-			for (GameObjectComponent* component : go->GetComponents())
+			for (GameObjectComponent* component : editorObject->GetComponents())
 			{
 				float multiplier = 0.5f;
-
 				switch (component->GetGOC_Type())
 				{
 
@@ -401,15 +406,15 @@ update_status UIFunctions::Update(float dt)
 				{
 					if (ImGui::CollapsingHeader("Transform"))
 					{
-						float newPositionX = go->transform->GetPosition().x;
-						float newPositionY = go->transform->GetPosition().y;
-						float newPositionZ = go->transform->GetPosition().z;
+						float newPositionX = editorObject->transform->GetPosition().x;
+						float newPositionY = editorObject->transform->GetPosition().y;
+						float newPositionZ = editorObject->transform->GetPosition().z;
 
 						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
 
 						if (ImGui::DragFloat3("Location", &newPosition[0]))
 						{
-							go->transform->SetPos(go->transform->GetPosition().x + newPosition.x, go->transform->GetPosition().y + newPosition.y, go->transform->GetPosition().z + newPosition.z);
+							editorObject->transform->SetPos(editorObject->transform->GetPosition().x + newPosition.x, editorObject->transform->GetPosition().y + newPosition.y, editorObject->transform->GetPosition().z + newPosition.z);
 						}
 						float3 newRotationEuler(0, 0, 0);
 
@@ -425,15 +430,15 @@ update_status UIFunctions::Update(float dt)
 							//SetRotation(newRotationEuler);
 						}
 
-						float newScaleX = go->transform->GetScale().x;
-						float newScaleY = go->transform->GetScale().y;
-						float newScaleZ = go->transform->GetScale().z;
+						float newScaleX = editorObject->transform->GetScale().x;
+						float newScaleY = editorObject->transform->GetScale().y;
+						float newScaleZ = editorObject->transform->GetScale().z;
 
 						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
 						if (ImGui::DragFloat3("Scale", &(newScale[0])))
 						{
 							//SetScale(newScale);
-							go->transform->SetScale(go->transform->GetScale().x + newScale.x, go->transform->GetScale().y + newScale.y, go->transform->GetScale().z + newScale.z);
+							editorObject->transform->SetScale(editorObject->transform->GetScale().x + newScale.x, editorObject->transform->GetScale().y + newScale.y, editorObject->transform->GetScale().z + newScale.z);
 						}
 
 
@@ -509,7 +514,7 @@ update_status UIFunctions::Update(float dt)
 						ImGui::Text(test.c_str());
 						if (texture->GetTextures().size() > 0)
 						{
-							
+
 							for (Texture* tex : texture->GetTextures())
 							{
 								std::string texName = "Texture name: " + tex->name;
@@ -522,14 +527,14 @@ update_status UIFunctions::Update(float dt)
 						{
 							ImGui::Text("No texture loaded.");
 						}
-						
-						
 
-						
+
+
+
 						//ImGui::Image((ImTextureID)texture->GetTexture(), ImVec2(85, 85));
 						ImGui::SameLine();
 						ImGui::BeginGroup();
-						/*ImGui::Text(texture->GetTexture()->name.c_str()); 
+						/*ImGui::Text(texture->GetTexture()->name.c_str());
 						ImGui::PushID(texture->GetTexture()->id << 8);*/
 						if (ImGui::Button("Change Texture")) {
 							/*panelChooser->OpenPanel("ChangeTexture", "png");
@@ -539,24 +544,24 @@ update_status UIFunctions::Update(float dt)
 							ZeroMemory(&ofn, sizeof(ofn));
 							ofn.lStructSize = sizeof(OPENFILENAME);
 							ofn.hwndOwner = NULL;
-							ofn.lpstrFilter = (LPCWSTR) "All Files (*.*)\0*.*\0";
+							ofn.lpstrFilter = (LPCWSTR)"All Files (*.*)\0*.*\0";
 							ofn.lpstrFile = (LPWSTR)fileName;
 							ofn.nMaxFile = MAX_PATH;
 							ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-							ofn.lpstrDefExt = (LPCWSTR) "";
+							ofn.lpstrDefExt = (LPCWSTR)"";
 
 							GetOpenFileName(&ofn);
 							if (fileName[0] != '\0')
 							{
 								App->engineSystem->LoadFromPath(fileName);
 							}
-								
+
 
 						}
 						/*ImGui::PopID();*/
 
 						/*ImGui::PushID(texture->GetTexture() << 16);*/
-						ImGui::Dummy(ImVec2(0,0));
+						ImGui::Dummy(ImVec2(0, 0));
 						if (ImGui::Button("Delete Texture")) {
 							/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");*/
 						}
@@ -564,7 +569,7 @@ update_status UIFunctions::Update(float dt)
 
 						ImGui::EndGroup();
 
-						
+
 						if (ImGui::Button("Show Checker Texture")) {
 							/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");*/
 						}
@@ -583,7 +588,7 @@ update_status UIFunctions::Update(float dt)
 							ImGui::TreePop();
 						}
 
-						ImGui::Separator();
+
 
 
 						/*if (texture->GetTexture() != nullptr)
@@ -596,13 +601,19 @@ update_status UIFunctions::Update(float dt)
 
 
 					}
+
 				}
 				break;
 				}
 
-				/*component->InspectorDraw(gameObject);*/
 			}
-			ImGui::Separator();
+
+			/*for (GameObject* go : selectedGameObjects)
+			{
+				
+				go->CopyFromGameObject(*editorObject);
+					
+			}*/
 
 		}
 
@@ -689,7 +700,7 @@ update_status UIFunctions::Update(float dt)
 		App->ui->cleanPrimitives = false;
 	}
 
-	//App->ui->AppendToOutput(DEBUG_LOG("selected size: %i", App->engineSystem->GetselectedGameObjects().size()));
+	//App->ui->AppendToOutput(DEBUG_LOG("selected size: %i", selectedGameObjects.size()));
 	return UPDATE_CONTINUE;
 }
 
@@ -702,6 +713,11 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 
 	Scene* currentScene = App->engineSystem->GetCurrentScene();
 
+	if (go->parent != nullptr)
+	{
+		ImGui::Dummy(ImVec2(5, 0));
+		ImGui::SameLine();
+	}
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
 		//for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
@@ -709,8 +725,8 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 		//	sceneGo->selected = false;
 		//}
 		
-		//if (selectedGameObjects.)
-			selectedGameObjects.push_back(go);
+		selectedGameObjects.push_back(go);
+			
 		go->selected = true;
 
 		if (ImGui::MenuItem("Delete", "", false, false))

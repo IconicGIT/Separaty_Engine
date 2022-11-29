@@ -33,6 +33,8 @@ private:
 
 	EngineSystem* engineSystem;
 
+	GameObject* ghostObject = nullptr;
+
 
 	//GameObject* gameObject = nullptr;
 	GameObject* selectedGameObject = nullptr;
