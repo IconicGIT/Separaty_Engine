@@ -14,6 +14,12 @@
 
 #include "ModuleUI.h"
 
+std::string WStringToString(const std::wstring& s)
+{
+	std::string temp(s.length(), ' ');
+	std::copy(s.begin(), s.end(), temp.begin());
+	return temp;
+}
 
 UIFunctions::UIFunctions()
 {
@@ -538,42 +544,57 @@ update_status UIFunctions::Update(float dt)
 							ImGui::Text("No texture loaded.");
 						}
 
-
-
-
 						//ImGui::Image((ImTextureID)texture->GetTexture(), ImVec2(85, 85));
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 						/*ImGui::Text(texture->GetTexture()->name.c_str());
 						ImGui::PushID(texture->GetTexture()->id << 8);*/
+
 						if (ImGui::Button("Change Texture")) {
 							/*panelChooser->OpenPanel("ChangeTexture", "png");
 							currentTextureId = tex.GetTexture();*/
-							OPENFILENAME ofn;
+							OPENFILENAMEA ofn;
 							char fileName[MAX_PATH] = "";
 							ZeroMemory(&ofn, sizeof(ofn));
-							ofn.lStructSize = sizeof(OPENFILENAME);
+							ofn.lStructSize = sizeof(OPENFILENAMEA);
 							ofn.hwndOwner = NULL;
-							ofn.lpstrFilter = (LPCWSTR)"All Files (*.*)\0*.*\0";
-							ofn.lpstrFile = (LPWSTR)fileName;
+							ofn.lpstrFilter = "All Files (*.*)\0*.*\0";
+							ofn.lpstrFile = fileName;
 							ofn.nMaxFile = MAX_PATH;
 							ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-							ofn.lpstrDefExt = (LPCWSTR)"";
+							ofn.lpstrDefExt = "";
 
-							GetOpenFileName(&ofn);
+							GetOpenFileNameA(&ofn);
 							if (fileName[0] != '\0')
 							{
 								App->engineSystem->LoadFromPath(fileName);
 							}
 
-
+							for (Texture tex : App->engineSystem->GetAllTextures())
+							{
+								if (std::strcmp(tex.path.c_str(), fileName) == 0)
+								{
+									texture->SetTexture(tex);
+									texture->UpdateMeshRendererTexture(true);
+									break;
+								}
+							}
 						}
 						/*ImGui::PopID();*/
 
 						/*ImGui::PushID(texture->GetTexture() << 16);*/
 						ImGui::Dummy(ImVec2(0, 0));
-						if (ImGui::Button("Delete Texture")) {
-							/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");*/
+						if (ImGui::Button("Delete Texture")) 
+						{
+							for (Texture tex : App->engineSystem->GetAllTextures())
+							{
+								if (std::strcmp(tex.name.c_str(), "default_texture.png") == 0)
+								{
+									texture->SetTexture(tex);
+									texture->UpdateMeshRendererTexture(true);
+									break;
+								}
+							}
 						}
 						/*ImGui::PopID();*/
 
@@ -582,6 +603,15 @@ update_status UIFunctions::Update(float dt)
 
 						if (ImGui::Button("Show Checker Texture")) {
 
+							for (Texture tex : App->engineSystem->GetAllTextures())
+							{
+								if (std::strcmp(tex.name.c_str(), "checker_pattern.png") == 0)
+								{
+									texture->SetTexture(tex);
+									texture->UpdateMeshRendererTexture(true);
+									break;
+								}
+							}
 							/*Texture a = ;
 							texture->SetTexture(a);
 							texture->UpdateMeshRendererTexture();*/
@@ -595,7 +625,7 @@ update_status UIFunctions::Update(float dt)
 								if (ImGui::MenuItem(t.name.c_str()))
 								{
 									texture->SetTexture(t);
-									texture->UpdateMeshRendererTexture();
+									texture->UpdateMeshRendererTexture(true);
 								}
 							}
 							ImGui::TreePop();
