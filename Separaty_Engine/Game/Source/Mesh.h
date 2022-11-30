@@ -8,6 +8,7 @@
 #include <vector>
 #include "Shader.h"
 #include "Texture.h"
+#include "MathGeoLib/Geometry/AABB.h"
 
 struct Vertex {
 
@@ -44,6 +45,11 @@ public:
 private:
     //  render data
     unsigned int VAO, VBO, EBO;
+
+    unsigned int bboxVAO, bboxVBO, bboxEBO;
+    bool drawBbox = true;
+    AABB bbox;
+    vec bboxPoints[8];
 
     void SetupMesh();
 };
