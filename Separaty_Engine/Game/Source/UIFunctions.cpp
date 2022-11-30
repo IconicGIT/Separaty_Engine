@@ -406,39 +406,49 @@ update_status UIFunctions::Update(float dt)
 				{
 					if (ImGui::CollapsingHeader("Transform"))
 					{
-						float newPositionX = editorObject->transform->GetPosition().x;
+
+						float3 newPosition = position;
+
+						/*float newPositionX = editorObject->transform->GetPosition().x;
 						float newPositionY = editorObject->transform->GetPosition().y;
 						float newPositionZ = editorObject->transform->GetPosition().z;
 
-						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
+						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);*/
 
-						if (ImGui::DragFloat3("Location", &newPosition[0]))
+						if (ImGui::DragFloat3("Location", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
-							editorObject->transform->SetPos(editorObject->transform->GetPosition().x + newPosition.x, editorObject->transform->GetPosition().y + newPosition.y, editorObject->transform->GetPosition().z + newPosition.z);
+							this->position = newPosition;
+							editorObject->transform->SetPos(/*editorObject->transform->GetPosition().x +*/ newPosition.x, /*editorObject->transform->GetPosition().y*/ + newPosition.y, /*editorObject->transform->GetPosition().z*/ + newPosition.z);
 						}
-						float3 newRotationEuler(0, 0, 0);
 
-						/*newRotationEuler.x = RADTODEG * rotationEuler.x;
+						float3 newRotationEuler;
+
+						newRotationEuler.x = RADTODEG * rotationEuler.x;
 						newRotationEuler.y = RADTODEG * rotationEuler.y;
-						newRotationEuler.z = RADTODEG * rotationEuler.z;*/
+						newRotationEuler.z = RADTODEG * rotationEuler.z;
 
-						if (ImGui::DragFloat3("Rotation", &(newRotationEuler[0])))
+						if (ImGui::DragFloat3("Rotation", &newRotationEuler[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
-							/*newRotationEuler.x = DEGTORAD * newRotationEuler.x;
+							newRotationEuler.x = DEGTORAD * newRotationEuler.x;
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
-							newRotationEuler.z = DEGTORAD * newRotationEuler.z;*/
-							//SetRotation(newRotationEuler);
+							newRotationEuler.z = DEGTORAD * newRotationEuler.z;
+
+							vec3 rotationDelta = (newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
+
+							this->rotationEuler = newRotationEuler;
+							editorObject->transform->SetRotation(0, rotationDelta);
 						}
 
-						float newScaleX = editorObject->transform->GetScale().x;
-						float newScaleY = editorObject->transform->GetScale().y;
-						float newScaleZ = editorObject->transform->GetScale().z;
+						float3 newScale = scale;
 
-						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
-						if (ImGui::DragFloat3("Scale", &(newScale[0])))
+						/*float newScaleX = editorObject->transform->GetScale().x;
+						float newScaleY = editorObject->transform->GetScale().y;
+						float newScaleZ = editorObject->transform->GetScale().z;*/
+
+						if (ImGui::DragFloat3("Scale", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
-							//SetScale(newScale);
-							editorObject->transform->SetScale(editorObject->transform->GetScale().x + newScale.x, editorObject->transform->GetScale().y + newScale.y, editorObject->transform->GetScale().z + newScale.z);
+							this->scale = newScale;
+							editorObject->transform->SetScale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y*/ + newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
 						}
 
 
@@ -571,7 +581,10 @@ update_status UIFunctions::Update(float dt)
 
 
 						if (ImGui::Button("Show Checker Texture")) {
-							/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");*/
+
+							/*Texture a = ;
+							texture->SetTexture(a);
+							texture->UpdateMeshRendererTexture();*/
 						}
 						ImGui::Separator();
 
@@ -713,22 +726,46 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 
 	Scene* currentScene = App->engineSystem->GetCurrentScene();
 
-	if (go->parent != nullptr)
-	{
-		ImGui::Dummy(ImVec2(5, 0));
-		ImGui::SameLine();
-	}
+	//if (go->parent != nullptr)
+	//{
+	//	ImGui::Dummy(ImVec2(5, 0));
+	//	ImGui::SameLine();
+	//}
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
 		//for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
 		//{
 		//	sceneGo->selected = false;
 		//}
-		
+		for (int i = 0; i < go->GetChildren().size(); i++)
+		{
+			DisplayTree(go->GetChildren()[i], flags);
+		}
+
 		selectedGameObjects.push_back(go);
 			
 		go->selected = true;
 
+		
+		ImGui::Dummy(ImVec2(8, 0));
+		ImGui::SameLine();
+		if (ImGui::MenuItem("Create Child", "", false, false))
+		{
+			//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+			//	{
+
+			//		if (go->GetID() == go->selected && go->GetID() != -1)
+			//		{
+			//			/*go->Delete();*/
+			//			go->selected = 0;
+
+			//		}
+
+			//	}
+		}
+
+		ImGui::Dummy(ImVec2(0, 0));
+		ImGui::SameLine();
 		if (ImGui::MenuItem("Delete", "", false, false))
 		{
 		//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
@@ -748,14 +785,7 @@ void UIFunctions::DisplayTree(GameObject* go, int flags)
 	}
 	else
 	{
-		
 		go->selected = false;
-		
-	}
-	
-	for (int i = 0; i < go->GetChildren().size(); i++)
-	{
-		DisplayTree(go->GetChildren()[i], flags);
 	}
 }
 	
@@ -793,19 +823,18 @@ void UIFunctions::DragAndDrop(GameObject* go)
 //Inspector
 //void UIFunctions::SetPosition(const float3& newPosition)
 //{
-//	gameObject->transform->SetPos(newPosition.x, newPosition.y, newPosition.z);
+//	position = newPosition;
 //}
-//
+
 //void UIFunctions::SetRotation(const float3& newRotation)
 //{
-//	/*Quat rotationDelta = Quat::FromEulerXYZ(newRotation.x - rotationEuler.x, newRotation.y - rotationEuler.y, newRotation.z - rotationEuler.z);
+//	Quat rotationDelta = Quat::FromEulerXYZ(newRotation.x - rotationEuler.x, newRotation.y - rotationEuler.y, newRotation.z - rotationEuler.z);
 //	rotation = rotation * rotationDelta;
 //	rotationEuler = newRotation;
-//	isDirty = true;*/
 //}
 //
 //void UIFunctions::SetScale(const float3& newScale)
 //{
-//	gameObject->transform->SetScale(newScale.x, newScale.y, newScale.z);
+//	selectedGameObject->transform->SetScale(newScale.x, newScale.y, newScale.z);
 //}
-//
+

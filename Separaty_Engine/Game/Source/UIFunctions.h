@@ -25,9 +25,12 @@ public:
 	void DragAndDrop(GameObject* go);
 
 	//Inspector
-	//void SetPosition(const float3& newPosition);
-	//void SetScale(const float3& newScale);
-	//void SetRotation(const float3& newRotation);
+	void SetPosition(const float3& newPosition);
+	void SetScale(const float3& newScale);
+	void SetRotation(const float3& newRotation);
+
+	float4x4 transformMatrix;
+	float4x4 transformMatrixLocal;
 
 private:
 
@@ -35,12 +38,14 @@ private:
 
 	GameObject* ghostObject = nullptr;
 
-
 	//GameObject* gameObject = nullptr;
 	GameObject* selectedGameObject = nullptr;
 	GameObject* destinationGameObject = nullptr;
 	std::vector<GameObject*> selectedGameObjects;
 	bool is_selected = false;
 
-
+	float3 position;
+	Quat rotation;
+	float3 rotationEuler;
+	float3 scale;
 };
