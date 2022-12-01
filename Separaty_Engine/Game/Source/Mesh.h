@@ -9,16 +9,17 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "MathGeoLib/Geometry/AABB.h"
+#include "MathGeoLib/Geometry/OBB.h"
 
 struct Vertex {
 
     Vertex(){}
 
-    vec3 Position;
-    vec3 Normal;
+    vec Position;
+    vec Normal;
     vec2 TexCoords;
 
-    Vertex(vec3 v)
+    Vertex(vec v)
     {
         Position = v;
     }
@@ -48,8 +49,12 @@ private:
 
     unsigned int bboxVAO, bboxVBO, bboxEBO;
     bool drawBbox = true;
+
+    OBB obb;
     AABB bbox;
     vec bboxPoints[8];
+
+    void DrawCube(static float3* corners, vec color);
 
     void SetupMesh();
 };

@@ -97,7 +97,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         Vertex vertex;
 
         // process vertex positions, normals and texture coordinates
-        vec3 vector;
+        vec vector;
         vector.x = mesh->mVertices[i].x;
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;

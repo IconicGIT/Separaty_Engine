@@ -47,36 +47,24 @@ void Mesh::SetupMesh()
 
     ////set bbox
     //bbox.SetNegativeInfinity();
-    //vec* bboxVertices = new vec(sizeof(vec) * vertices.size());
+    //bbox = obb.MinimalEnclosingAABB();
 
-    //for (size_t i = 0; i < vertices.size(); i++)
+    //std::vector<float3> bboxVerticesTemp;
+
+    //for (Vertex v : vertices)
     //{
-    //    bboxVertices[i] = float3(vertices[i].Position.x, vertices[i].Position.y, vertices[i].Position.z);
+    //    bboxVerticesTemp.push_back((float3)v.Position);
     //}
+
+    //float3* bboxVertices = &bboxVerticesTemp[0];
 
 
 
     //bbox.Enclose((float3*)bboxVertices, vertices.size());
     //bbox.GetCornerPoints(bboxPoints);
+    //int a = 0;
 
-    //glGenVertexArrays(1, &bboxVAO);
-    //glGenBuffers(1, &bboxVBO);
-    //glGenBuffers(1, &bboxEBO);
 
-    //glBindVertexArray(bboxVAO);
-    //glBindBuffer(GL_ARRAY_BUFFER, bboxVBO);
-
-    //glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex), &bboxPoints[0], GL_STATIC_DRAW);
-
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bboxEBO);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, 8 * sizeof(unsigned int), &bboxPoints[0], GL_STATIC_DRAW);
-
-    //// vertex positions
-    //glEnableVertexAttribArray(0);
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    //// vertex normals
-    //glEnableVertexAttribArray(1);
-    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 }
 
 void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
@@ -112,10 +100,45 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
-    /*if (drawBbox)
-    {
-        glBindVertexArray(bboxVAO);
-        glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-    }*/
+
+}
+
+void Mesh::DrawCube(static float3* corners, vec color)
+{
+    glLineWidth(2.0f);
+    glColor3f(color.x, color.y, color.z);
+    glBegin(GL_QUADS);
+
+    glVertex3fv((GLfloat*)&corners[1]);
+    glVertex3fv((GLfloat*)&corners[5]);
+    glVertex3fv((GLfloat*)&corners[7]);
+    glVertex3fv((GLfloat*)&corners[3]);
+
+    glVertex3fv((GLfloat*)&corners[4]);
+    glVertex3fv((GLfloat*)&corners[0]);
+    glVertex3fv((GLfloat*)&corners[2]);
+    glVertex3fv((GLfloat*)&corners[6]);
+
+    glVertex3fv((GLfloat*)&corners[5]);
+    glVertex3fv((GLfloat*)&corners[4]);
+    glVertex3fv((GLfloat*)&corners[6]);
+    glVertex3fv((GLfloat*)&corners[7]);
+
+    glVertex3fv((GLfloat*)&corners[0]);
+    glVertex3fv((GLfloat*)&corners[1]);
+    glVertex3fv((GLfloat*)&corners[3]);
+    glVertex3fv((GLfloat*)&corners[2]);
+
+    glVertex3fv((GLfloat*)&corners[3]);
+    glVertex3fv((GLfloat*)&corners[7]);
+    glVertex3fv((GLfloat*)&corners[6]);
+    glVertex3fv((GLfloat*)&corners[2]);
+
+    glVertex3fv((GLfloat*)&corners[0]);
+    glVertex3fv((GLfloat*)&corners[4]);
+    glVertex3fv((GLfloat*)&corners[5]);
+    glVertex3fv((GLfloat*)&corners[1]);
+
+    glEnd();
+
 }
