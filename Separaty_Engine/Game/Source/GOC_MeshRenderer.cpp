@@ -4,7 +4,6 @@
 
 GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform)
 {
-	this->transform = transform;
 	gameObject = gameObjectAttached;
 	GOC_type = GOC_Type::GOC_MESH_RENDERER;
 
@@ -104,8 +103,6 @@ void GOC_MeshRenderer::Render()
 	if (!myMesh.vertices.empty())
 	{
 
-		GOC_Transform* GoTransform = (GOC_Transform*)gameObject->GetComponent(GOC_Type::GOC_TRANSFORM);
-
 		if (gameObject->selected)
 		{
 			selctedShader->Use();
@@ -120,12 +117,12 @@ void GOC_MeshRenderer::Render()
 		myShader->SetMat4x4("projection", projection);
 		myShader->SetMat4x4("view", view);
 
-		// render the loaded model
-		mat4x4 modelState = IdentityMatrix;
-		modelState.translate(gameObject->transform->GetPosition().x, gameObject->transform->GetPosition().y, gameObject->transform->GetPosition().z); // translate it down so it's at the center of the scene
-		modelState.scale(gameObject->transform->GetScale().x, gameObject->transform->GetScale().y, gameObject->transform->GetScale().z);	// it's a bit too big for our scene, so scale it down
+		//// render the loaded model
+		//mat4x4 modelState = IdentityMatrix;
+		//modelState.translate(gameObject->transform->GetPosition().x, gameObject->transform->GetPosition().y, gameObject->transform->GetPosition().z); // translate it down so it's at the center of the scene
+		//modelState.scale(gameObject->transform->GetScale().x, gameObject->transform->GetScale().y, gameObject->transform->GetScale().z);	// it's a bit too big for our scene, so scale it down
 
-		myShader->SetMat4x4("model", modelState);
+		myShader->SetMat4x4("model", gameObject->transform->Get4x4Matrix());
 
 		myMesh.Draw(*myShader);
 
@@ -173,7 +170,6 @@ void GOC_MeshRenderer::RenderAxis()
 bool GOC_MeshRenderer::Execute()
 {
 	//App->ui->AppendToOutput(DEBUG_LOG("executing"));
-	transform = gameObject->transform->Get4x4Matrix();
 	Render();
 
 	return true;
