@@ -9,7 +9,6 @@
 #include "GOC_Transform.h"
 #include "GOC_Texture.h"
 
-
 class EngineSystem;
 enum class GOC_Type;
 //class GameObjectComponent;
@@ -62,6 +61,16 @@ public:
 		this->name = changeName;
 	}
 
+	void SetRotationQuat(Quat rotation)
+	{
+		this->rotation = rotation;
+	};
+
+	Quat GetRotationQuat() const
+	{
+		return rotation;
+	}
+
 	std::vector<GameObjectComponent*> GetComponents() const
 	{
 		return components;
@@ -85,6 +94,7 @@ public:
 private:
 	EngineSystem* engineSystem;
 
+	Quat rotation;
 
 	//This should not be here... but where???
 	//double pointers??

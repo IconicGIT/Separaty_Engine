@@ -427,7 +427,11 @@ update_status UIFunctions::Update(float dt)
 							editorObject->transform->SetPos(/*editorObject->transform->GetPosition().x +*/ newPosition.x, /*editorObject->transform->GetPosition().y*/ + newPosition.y, /*editorObject->transform->GetPosition().z*/ + newPosition.z);
 						}
 
-						float3 newRotationEuler;
+						float3 newRotationEuler = float3(0,0,0);
+
+			/*			float newRotationEulerX = editorObject->GetRotationQuat().ToEulerXYZ().x;
+						float newRotationEulerY = editorObject->GetRotationQuat().ToEulerXYZ().y;
+						float newRotationEulerZ = editorObject->GetRotationQuat().ToEulerXYZ().z;*/
 
 						newRotationEuler.x = RADTODEG * rotationEuler.x;
 						newRotationEuler.y = RADTODEG * rotationEuler.y;
@@ -441,14 +445,20 @@ update_status UIFunctions::Update(float dt)
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
 							newRotationEuler.z = DEGTORAD * newRotationEuler.z;
 
-							/*Quat rotationDelta = Quat::FromEulerXYZ(newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
-							rotation = rotation * rotationDelta;*/
+							Quat rotationDelta = Quat::FromEulerXYZ(newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
+
+							rotation.w = 1;
+							rotation = rotation * rotationDelta;
 
 							this->rotationEuler = newRotationEuler;
 
-							vec3 finalRotation = (newRotationEuler.x, newRotationEuler.y , newRotationEuler.z);
+							/*vec3 finalRotation = (newRotationEuler.x, newRotationEuler.y , newRotationEuler.z);*/
 
-							editorObject->transform->SetRotation(0, finalRotation);
+							editorObject->SetRotationQuat(rotation);
+
+							editorObject->transform->SetRotation(newRotationEuler.x * 57.29578, vec3(1, 0, 0));
+							editorObject->transform->SetRotation(newRotationEuler.y * 57.29578, vec3(0, 1, 0));
+							editorObject->transform->SetRotation(newRotationEuler.z * 57.29578, vec3(0, 0, 1));
 						}
 
 						/*float3 newScale = scale;*/
@@ -468,7 +478,7 @@ update_status UIFunctions::Update(float dt)
 						if (ImGui::Button(("Reset Transform"), ImVec2(150, 30)))
 						{
 							editorObject->transform->SetPos(0, 0, 0);
-							editorObject->transform->SetRotation(0, 0);
+							//editorObject->transform->SetRotation(0, 0);
 							editorObject->transform->SetScale(1, 1, 1);
 						}
 					}

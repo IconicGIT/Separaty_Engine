@@ -120,12 +120,7 @@ void GOC_MeshRenderer::Render()
 		myShader->SetMat4x4("projection", projection);
 		myShader->SetMat4x4("view", view);
 
-		// render the loaded model
-		mat4x4 modelState = IdentityMatrix;
-		modelState.translate(gameObject->transform->GetPosition().x, gameObject->transform->GetPosition().y, gameObject->transform->GetPosition().z); // translate it down so it's at the center of the scene
-		modelState.scale(gameObject->transform->GetScale().x, gameObject->transform->GetScale().y, gameObject->transform->GetScale().z);	// it's a bit too big for our scene, so scale it down
-
-		myShader->SetMat4x4("model", modelState);
+		myShader->SetMat4x4("model", gameObject->transform->Get4x4Matrix());
 
 		myMesh.Draw(*myShader);
 

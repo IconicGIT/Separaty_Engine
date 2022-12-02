@@ -28,6 +28,11 @@ public:
 		return transform.scaling();
 	}
 
+	//vec3 GetScale() const
+	//{
+	//	return transform.scaling();
+	//}
+
 	bool Execute();
 
 	mat4x4 Get4x4Matrix() const
