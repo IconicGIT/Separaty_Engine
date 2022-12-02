@@ -413,13 +413,13 @@ update_status UIFunctions::Update(float dt)
 					if (ImGui::CollapsingHeader("Transform"))
 					{
 
-						float3 newPosition = position;
+						/*float3 newPosition = position;*/
 
-						/*float newPositionX = editorObject->transform->GetPosition().x;
+						float newPositionX = editorObject->transform->GetPosition().x;
 						float newPositionY = editorObject->transform->GetPosition().y;
 						float newPositionZ = editorObject->transform->GetPosition().z;
 
-						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);*/
+						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
 
 						if (ImGui::DragFloat3("Location", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
@@ -433,23 +433,31 @@ update_status UIFunctions::Update(float dt)
 						newRotationEuler.y = RADTODEG * rotationEuler.y;
 						newRotationEuler.z = RADTODEG * rotationEuler.z;
 
+						/*float3 newRotationEuler = vec(newRotationEulerX, newRotationEulerY, newRotationEulerZ);*/
+
 						if (ImGui::DragFloat3("Rotation", &newRotationEuler[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							newRotationEuler.x = DEGTORAD * newRotationEuler.x;
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
 							newRotationEuler.z = DEGTORAD * newRotationEuler.z;
 
-							vec3 rotationDelta = (newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
+							/*Quat rotationDelta = Quat::FromEulerXYZ(newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
+							rotation = rotation * rotationDelta;*/
 
 							this->rotationEuler = newRotationEuler;
-							editorObject->transform->SetRotation(0, rotationDelta);
+
+							vec3 finalRotation = (newRotationEuler.x, newRotationEuler.y , newRotationEuler.z);
+
+							editorObject->transform->SetRotation(0, finalRotation);
 						}
 
-						float3 newScale = scale;
+						/*float3 newScale = scale;*/
 
-						/*float newScaleX = editorObject->transform->GetScale().x;
+						float newScaleX = editorObject->transform->GetScale().x;
 						float newScaleY = editorObject->transform->GetScale().y;
-						float newScaleZ = editorObject->transform->GetScale().z;*/
+						float newScaleZ = editorObject->transform->GetScale().z;
+
+						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
 
 						if (ImGui::DragFloat3("Scale", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
@@ -457,7 +465,12 @@ update_status UIFunctions::Update(float dt)
 							editorObject->transform->SetScale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y*/ + newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
 						}
 
-
+						if (ImGui::Button(("Reset Transform"), ImVec2(150, 30)))
+						{
+							editorObject->transform->SetPos(0, 0, 0);
+							editorObject->transform->SetRotation(0, 0);
+							editorObject->transform->SetScale(1, 1, 1);
+						}
 					}
 				}
 				break;
