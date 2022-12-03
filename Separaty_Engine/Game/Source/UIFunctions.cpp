@@ -415,19 +415,22 @@ update_status UIFunctions::Update(float dt)
 
 						/*float3 newPosition = position;*/
 
-						float newPositionX = editorObject->transform->GetPosition().x;
-						float newPositionY = editorObject->transform->GetPosition().y;
-						float newPositionZ = editorObject->transform->GetPosition().z;
+						float newPositionX = editorObject->transform->translation.translation().x;
+						float newPositionY = editorObject->transform->translation.translation().y;
+						float newPositionZ = editorObject->transform->translation.translation().z;
 
 						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
 
 						if (ImGui::DragFloat3("Location", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							this->position = newPosition;
-							editorObject->transform->SetPos(/*editorObject->transform->GetPosition().x +*/ newPosition.x, /*editorObject->transform->GetPosition().y*/ + newPosition.y, /*editorObject->transform->GetPosition().z*/ + newPosition.z);
+							editorObject->transform->translation.translate(newPosition.x, + newPosition.y, + newPosition.z);
+							editorObject->transform->ApplyTransformations();
+
+
 						}
 
-						float3 newRotationEuler = float3(0,0,0);
+						
 
 			/*			float newRotationEulerX = editorObject->GetRotationQuat().ToEulerXYZ().x;
 						float newRotationEulerY = editorObject->GetRotationQuat().ToEulerXYZ().y;
@@ -439,48 +442,157 @@ update_status UIFunctions::Update(float dt)
 
 						/*float3 newRotationEuler = vec(newRotationEulerX, newRotationEulerY, newRotationEulerZ);*/
 
+						
+						//newRotationEuler = editorObject->GetRotationQuat().ToEulerXYZ();
+
 						if (ImGui::DragFloat3("Rotation", &newRotationEuler[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							newRotationEuler.x = DEGTORAD * newRotationEuler.x;
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
 							newRotationEuler.z = DEGTORAD * newRotationEuler.z;
 
-							Quat rotationDelta = Quat::FromEulerXYZ(newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
+							/*Quat rotationDelta = Quat::FromEulerXYZ(newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
 
 							rotation.w = 1;
-							rotation = rotation * rotationDelta;
+							rotation = rotation * rotationDelta;*/
 
 							this->rotationEuler = newRotationEuler;
 
+						
+							//transform desired rotation from euler to quaternion [editor euler angles]
+							Quat rotatorQuat = Quat::FromEulerXYZ(newRotationEuler.x, newRotationEuler.y, newRotationEuler.z);
+							aiQuaternion rotationQuat(rotatorQuat.w, rotatorQuat.x, rotatorQuat.y, rotatorQuat.z);
+
+
+							////original vector [editorObject previous transform]
+							//aiVector3D rotateVec(1, 0, 0);
+
+							////vector rotates by using the rotation quaternion
+							//aiVector3D rotatedVector = rotationQuat.Rotate(rotateVec);
+
+							aiMatrix4x4* tempMat = new aiMatrix4x4;
+
+							aiVector3D* tempScale = new aiVector3D(1, 1, 1);
+
+							aiQuaternion* tempRotationQuat = new aiQuaternion(rotationQuat);
+
+							aiVector3D* tempPosition = new aiVector3D(0,0,0);
+							
+
+							aiMatrix4FromScalingQuaternionPosition(tempMat, tempScale, tempRotationQuat, tempPosition);
+
+							
+							mat4x4 resMat = IdentityMatrix;
+
+							resMat[0] = (float)tempMat->a1;
+							resMat[1] = (float)tempMat->a2;
+							resMat[2] = (float)tempMat->a3;
+							resMat[3] = (float)tempMat->a4;
+							
+							resMat[4] = (float)tempMat->b1;
+							resMat[5] = (float)tempMat->b2;
+							resMat[6] = (float)tempMat->b3;
+							resMat[7] = (float)tempMat->b4;
+							
+							resMat[8] = (float)tempMat-> c1;
+							resMat[9] = (float)tempMat-> c2;
+							resMat[10] = (float)tempMat->c3;
+							resMat[11] = (float)tempMat->c4;
+							
+							resMat[12] = (float)tempMat->d1;
+							resMat[13] = (float)tempMat->d2;
+							resMat[14] = (float)tempMat->d3;
+							resMat[15] = (float)tempMat->d4;
+
+							resMat.transpose();
+
+							editorObject->transform->rotation = resMat;
+
+							//editorObject->transform->Set4x4Matrix(App->renderer3D->ProjectionMatrix * );
+							editorObject->transform->ApplyTransformations();
+
 							/*vec3 finalRotation = (newRotationEuler.x, newRotationEuler.y , newRotationEuler.z);*/
 
-							editorObject->SetRotationQuat(rotation);
+							Quat returnQuat(tempRotationQuat->w, tempRotationQuat->x, tempRotationQuat->y, tempRotationQuat->z);
+							editorObject->SetRotationQuat(returnQuat);
+							//editorObject->transform->SetScale(tempScale->x, tempScale->y, tempScale->z);
 
-							editorObject->transform->SetRotation(newRotationEuler.x * 57.29578, vec3(1, 0, 0));
-							editorObject->transform->SetRotation(newRotationEuler.y * 57.29578, vec3(0, 1, 0));
-							editorObject->transform->SetRotation(newRotationEuler.z * 57.29578, vec3(0, 0, 1));
+							delete tempMat;
+							delete tempScale;
+							delete tempRotationQuat;
+							delete tempPosition;
+
+							/*editorObject->transform->SetRotation(newRotationEuler.x , vec3(1, 0, 0));
+							editorObject->transform->SetRotation(newRotationEuler.y , vec3(0, 1, 0));
+							editorObject->transform->SetRotation(newRotationEuler.z , vec3(0, 0, 1));*/
+
+							//* 57.29578
+							//* 57.29578
+							//* 57.29578
 						}
+
 
 						/*float3 newScale = scale;*/
 
-						float newScaleX = editorObject->transform->GetScale().x;
-						float newScaleY = editorObject->transform->GetScale().y;
-						float newScaleZ = editorObject->transform->GetScale().z;
+						float newScaleX = editorObject->transform->transformLocal.scaling().x;
+						float newScaleY = editorObject->transform->transformLocal.scaling().y;
+						float newScaleZ = editorObject->transform->transformLocal.scaling().z;
 
 						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
 
 						if (ImGui::DragFloat3("Scale", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							this->scale = newScale;
-							editorObject->transform->SetScale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y*/ + newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
+							editorObject->transform->transformLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y*/ + newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
+							editorObject->transform->ApplyTransformations();
+
 						}
 
 						if (ImGui::Button(("Reset Transform"), ImVec2(150, 30)))
 						{
-							editorObject->transform->SetPos(0, 0, 0);
-							//editorObject->transform->SetRotation(0, 0);
-							editorObject->transform->SetScale(1, 1, 1);
+							editorObject->transform->Set4x4Matrix(IdentityMatrix);
+							editorObject->transform->translation = IdentityMatrix;
+							editorObject->transform->rotation = IdentityMatrix;
 						}
+
+						
+						mat4x4 debugMat = editorObject->transform->rotation;
+
+
+						ImGui::Text(std::to_string(debugMat[0]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[1]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[2]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[3]).c_str());
+
+						ImGui::Text(std::to_string(debugMat[4]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[5]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[6]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[7]).c_str());
+
+						ImGui::Text(std::to_string(debugMat[8]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[9]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[10]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[11]).c_str());
+
+						ImGui::Text(std::to_string(debugMat[12]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[13]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[14]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat[15]).c_str());
+						
+
+
 					}
 				}
 				break;

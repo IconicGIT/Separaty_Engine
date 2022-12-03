@@ -39,12 +39,34 @@ public:
 	{
 		return transform;
 	}
+
+	void Set4x4Matrix(mat4x4 matrix) 
+	{
+		transform = matrix;
+	}
 	mat4x4 Get4x4MatrixLocal() const
 	{
 		return transform;
 	}
+
+	void Set4x4MatrixLocal(mat4x4 matrix)
+	{
+		transformLocal = matrix;
+	}
+
+	void ApplyTransformations()
+	{
+		transform = translation * transformLocal * rotation;
+	}
+
+	mat4x4 translation = IdentityMatrix;
+	mat4x4 rotation = IdentityMatrix;
+	mat4x4 transform = IdentityMatrix;
+	mat4x4 transformLocal = IdentityMatrix;
 private:
-	mat4x4 transform;
-	mat4x4 transformLocal;
+
+
+	
+	
 };
 

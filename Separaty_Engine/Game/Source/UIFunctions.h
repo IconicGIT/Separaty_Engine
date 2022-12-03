@@ -3,7 +3,7 @@
 #include "ModuleUI.h"
 #include "Globals.h"
 #include "GameObject.h"
-
+#include "MathGeoLib/Math/Quat.h"
 class EngineSystem;
 class GameObject;
 
@@ -44,8 +44,12 @@ private:
 	std::vector<GameObject*> selectedGameObjects;
 	bool is_selected = false;
 
+	float3 newRotationEuler = float3(0, 0, 0);
 	float3 position;
 	Quat rotation;
+	//temp
+	
+	//
 	float3 rotationEuler;
 	float3 scale;
 };
