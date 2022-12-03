@@ -618,6 +618,16 @@ update_status UIFunctions::Update(float dt)
 							}
 							ImGui::TreePop();
 						}
+
+						bool drawBBox = renderer->GetMesh().GetDrawBoundingBox();
+
+						if (ImGui::Checkbox("Draw Bounding Box", &drawBBox))
+						{
+							renderer->GetMesh().SetDrawBoundingBox(&drawBBox);
+
+						}
+
+
 						/*
 						for (Texture& tex : materiatel.textures) {
 							ImGui::Image((ImTextureID)tex.GetTextureId(), ImVec2(85, 85));

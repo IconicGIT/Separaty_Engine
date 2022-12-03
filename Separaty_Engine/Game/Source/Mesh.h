@@ -9,7 +9,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "MathGeoLib/Geometry/AABB.h"
-
+#include "Color.h"
 struct Vertex {
 
     Vertex(){}
@@ -21,6 +21,13 @@ struct Vertex {
     Vertex(vec3 v)
     {
         Position = v;
+    }
+
+    Vertex(vec v)
+    {
+        Position.x = v.x;
+        Position.y = v.y;
+        Position.z = v.z;
     }
 
     
@@ -41,6 +48,16 @@ public:
 
     void Draw(Shader& shader/*, std::vector<Texture*> textures*/);
 
+    bool GetDrawBoundingBox() const
+    {
+        return drawBbox;
+    }
+
+    void SetDrawBoundingBox(bool draw)
+    {
+        drawBbox = draw;
+    }
+
     std::string name;
 private:
     //  render data
@@ -52,4 +69,5 @@ private:
     vec bboxPoints[8];
 
     void SetupMesh();
+    void DrawCube(static float3* corners, Color color);
 };

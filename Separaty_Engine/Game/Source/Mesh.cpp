@@ -45,19 +45,28 @@ void Mesh::SetupMesh()
 
     glBindVertexArray(0);
 
-    ////set bbox
-    //bbox.SetNegativeInfinity();
-    //vec* bboxVertices = new vec(sizeof(vec) * vertices.size());
+    //set bbox
+    bbox.SetNegativeInfinity();
+    float3 *bboxVertices = new float3[sizeof(float3) * vertices.size()];
 
-    //for (size_t i = 0; i < vertices.size(); i++)
-    //{
-    //    bboxVertices[i] = float3(vertices[i].Position.x, vertices[i].Position.y, vertices[i].Position.z);
-    //}
+    for (size_t i = 0; i < vertices.size(); i++)
+    {
+       float3 vec;
+       vec.x = vertices[i].Position.x;
+       vec.y = vertices[i].Position.y;
+       vec.z = vertices[i].Position.z;
 
 
+        bboxVertices[i] = vec;
 
-    //bbox.Enclose((float3*)bboxVertices, vertices.size());
-    //bbox.GetCornerPoints(bboxPoints);
+        float3 v = float3(bboxVertices[i]);
+        //printf("%f %f %f \n", v.x, v.y, v.z);
+    }
+
+    
+
+    bbox.Enclose(bboxVertices, vertices.size());
+    bbox.GetCornerPoints(bboxPoints);
 
     //glGenVertexArrays(1, &bboxVAO);
     //glGenBuffers(1, &bboxVBO);
@@ -77,6 +86,7 @@ void Mesh::SetupMesh()
     //// vertex normals
     //glEnableVertexAttribArray(1);
     //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+    delete[] bboxVertices;
 }
 
 void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
@@ -105,17 +115,59 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
     }
     
     
-    glActiveTexture(GL_TEXTURE0);
+    //glActiveTexture(GL_TEXTURE0);
 
     // draw mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
 
-    /*if (drawBbox)
+
+    if (drawBbox)
     {
-        glBindVertexArray(bboxVAO);
-        glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-    }*/
+        DrawCube(bboxPoints, Color(1, 1, 1, 1));
+    }
+}
+
+void Mesh::DrawCube(static float3* corners, Color color)
+{
+    glLineWidth(2.0f);
+    glColor4f(color.r, color.g, color.b, color.a);
+
+    glBegin(GL_QUADS);
+
+    glVertex3fv((GLfloat*)&corners[1]);
+    glVertex3fv((GLfloat*)&corners[5]);
+    glVertex3fv((GLfloat*)&corners[7]);
+    glVertex3fv((GLfloat*)&corners[3]);
+
+    glVertex3fv((GLfloat*)&corners[4]);
+    glVertex3fv((GLfloat*)&corners[0]);
+    glVertex3fv((GLfloat*)&corners[2]);
+    glVertex3fv((GLfloat*)&corners[6]);
+
+    glVertex3fv((GLfloat*)&corners[5]);
+    glVertex3fv((GLfloat*)&corners[4]);
+    glVertex3fv((GLfloat*)&corners[6]);
+    glVertex3fv((GLfloat*)&corners[7]);
+
+    glVertex3fv((GLfloat*)&corners[0]);
+    glVertex3fv((GLfloat*)&corners[1]);
+    glVertex3fv((GLfloat*)&corners[3]);
+    glVertex3fv((GLfloat*)&corners[2]);
+
+    glVertex3fv((GLfloat*)&corners[3]);
+    glVertex3fv((GLfloat*)&corners[7]);
+    glVertex3fv((GLfloat*)&corners[6]);
+    glVertex3fv((GLfloat*)&corners[2]);
+
+    glVertex3fv((GLfloat*)&corners[0]);
+    glVertex3fv((GLfloat*)&corners[4]);
+    glVertex3fv((GLfloat*)&corners[5]);
+    glVertex3fv((GLfloat*)&corners[1]);
+
+    glEnd();
+
 }
