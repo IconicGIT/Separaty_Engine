@@ -376,12 +376,25 @@ update_status UIFunctions::Update(float dt)
 
 	if (App->ui->inspector)
 	{
+		
 
 		/*WindowGameObjectInfo windowGameObjectInfo = gameObject->windowGameObjectInfo;*/
 		ImGui::Begin("Inspector", &App->ui->inspector);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f , 18.9f));
 		ImGui::SetWindowSize(windowSize);		
+
+		std::string editingTypeText = "Editing Mode: ";
+
+		std::string editingType = "Local";
+		if (editingModeWorld)
+			editingType = "World";
+
+		std::string text = editingTypeText + editingType;
+		if (ImGui::Checkbox(text.c_str(), &editingModeWorld))
+		{
+			int a = 0;
+		}
 
 		if (!selectedGameObjects.empty())
 		{
@@ -404,6 +417,17 @@ update_status UIFunctions::Update(float dt)
 			// Current game object (the one we have selected at the moment)
 			for (GameObjectComponent* component : editorObject->GetComponents())
 			{
+
+				/*if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+				{
+					editingModeWorld = false;
+				}
+				else
+				{
+					editingModeWorld = true;
+
+				}*/
+
 				float multiplier = 0.5f;
 				switch (component->GetGOC_Type())
 				{
@@ -415,17 +439,36 @@ update_status UIFunctions::Update(float dt)
 
 						/*float3 newPosition = position;*/
 
-						float newPositionX = editorObject->transform->translation.translation().x;
-						float newPositionY = editorObject->transform->translation.translation().y;
-						float newPositionZ = editorObject->transform->translation.translation().z;
+						float newPositionX = editorObject->transform->translationWorld.translation().x;
+						float newPositionY = editorObject->transform->translationWorld.translation().y;
+						float newPositionZ = editorObject->transform->translationWorld.translation().z;
+						
+						if (!editingModeWorld)
+						{
+							newPositionX = editorObject->transform->translationLocal.translation().x;
+							newPositionY = editorObject->transform->translationLocal.translation().y;
+							newPositionZ = editorObject->transform->translationLocal.translation().z;
+						}
 
 						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
 
 						if (ImGui::DragFloat3("Location", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							this->position = newPosition;
-							editorObject->transform->translation.translate(newPosition.x, /*+*/ newPosition.y, /*+*/ newPosition.z);
-							editorObject->transform->ApplyTransformations();
+							
+							if (editingModeWorld)
+							{
+								editorObject->transform->translationWorld.translate(newPosition.x, /*+*/ newPosition.y, /*+*/ newPosition.z);
+								editorObject->transform->ApplyTransformationsWorld();
+							}
+							else
+							{
+
+								editorObject->transform->translationLocal.translate(newPosition.x, /*+*/ newPosition.y, /*+*/ newPosition.z);
+								editorObject->transform->ApplyTransformationsLocal();
+
+							}
+
 						}
 
 						
@@ -433,9 +476,15 @@ update_status UIFunctions::Update(float dt)
 						float newRotationEulerY = editorObject->GetRotationQuat().ToEulerXYZ().y;
 						float newRotationEulerZ = editorObject->GetRotationQuat().ToEulerXYZ().z;*/
 
-						newRotationEuler.x = RADTODEG * rotationEuler.x;
-						newRotationEuler.y = RADTODEG * rotationEuler.y;
-						newRotationEuler.z = RADTODEG * rotationEuler.z;
+						float3 newRotationEuler = editorObject->transform->rotationEulerWorld;
+
+						if (!editingModeWorld)
+							newRotationEuler = editorObject->transform->rotationEulerLocal;
+
+
+						newRotationEuler.x = RADTODEG * newRotationEuler.x;
+						newRotationEuler.y = RADTODEG * newRotationEuler.y;
+						newRotationEuler.z = RADTODEG * newRotationEuler.z;
 
 						/*float3 newRotationEuler = vec(newRotationEulerX, newRotationEulerY, newRotationEulerZ);*/
 
@@ -453,8 +502,14 @@ update_status UIFunctions::Update(float dt)
 							rotation.w = 1;
 							rotation = rotation * rotationDelta;*/
 
-							this->rotationEuler = newRotationEuler;
-
+							//this->rotationEuler = newRotationEuler;
+							if (editingModeWorld)
+							{
+								editorObject->transform->rotationEulerWorld = newRotationEuler;
+							}
+							{
+								editorObject->transform->rotationEulerLocal = newRotationEuler;
+							}
 						
 							//transform desired rotation from euler to quaternion [editor euler angles]
 							Quat rotatorQuat = Quat::FromEulerXYZ(newRotationEuler.x, newRotationEuler.y, newRotationEuler.z);
@@ -503,16 +558,30 @@ update_status UIFunctions::Update(float dt)
 
 							resMat.transpose();
 
-							editorObject->transform->rotation = resMat;
+							if (editingModeWorld)
+							{
+								editorObject->transform->rotationWorld = resMat;
 
-							//editorObject->transform->Set4x4Matrix(App->renderer3D->ProjectionMatrix * );
-							editorObject->transform->ApplyTransformations();
+								editorObject->transform->ApplyTransformationsWorld();
+							}
+							else
+							{
+								editorObject->transform->rotationLocal = resMat;
 
-							/*vec3 finalRotation = (newRotationEuler.x, newRotationEuler.y , newRotationEuler.z);*/
+								editorObject->transform->ApplyTransformationsLocal();
 
-							Quat returnQuat(tempRotationQuat->w, tempRotationQuat->x, tempRotationQuat->y, tempRotationQuat->z);
-							editorObject->SetRotationQuat(returnQuat);
-							//editorObject->transform->SetScale(tempScale->x, tempScale->y, tempScale->z);
+							}
+
+							//Quat returnQuat(tempRotationQuat->w, tempRotationQuat->x, tempRotationQuat->y, tempRotationQuat->z);
+							//
+							//if (editingModeWorld)
+							//{
+							//	editorObject->transform->rotationEulerWorld = returnQuat;
+							//}
+							//else
+							//{
+							//	editorObject->transform->rotationEulerLocal = returnQuat;
+							//}
 
 							delete tempMat;
 							delete tempScale;
@@ -531,63 +600,179 @@ update_status UIFunctions::Update(float dt)
 
 						/*float3 newScale = scale;*/
 
-						float newScaleX = editorObject->transform->transformLocal.scaling().x;
-						float newScaleY = editorObject->transform->transformLocal.scaling().y;
-						float newScaleZ = editorObject->transform->transformLocal.scaling().z;
+						float newScaleX = editorObject->transform->scalingWorld.scaling().x;
+						float newScaleY = editorObject->transform->scalingWorld.scaling().y;
+						float newScaleZ = editorObject->transform->scalingWorld.scaling().z;
+						if (!editingModeWorld)
+						{
+							newScaleX = editorObject->transform->scalingLocal.scaling().x;
+							newScaleY = editorObject->transform->scalingLocal.scaling().y;
+							newScaleZ = editorObject->transform->scalingLocal.scaling().z;
+						}
 
 						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
 
 						if (ImGui::DragFloat3("Scale", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
-							this->scale = newScale;
-							editorObject->transform->transformLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
-							editorObject->transform->ApplyTransformations();
+							//this->scale = newScale;
+							
+							if (editingModeWorld)
+							{
+								editorObject->transform->scalingWorld.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
+								editorObject->transform->ApplyTransformationsWorld();
+							}
+							else
+							{
+								editorObject->transform->scalingLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
+								editorObject->transform->ApplyTransformationsLocal();
+
+							}
 
 						}
 
-						if (ImGui::Button(("Reset Transform"), ImVec2(150, 30)))
+
+						if (ImGui::Button(("Reset Local Transform"), ImVec2(150, 30)))
 						{
-							editorObject->transform->Set4x4Matrix(IdentityMatrix);
-							editorObject->transform->translation = IdentityMatrix;
-							editorObject->transform->rotation = IdentityMatrix;
+							editorObject->transform->translationLocal = IdentityMatrix;
+							editorObject->transform->rotationLocal = IdentityMatrix;
+							editorObject->transform->rotationEulerLocal = float3(0, 0, 0);
+							editorObject->transform->scalingLocal = IdentityMatrix;
 							editorObject->transform->transformLocal = IdentityMatrix;
 						}
 
+						if (ImGui::Button(("Reset World Transform"), ImVec2(150, 30)))
+						{
+							editorObject->transform->translationWorld = IdentityMatrix;
+							editorObject->transform->rotationWorld = IdentityMatrix;
+							editorObject->transform->rotationEulerWorld = float3(0, 0, 0);
+							editorObject->transform->scalingWorld = IdentityMatrix;
+							editorObject->transform->transformWorld = IdentityMatrix;
+						}
 						
-						mat4x4 debugMat = editorObject->transform->rotation;
+						float3 debugRot = editorObject->transform->rotationEulerWorld;
+						if (!editingModeWorld)
+							debugRot = editorObject->transform->rotationEulerLocal;
+
+						ImGui::Text("Editor Object Rotation:");
+						ImGui::Text(std::to_string(debugRot[0]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugRot[1]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugRot[2]).c_str());
+
+						mat4x4 debugMat1 = editorObject->transform->translationWorld;
+						if (!editingModeWorld)
+							debugMat1 = editorObject->transform->translationLocal;
+
+						ImGui::Text("Translation:");
+						ImGui::Text(std::to_string(debugMat1[0]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[1]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[2]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[3]).c_str());
+
+						ImGui::Text(std::to_string(debugMat1[4]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[5]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[6]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[7]).c_str());
+
+						ImGui::Text(std::to_string(debugMat1[8]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[9]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[10]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[11]).c_str());
+
+						ImGui::Text(std::to_string(debugMat1[12]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[13]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[14]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat1[15]).c_str());
 
 
-						ImGui::Text(std::to_string(debugMat[0]).c_str());
-						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[1]).c_str());
-						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[2]).c_str());
-						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[3]).c_str());
+						mat4x4 debugMat2 = editorObject->transform->rotationWorld;
+						if (!editingModeWorld)
+							debugMat1 = editorObject->transform->rotationLocal;
 
-						ImGui::Text(std::to_string(debugMat[4]).c_str());
+						ImGui::Text("Rotation:");
+						ImGui::Text(std::to_string(debugMat2[0]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[5]).c_str());
+						ImGui::Text(std::to_string(debugMat2[1]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[6]).c_str());
+						ImGui::Text(std::to_string(debugMat2[2]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[7]).c_str());
+						ImGui::Text(std::to_string(debugMat2[3]).c_str());
 
-						ImGui::Text(std::to_string(debugMat[8]).c_str());
+						ImGui::Text(std::to_string(debugMat2[4]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[9]).c_str());
+						ImGui::Text(std::to_string(debugMat2[5]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[10]).c_str());
+						ImGui::Text(std::to_string(debugMat2[6]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[11]).c_str());
+						ImGui::Text(std::to_string(debugMat2[7]).c_str());
 
-						ImGui::Text(std::to_string(debugMat[12]).c_str());
+						ImGui::Text(std::to_string(debugMat2[8]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[13]).c_str());
+						ImGui::Text(std::to_string(debugMat2[9]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[14]).c_str());
+						ImGui::Text(std::to_string(debugMat2[10]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat[15]).c_str());
+						ImGui::Text(std::to_string(debugMat2[11]).c_str());
+
+						ImGui::Text(std::to_string(debugMat2[12]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat2[13]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat2[14]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat2[15]).c_str());
+
+						mat4x4 debugMat3 = editorObject->transform->transformWorld;
+						if (!editingModeWorld)
+							debugMat1 = editorObject->transform->transformLocal;
+
+						ImGui::Text("Scaling:");
+						ImGui::Text(std::to_string(debugMat3[0]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[1]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[2]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[3]).c_str());
+
+						ImGui::Text(std::to_string(debugMat3[4]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[5]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[6]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[7]).c_str());
+
+						ImGui::Text(std::to_string(debugMat3[8]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[9]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[10]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[11]).c_str());
+
+						ImGui::Text(std::to_string(debugMat3[12]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[13]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[14]).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(debugMat3[15]).c_str());
+
+
 						
 
 

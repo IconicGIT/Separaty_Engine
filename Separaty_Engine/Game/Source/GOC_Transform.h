@@ -20,12 +20,12 @@ public:
 	void SetScale(float x, float y, float z);
 	vec3 GetPosition() const
 	{
-		return transform.translation();
+		return transformWorld.translation();
 	}
 
 	vec3 GetScale() const
 	{
-		return transform.scaling();
+		return transformWorld.scaling();
 	}
 
 	//vec3 GetScale() const
@@ -37,16 +37,16 @@ public:
 
 	mat4x4 Get4x4Matrix() const
 	{
-		return transform;
+		return transformWorld;
 	}
 
 	void Set4x4Matrix(mat4x4 matrix) 
 	{
-		transform = matrix;
+		transformWorld = matrix;
 	}
 	mat4x4 Get4x4MatrixLocal() const
 	{
-		return transform;
+		return transformWorld;
 	}
 
 	void Set4x4MatrixLocal(mat4x4 matrix)
@@ -54,15 +54,32 @@ public:
 		transformLocal = matrix;
 	}
 
-	void ApplyTransformations()
+	void ApplyTransformationsWorld()
 	{
-		transform = translation * transformLocal * rotation;
+		transformWorld =  rotationWorld * translationWorld * scalingWorld;
+		transformLocal = transformWorld * transformLocal;
 	}
 
-	mat4x4 translation = IdentityMatrix;
-	mat4x4 rotation = IdentityMatrix;
-	mat4x4 transform = IdentityMatrix;
+	void ApplyTransformationsLocal()
+	{
+		transformWorld = translationLocal * rotationLocal * scalingLocal;
+		transformWorld = transformWorld * transformLocal;
+	}
+
+	mat4x4 translationWorld = IdentityMatrix;
+	mat4x4 rotationWorld = IdentityMatrix;
+	float3 rotationEulerWorld = float3(0, 0, 0);
+	mat4x4 scalingWorld = IdentityMatrix;
+	mat4x4 transformWorld = IdentityMatrix;
+
+	mat4x4 translationLocal = IdentityMatrix;
+	float3 rotationEulerLocal= float3(0, 0, 0);
+	mat4x4 rotationLocal = IdentityMatrix;
+	mat4x4 scalingLocal = IdentityMatrix;
 	mat4x4 transformLocal = IdentityMatrix;
+
+
+
 private:
 
 

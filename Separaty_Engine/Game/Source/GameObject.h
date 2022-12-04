@@ -61,15 +61,7 @@ public:
 		this->name = changeName;
 	}
 
-	void SetRotationQuat(Quat rotation)
-	{
-		this->rotation = rotation;
-	};
 
-	Quat GetRotationQuat() const
-	{
-		return rotation;
-	}
 
 	std::vector<GameObjectComponent*> GetComponents() const
 	{
@@ -93,9 +85,6 @@ public:
 
 private:
 	EngineSystem* engineSystem;
-
-	Quat rotation;
-
 	//This should not be here... but where???
 	//double pointers??
 	std::vector<GameObjectComponent*> components;

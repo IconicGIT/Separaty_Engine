@@ -44,12 +44,11 @@ private:
 	std::vector<GameObject*> selectedGameObjects;
 	bool is_selected = false;
 
-	float3 newRotationEuler = float3(0, 0, 0);
+	
 	float3 position;
 	Quat rotation;
-	//temp
-	
-	//
-	float3 rotationEuler;
-	float3 scale;
+
+	/*true = editing in WORLD mode
+	false = editing in LOCAL mode*/
+	bool editingModeWorld = true;
 };
