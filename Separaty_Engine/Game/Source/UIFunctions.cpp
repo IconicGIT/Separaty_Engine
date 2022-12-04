@@ -424,14 +424,11 @@ update_status UIFunctions::Update(float dt)
 						if (ImGui::DragFloat3("Location", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							this->position = newPosition;
-							editorObject->transform->translation.translate(newPosition.x, + newPosition.y, + newPosition.z);
+							editorObject->transform->translation.translate(newPosition.x, /*+*/ newPosition.y, /*+*/ newPosition.z);
 							editorObject->transform->ApplyTransformations();
-
-
 						}
 
 						
-
 			/*			float newRotationEulerX = editorObject->GetRotationQuat().ToEulerXYZ().x;
 						float newRotationEulerY = editorObject->GetRotationQuat().ToEulerXYZ().y;
 						float newRotationEulerZ = editorObject->GetRotationQuat().ToEulerXYZ().z;*/
@@ -543,7 +540,7 @@ update_status UIFunctions::Update(float dt)
 						if (ImGui::DragFloat3("Scale", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							this->scale = newScale;
-							editorObject->transform->transformLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y*/ + newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
+							editorObject->transform->transformLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
 							editorObject->transform->ApplyTransformations();
 
 						}
@@ -553,6 +550,7 @@ update_status UIFunctions::Update(float dt)
 							editorObject->transform->Set4x4Matrix(IdentityMatrix);
 							editorObject->transform->translation = IdentityMatrix;
 							editorObject->transform->rotation = IdentityMatrix;
+							editorObject->transform->transformLocal = IdentityMatrix;
 						}
 
 						

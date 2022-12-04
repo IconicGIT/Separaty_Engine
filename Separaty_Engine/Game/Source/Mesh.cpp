@@ -99,6 +99,7 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
     {
         for (unsigned int i = 0; i < textures.size(); i++)
         {
+         
             glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
             std::string number;
@@ -112,9 +113,11 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
             glUniform1i(glGetUniformLocation(shader.ID, ("material." + name + number).c_str()), i);
             glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }
+       
     }
     
-    
+    glPolygonMode(GL_FRONT, GL_FILL);
+   
     //glActiveTexture(GL_TEXTURE0);
 
     // draw mesh
@@ -124,6 +127,7 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
 
+    glPolygonMode(GL_FRONT, GL_LINE);
 
     if (drawBbox)
     {
