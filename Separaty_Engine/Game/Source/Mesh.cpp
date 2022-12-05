@@ -89,7 +89,7 @@ void Mesh::SetupMesh()
     delete[] bboxVertices;
 }
 
-void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
+void Mesh::Draw(Shader& shader, bool wireframeActive)
 {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
@@ -115,10 +115,14 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
         }
        
     }
-    
-    glPolygonMode(GL_FRONT, GL_FILL);
+
    
     //glActiveTexture(GL_TEXTURE0);
+    if (!wireframeActive)
+    {
+        glPolygonMode(GL_FRONT, GL_FILL);
+    }
+
 
     // draw mesh
     glBindVertexArray(VAO);
@@ -133,6 +137,9 @@ void Mesh::Draw(Shader& shader/*, std::vector<Texture*> textures*/)
     {
         DrawCube(bboxPoints, Color(1, 1, 1, 1));
     }
+
+
+
 }
 
 void Mesh::DrawCube(static float3* corners, Color color)

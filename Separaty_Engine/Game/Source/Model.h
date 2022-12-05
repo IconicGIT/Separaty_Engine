@@ -19,7 +19,7 @@ public:
     Model() {};
     Model(const char* path);
     
-    void Draw(Shader& shader);
+    void Draw(Shader& shader, bool drawMode);
 
     bool Set(const char* path);
     bool Set(Model model);

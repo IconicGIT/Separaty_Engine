@@ -122,7 +122,7 @@ void GOC_MeshRenderer::Render()
 
 		myShader->SetMat4x4("model", gameObject->transform->Get4x4Matrix());
 
-		myMesh.Draw(*myShader);
+		myMesh.Draw(*myShader, App->renderer3D->atributes.Wireframe);
 
 		myShader->Unuse();
 	}

@@ -175,9 +175,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	if (atributes.Wireframe == true)
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT, GL_LINE);
 	}
-	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	else glPolygonMode(GL_FRONT, GL_FILL);
 
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
