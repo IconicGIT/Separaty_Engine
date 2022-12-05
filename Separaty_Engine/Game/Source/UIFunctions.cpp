@@ -437,11 +437,9 @@ update_status UIFunctions::Update(float dt)
 					if (ImGui::CollapsingHeader("Transform"))
 					{
 
-						/*float3 newPosition = position;*/
-
-						float newPositionX = editorObject->transform->translationWorld.translation().x;
-						float newPositionY = editorObject->transform->translationWorld.translation().y;
-						float newPositionZ = editorObject->transform->translationWorld.translation().z;
+						float newPositionX = editorObject->transform->translationLocal.translation().x;
+						float newPositionY = editorObject->transform->translationLocal.translation().y;
+						float newPositionZ = editorObject->transform->translationLocal.translation().z;
 						
 						if (!editingModeWorld)
 						{
@@ -452,31 +450,30 @@ update_status UIFunctions::Update(float dt)
 
 						float3 newPosition = vec(newPositionX, newPositionY, newPositionZ);
 
-						if (ImGui::DragFloat3("Location", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
+						ImGui::Text("Translation");
+						if (ImGui::DragFloat3(" ", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							this->position = newPosition;
 							
 							if (editingModeWorld)
 							{
-								editorObject->transform->translationWorld.translate(newPosition.x, /*+*/ newPosition.y, /*+*/ newPosition.z);
-								editorObject->transform->ApplyTransformationsWorld();
+								editorObject->transform->translationLocal.translate(newPosition.x, newPosition.y, newPosition.z);
 							}
 							else
 							{
 
-								editorObject->transform->translationLocal.translate(newPosition.x, /*+*/ newPosition.y, /*+*/ newPosition.z);
-								editorObject->transform->ApplyTransformationsLocal();
+								editorObject->transform->translationLocal.translate(newPosition.x, newPosition.y, newPosition.z);
 
 							}
+							editorObject->transform->ApplyTransformations();
 
 						}
+						if (ImGui::Button(("Reset Translation"), ImVec2(150, 20)))
+						{
+							editorObject->transform->ResetTranslation();
+						}
 
-						
-			/*			float newRotationEulerX = editorObject->GetRotationQuat().ToEulerXYZ().x;
-						float newRotationEulerY = editorObject->GetRotationQuat().ToEulerXYZ().y;
-						float newRotationEulerZ = editorObject->GetRotationQuat().ToEulerXYZ().z;*/
-
-						float3 newRotationEuler = editorObject->transform->rotationEulerWorld;
+						float3 newRotationEuler = editorObject->transform->rotationEulerLocal;
 
 						if (!editingModeWorld)
 							newRotationEuler = editorObject->transform->rotationEulerLocal;
@@ -486,41 +483,25 @@ update_status UIFunctions::Update(float dt)
 						newRotationEuler.y = RADTODEG * newRotationEuler.y;
 						newRotationEuler.z = RADTODEG * newRotationEuler.z;
 
-						/*float3 newRotationEuler = vec(newRotationEulerX, newRotationEulerY, newRotationEulerZ);*/
 
-						
-						//newRotationEuler = editorObject->GetRotationQuat().ToEulerXYZ();
-
-						if (ImGui::DragFloat3("Rotation", &newRotationEuler[0], 0.05f, 0.0f, 0.0f, "%.2f"))
+						ImGui::Text("Rotation");
+						if (ImGui::DragFloat3("", &newRotationEuler[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
 							newRotationEuler.x = DEGTORAD * newRotationEuler.x;
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
 							newRotationEuler.z = DEGTORAD * newRotationEuler.z;
 
-							/*Quat rotationDelta = Quat::FromEulerXYZ(newRotationEuler.x - rotationEuler.x, newRotationEuler.y - rotationEuler.y, newRotationEuler.z - rotationEuler.z);
-
-							rotation.w = 1;
-							rotation = rotation * rotationDelta;*/
-
-							//this->rotationEuler = newRotationEuler;
 							if (editingModeWorld)
 							{
-								editorObject->transform->rotationEulerWorld = newRotationEuler;
+								editorObject->transform->rotationEulerLocal = newRotationEuler;
 							}
 							{
 								editorObject->transform->rotationEulerLocal = newRotationEuler;
 							}
-						
-							//transform desired rotation from euler to quaternion [editor euler angles]
+
 							Quat rotatorQuat = Quat::FromEulerXYZ(newRotationEuler.x, newRotationEuler.y, newRotationEuler.z);
 							aiQuaternion rotationQuat(rotatorQuat.w, rotatorQuat.x, rotatorQuat.y, rotatorQuat.z);
 
-
-							////original vector [editorObject previous transform]
-							//aiVector3D rotateVec(1, 0, 0);
-
-							////vector rotates by using the rotation quaternion
-							//aiVector3D rotatedVector = rotationQuat.Rotate(rotateVec);
 
 							aiMatrix4x4* tempMat = new aiMatrix4x4;
 
@@ -560,49 +541,34 @@ update_status UIFunctions::Update(float dt)
 
 							if (editingModeWorld)
 							{
-								editorObject->transform->rotationWorld = resMat;
+								editorObject->transform->rotationLocal = resMat;
 
-								editorObject->transform->ApplyTransformationsWorld();
 							}
 							else
 							{
 								editorObject->transform->rotationLocal = resMat;
 
-								editorObject->transform->ApplyTransformationsLocal();
+
 
 							}
-
-							//Quat returnQuat(tempRotationQuat->w, tempRotationQuat->x, tempRotationQuat->y, tempRotationQuat->z);
-							//
-							//if (editingModeWorld)
-							//{
-							//	editorObject->transform->rotationEulerWorld = returnQuat;
-							//}
-							//else
-							//{
-							//	editorObject->transform->rotationEulerLocal = returnQuat;
-							//}
+							editorObject->transform->ApplyTransformations();
 
 							delete tempMat;
 							delete tempScale;
 							delete tempRotationQuat;
 							delete tempPosition;
 
-							/*editorObject->transform->SetRotation(newRotationEuler.x , vec3(1, 0, 0));
-							editorObject->transform->SetRotation(newRotationEuler.y , vec3(0, 1, 0));
-							editorObject->transform->SetRotation(newRotationEuler.z , vec3(0, 0, 1));*/
-
-							//* 57.29578
-							//* 57.29578
 							//* 57.29578
 						}
 
+						if (ImGui::Button(("Reset Rotation"), ImVec2(150, 20)))
+						{
+							editorObject->transform->ResetRotation();
+						}
 
-						/*float3 newScale = scale;*/
-
-						float newScaleX = editorObject->transform->scalingWorld.scaling().x;
-						float newScaleY = editorObject->transform->scalingWorld.scaling().y;
-						float newScaleZ = editorObject->transform->scalingWorld.scaling().z;
+						float newScaleX = editorObject->transform->scalingLocal.scaling().x;
+						float newScaleY = editorObject->transform->scalingLocal.scaling().y;
+						float newScaleZ = editorObject->transform->scalingLocal.scaling().z;
 						if (!editingModeWorld)
 						{
 							newScaleX = editorObject->transform->scalingLocal.scaling().x;
@@ -611,44 +577,38 @@ update_status UIFunctions::Update(float dt)
 						}
 
 						float3 newScale = vec(newScaleX, newScaleY, newScaleZ);
+						
 
-						if (ImGui::DragFloat3("Scale", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
+						ImGui::Text("Scale");
+						if (ImGui::DragFloat3("  ", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
-							//this->scale = newScale;
 							
 							if (editingModeWorld)
 							{
-								editorObject->transform->scalingWorld.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
-								editorObject->transform->ApplyTransformationsWorld();
+								editorObject->transform->scalingLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
 							}
 							else
 							{
 								editorObject->transform->scalingLocal.scale(/*editorObject->transform->GetScale().x +*/ newScale.x, /*editorObject->transform->GetScale().y +*/  newScale.y, /*editorObject->transform->GetScale().z +*/ newScale.z);
-								editorObject->transform->ApplyTransformationsLocal();
+
 
 							}
+							editorObject->transform->ApplyTransformations();
 
 						}
-
-
-						if (ImGui::Button(("Reset Local Transform"), ImVec2(150, 30)))
+						if (ImGui::Button(("Reset Scale"), ImVec2(150, 20)))
 						{
-							editorObject->transform->translationLocal = IdentityMatrix;
-							editorObject->transform->rotationLocal = IdentityMatrix;
-							editorObject->transform->rotationEulerLocal = float3(0, 0, 0);
-							editorObject->transform->scalingLocal = IdentityMatrix;
-							editorObject->transform->transformLocal = IdentityMatrix;
+							editorObject->transform->ResetScale();
 						}
 
-						if (ImGui::Button(("Reset World Transform"), ImVec2(150, 30)))
+						ImGui::Dummy(ImVec2(0, 20));
+
+						if (ImGui::Button(("Reset Transform"), ImVec2(150, 30)))
 						{
-							editorObject->transform->translationWorld = IdentityMatrix;
-							editorObject->transform->rotationWorld = IdentityMatrix;
-							editorObject->transform->rotationEulerWorld = float3(0, 0, 0);
-							editorObject->transform->scalingWorld = IdentityMatrix;
-							editorObject->transform->transformWorld = IdentityMatrix;
+							editorObject->transform->ResetMatrices();
 						}
-						
+
+
 						float3 debugRot = editorObject->transform->rotationEulerWorld;
 						if (!editingModeWorld)
 							debugRot = editorObject->transform->rotationEulerLocal;

@@ -6,7 +6,6 @@
 
 
 class GameObjectComponent;
-class GameObject;
 
 class GOC_Transform : public GameObjectComponent
 {
@@ -54,16 +53,62 @@ public:
 		transformLocal = matrix;
 	}
 
-	void ApplyTransformationsWorld()
+	void ApplyTransformationsWorld();
+
+	void ApplyTransformations();
+	
+
+
+	void ResetMatrices()
 	{
-		transformWorld =  rotationWorld * translationWorld * scalingWorld;
-		transformLocal = transformWorld * transformLocal;
+		translationLocal = IdentityMatrix;
+		rotationLocal = IdentityMatrix;
+		rotationEulerLocal = float3(0, 0, 0);
+		scalingLocal = IdentityMatrix;
+		ApplyTransformations();
 	}
 
-	void ApplyTransformationsLocal()
+	void ResetTranslation()
 	{
-		transformWorld = translationLocal * rotationLocal * scalingLocal;
-		transformWorld = transformWorld * transformLocal;
+		translationLocal = IdentityMatrix;
+		ApplyTransformations();
+	}
+
+	void ResetRotation()
+	{
+		rotationLocal = IdentityMatrix;
+		rotationEulerLocal = float3(0, 0, 0);
+		ApplyTransformations();
+	}
+
+	void ResetScale()
+	{
+		scalingLocal = IdentityMatrix;
+		ApplyTransformations();
+	}
+
+	mat4x4 AddMatrices(const mat4x4& Matrix1, const mat4x4& Matrix2)
+	{
+		mat4x4 Matrix3;
+
+		Matrix3.M[0] = Matrix1.M[0] + Matrix2.M[0];
+		Matrix3.M[1] = Matrix1.M[1] + Matrix2.M[1];
+		Matrix3.M[2] = Matrix1.M[2] + Matrix2.M[2];
+		Matrix3.M[3] = Matrix1.M[3] + Matrix2.M[3];
+		Matrix3.M[4] = Matrix1.M[4] + Matrix2.M[4];
+		Matrix3.M[5] = Matrix1.M[5] + Matrix2.M[5];
+		Matrix3.M[6] = Matrix1.M[6] + Matrix2.M[6];
+		Matrix3.M[7] = Matrix1.M[7] + Matrix2.M[7];
+		Matrix3.M[8] = Matrix1.M[8] + Matrix2.M[8];
+		Matrix3.M[9] = Matrix1.M[9] + Matrix2.M[9];
+		Matrix3.M[10] = Matrix1.M[10] + Matrix2.M[10];
+		Matrix3.M[11] = Matrix1.M[11] + Matrix2.M[11];
+		Matrix3.M[12] = Matrix1.M[12] + Matrix2.M[12];
+		Matrix3.M[13] = Matrix1.M[13] + Matrix2.M[13];
+		Matrix3.M[14] = Matrix1.M[14] + Matrix2.M[14];
+		Matrix3.M[15] = Matrix1.M[15] + Matrix2.M[15];
+
+		return Matrix3;
 	}
 
 	mat4x4 translationWorld = IdentityMatrix;

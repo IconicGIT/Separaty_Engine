@@ -37,3 +37,33 @@ bool GOC_Transform::Execute()
 
 	return true;
 }
+
+void GOC_Transform::ApplyTransformations()
+{
+
+	translationWorld = translationLocal;
+	rotationWorld = rotationLocal;
+	scalingWorld = scalingLocal;
+	if (gameObject->parent != nullptr)
+	{
+		//12 13 14
+		translationWorld = AddMatrices(gameObject->parent->transform->translationWorld, translationLocal);
+		translationWorld.M[0] = translationWorld.M[5] = translationWorld.M[10] = translationWorld.M[15] = 1;
+		rotationWorld = gameObject->parent->transform->rotationWorld * rotationLocal;
+		scalingWorld = gameObject->parent->transform->scalingWorld * scalingLocal;
+	}
+
+	ApplyTransformationsWorld();
+}
+
+void GOC_Transform::ApplyTransformationsWorld()
+{
+	transformWorld =  translationWorld * rotationWorld * scalingWorld;
+
+
+	for (GameObject* go : gameObject->GetChildren())
+	{
+		go->transform->ApplyTransformations();
+	}
+
+}
