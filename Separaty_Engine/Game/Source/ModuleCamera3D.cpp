@@ -80,7 +80,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 
 	Position += newPos;
-	Reference += newPos;
+	//Reference += newPos;
 
 	// Mouse motion ----------------
 
@@ -178,6 +178,7 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 
 	CalculateViewMatrix();
 }
+
 
 // -----------------------------------------------------------------
 mat4x4 ModuleCamera3D::GetViewMatrix()

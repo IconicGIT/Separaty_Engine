@@ -3,9 +3,11 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "UIFunctions.h"
 
 class GameObject;
 class Editor;
+class UIFunctions;
 struct EngineConfig;
 
 class Hierarchy : public Module
@@ -21,8 +23,8 @@ public:
 
 	GameObject* selectedGameObject = nullptr;
 	GameObject* destinationGameObject = nullptr;
-	std::vector<GameObject*> selectedGameObjects;
 
+	UIFunctions* UImanager;
 private:
 	std::string name;
 };

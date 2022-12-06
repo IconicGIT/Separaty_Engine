@@ -35,6 +35,9 @@ public:
 	Assets* assetsWindow;
 	Output* outputWindow;
 
+	std::vector<GameObject*> selectedGameObjects;
+
+
 private:
 
 	EngineSystem* engineSystem;

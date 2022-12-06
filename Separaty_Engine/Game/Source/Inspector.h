@@ -2,8 +2,10 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "UIFunctions.h"
 
 class Editor;
+class UIFunctions;
 struct EngineConfig;
 
 class Inspector : public Module
@@ -16,10 +18,11 @@ public:
 
 	GameObject* selectedGameObject = nullptr;
 	GameObject* destinationGameObject = nullptr;
-	std::vector<GameObject*> selectedGameObjects;
 
 	float4x4 transformMatrix;
 	float4x4 transformMatrixLocal;
+
+	UIFunctions* UImanager;
 private:
 	std::string name;
 

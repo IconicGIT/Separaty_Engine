@@ -6,6 +6,7 @@
 #include "ModuleRenderer3D.h"
 #include "UIFunctions.h"
 #include "Inspector.h"
+#include "GOC_Camera.h"
 
 #include "imgui_stdlib.h"
 
@@ -14,6 +15,7 @@
 Inspector::Inspector()
 {
 	name = "Inspector";
+
 }
 
 Inspector::~Inspector()
@@ -47,11 +49,11 @@ update_status Inspector::Update(float dt)
 			int a = 0;
 		}
 
-		if (!selectedGameObjects.empty())
+		if (!UImanager->selectedGameObjects.empty())
 		{
-			GameObject* editorObject = selectedGameObjects[0];
+			GameObject* editorObject = UImanager->selectedGameObjects[0];
 
-			/*if (selectedGameObjects.size() > 1)
+			/*if (UImanager->selectedGameObjects.size() > 1)
 			{
 				editorObject = ghostObject;
 
@@ -387,20 +389,21 @@ update_status Inspector::Update(float dt)
 				break;
 				case GOC_Type::GOC_CAMERA:
 				{
-					GOC_Camera* camera = (GOC_Camera*)component;
 
 					if (ImGui::CollapsingHeader("Camera"))
 					{
-						const char* camType = frustum.type == PerspectiveFrustum ? "Perspective" : "Orthographic";
+						GOC_Camera* camera = (GOC_Camera*)component;
+						;
+						const char* camType = camera->frustum.type == PerspectiveFrustum ? "Perspective" : "Orthographic";
 						ImGui::Text("Camera type: ", camType);
-						ImGui::DragFloat("Far plane distance", &frustum.farPlaneDistance, 10, frustum.nearPlaneDistance, 2000.0f);
-						ImGui::DragFloat("Near plane distance", &frustum.nearPlaneDistance, 1, 0.1, frustum.farPlaneDistance);
+						ImGui::DragFloat("Far plane distance", &camera->frustum.farPlaneDistance, 10, camera->frustum.nearPlaneDistance, 2000.0f);
+						ImGui::DragFloat("Near plane distance", &camera->frustum.nearPlaneDistance, 1, 0.1, camera->frustum.farPlaneDistance);
 
-						float fov = frustum.verticalFov * RADTODEG;
+						float fov = camera->frustum.verticalFov * RADTODEG;
 						if (ImGui::DragFloat("FOV", &fov, 1, 55, 120))
 						{
-							frustum.verticalFov = fov * DEGTORAD;
-							frustum.horizontalFov = 2.f * atan(tan(frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
+							camera->frustum.verticalFov = fov * DEGTORAD;
+							camera->frustum.horizontalFov = 2.f * atan(tan(camera->frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
 						}
 					}
 					else
@@ -616,7 +619,7 @@ update_status Inspector::Update(float dt)
 				}
 
 			}
-			/*for (GameObject* go : selectedGameObjects)
+			/*for (GameObject* go : UImanager->selectedGameObjects)
 			{
 
 				go->CopyFromGameObject(*editorObject);

@@ -41,9 +41,11 @@ bool UIFunctions::Start()
 	showApplicationData->Start();
 
 	hierarchyWindow = new Hierarchy();
+	hierarchyWindow->UImanager = this;
 	hierarchyWindow->Start();
 
 	inspectorWindow = new Inspector();
+	inspectorWindow->UImanager = this;
 	inspectorWindow->Start();
 
 	assetsWindow = new Assets();

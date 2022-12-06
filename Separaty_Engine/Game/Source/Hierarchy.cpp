@@ -27,7 +27,7 @@ update_status Hierarchy::Update(float dt)
 
 	if (App->ui->hierarchy)
 	{
-		selectedGameObjects = App->engineSystem->GetselectedGameObjects();
+		UImanager->selectedGameObjects = App->engineSystem->GetselectedGameObjects();
 
 		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
@@ -86,7 +86,7 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 			DisplayTree(go->GetChildren()[i], flags);
 		}
 
-		selectedGameObjects.push_back(go);
+		UImanager->selectedGameObjects.push_back(go);
 
 		go->selected = true;
 
