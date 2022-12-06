@@ -12,12 +12,12 @@
 #include "TextureLoader.h"
 
 #include "glmath.h"
+#include "EngineSystem.h"
 
 class Model
 {
 public:
-    Model() {};
-    Model(const char* path);
+    Model(const char* path, EngineSystem* engineSystem);
     
     void Draw(Shader& shader, bool drawMode);
 
@@ -47,6 +47,7 @@ private:
     std::vector<Mesh> meshes;
     std::string directory = "";
 
+    EngineSystem* engineSystem;
    
 
     bool LoadModel(std::string path);

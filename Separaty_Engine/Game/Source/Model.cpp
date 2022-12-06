@@ -1,9 +1,10 @@
 #include "Model.h"
 #include <vector>
-#include "Application.h"
 
-Model::Model(const char* path) 
+
+Model::Model(const char* path, EngineSystem* engineSystem) 
 {
+    this->engineSystem = engineSystem;
     LoadModel(path);
 }
 
@@ -164,24 +165,24 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
         aiString str;
         mat->GetTexture(type, i, &str);
         bool skip = false;
-        for (unsigned int j = 0; j < textures_loaded.size(); j++)
+        for (unsigned int j = 0; j < engineSystem->GetAllTextures().size(); j++)
         {
-            if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+            if (std::strcmp(engineSystem->GetAllTextures()[j].path.c_str(), str.C_Str()) == 0)
             {
-                textures.push_back(textures_loaded[j]);
+                textures.push_back(engineSystem->GetAllTextures()[j]);
                 skip = true;
                 break;
             }
         }
         if (!skip)
         {   // if texture hasn't been loaded already, load it
-            Texture texture = LoadTexture("Assets/Project_1/Assets/Textures/baker_house.png");
-            std::string name = "baker_house.png [" + std::to_string(texture.id);
-            name += "]";
-            texture.name = name;
-            texture.type = typeName;
-            textures.push_back(texture);
-            textures_loaded.push_back(texture); // add to loaded textures
+            //Texture texture = LoadTexture("Assets/Project_1/Assets/Textures/baker_house.png");
+            //std::string name = "baker_house.png ";/*[" + std::to_string(texture.id);
+            //name += "]";*/
+            //texture.name = name;
+            //texture.type = typeName;
+            textures.push_back(engineSystem->GetAllTextures()[0]);
+            //textures_loaded.push_back(texture); // add to loaded textures
         }
     }
     return textures;

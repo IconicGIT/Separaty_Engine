@@ -222,7 +222,7 @@ bool EngineSystem::LoadModel(char* path)
 	std::string name = path_s.substr(lastBar + 1);
 
 
-	Model* modelToAdd = new Model(path);
+	Model* modelToAdd = new Model(path, this);
 	GameObject* go = App->engineSystem->currentScene->CreateNewGameObject();
 
 	GOC_MeshRenderer* renderer = nullptr;
@@ -274,7 +274,7 @@ bool EngineSystem::LoadModel(char* path)
 	meshNr = 0;
 	for (size_t i = 0; i < modelToAdd->GetTextures().size(); i++)
 	{
-		modelToAdd->GetTextures()[i].name = name + " " + std::to_string(meshNr);
+		modelToAdd->GetTextures()[i].name = name;/* + " " + std::to_string(meshNr);*/
 
 		allTextures.push_back(modelToAdd->GetTextures()[i]);
 
@@ -331,15 +331,38 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir)
 
 			std::string name = path_s.substr(lastBar + 1);
 
-			Texture tex = LoadTexture(draggedFileDir);
+			bool alreadyLoaded = false;
 
-			tex.name = name;
+			for (Texture tCmp : allTextures)
+			{
+				int b = strncmp(name.c_str(), tCmp.name.c_str(),name.length());
 
-			allTextures.push_back(tex);
+				if (b == 0)
+					alreadyLoaded = true;
 
-			ret = true;
+				if (alreadyLoaded) 
+					break;
+					
+			}
 
-			App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture (%s)", draggedFileDir));
+			if (!alreadyLoaded)
+			{
+				Texture tex = LoadTexture(draggedFileDir);
+
+				tex.name = name;
+
+				allTextures.push_back(tex);
+
+				ret = true;
+				App->ui->AppendToOutput(DEBUG_LOG("Loaded Texture [%s]. [path: %s]", name.c_str(), draggedFileDir));
+			}
+			else
+			{
+				ret = true;
+				App->ui->AppendToOutput(DEBUG_LOG("Texture [%s] is already loaded. [path: %s]", name.c_str(), draggedFileDir));
+			}
+
+			
 
 			return ret;
 		}

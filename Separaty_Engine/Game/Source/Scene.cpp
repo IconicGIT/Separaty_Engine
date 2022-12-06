@@ -69,11 +69,17 @@ bool Scene::Start()
 	}
 
 
-	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
-	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/baker_house.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 
-	
+	for (GameObject* go : gameObjects)
+	{
+		GOC_Texture* texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		texture->SetTexture(App->engineSystem->GetAllTextures()[2]);
+		texture->UpdateMeshRendererTexture();
+	}
 
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));

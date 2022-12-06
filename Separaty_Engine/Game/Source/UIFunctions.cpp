@@ -858,9 +858,23 @@ update_status UIFunctions::Update(float dt)
 								App->engineSystem->LoadFromPath(fileName);
 							}
 
+							std::string path_s = fileName;
+							int lastBar = path_s.find_last_of("\\\"");
+							if (lastBar == -1)
+							{
+								lastBar = path_s.find_last_of("/");
+							}
+
+							std::string newTex_name = path_s.substr(lastBar + 1);
+
+							
+
 							for (Texture tex : App->engineSystem->GetAllTextures())
 							{
-								if (std::strcmp(tex.path.c_str(), fileName) == 0)
+								/*char* tex_name = nullptr;
+								strncpy_s(tex_name, tex.name.length() - 4, tex.name.c_str(), tex.name.length() - 4);*/
+
+								if (std::strcmp(tex.name.c_str(), name.c_str()) == 0)
 								{
 									texture->SetTexture(tex);
 									texture->UpdateMeshRendererTexture(true);

@@ -32,8 +32,9 @@ public:
 
 	void SetTexture(Texture texture)
 	{
-		this->textures.clear();
-		this->textures.push_back(new Texture(texture));
+		if (!textures.empty()) this->textures.clear();
+		Texture* t = new Texture(texture);
+		textures.push_back(t);
 	}
 
 	void SetTextures(std::vector<Texture*> textures)
