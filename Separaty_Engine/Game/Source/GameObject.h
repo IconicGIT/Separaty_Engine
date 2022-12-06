@@ -61,10 +61,6 @@ public:
 		this->name = changeName;
 	}
 
-
-	
-
-
 	std::vector<GameObjectComponent*> GetComponents() const
 	{
 		return components;

@@ -39,7 +39,7 @@ update_status Preferences::Update(float dt)
 		{
 			if (ImGui::TreeNode("Brightness"))
 			{
-				ImGui::SliderFloat("Brightness", &App->window->brightness, 0.001f, 1.000f); //NO FUNCIONA
+				ImGui::SliderFloat("Brightness", &App->window->brightness, 0.001f, 1.000f); 
 				//App->window->UpdateBrightness();
 				ImGui::TreePop();
 
@@ -49,22 +49,22 @@ update_status Preferences::Update(float dt)
 
 			if (ImGui::TreeNode("Window Size"))
 			{
-				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) //FUNCIONA
+				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) 
 				{
 					App->window->SetFullscreen(App->window->fullScreen);
 				}
 				ImGui::SameLine();
-				if (ImGui::Checkbox("Full Desktop", &App->window->fullDesktop)) //FUNCIONA
+				if (ImGui::Checkbox("Full Desktop", &App->window->fullDesktop)) 
 				{
 					App->window->SetFullscreen(App->window->fullDesktop);
 				}
 				ImGui::Separator();
-				if (ImGui::Checkbox("Resizable  ", &App->window->resizable)) //FUNCIONA
+				if (ImGui::Checkbox("Resizable  ", &App->window->resizable)) 
 				{
 					App->window->SetResizable(App->window->resizable);
 				}
-				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 //FUNCIONA
-				ImGui::SliderInt("Height", &App->window->height, 480, 1080); //FUNCIONA
+				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 
+				ImGui::SliderInt("Height", &App->window->height, 480, 1080); 
 				//App->window->UpdateWindowSize();
 
 				ImGui::TreePop();

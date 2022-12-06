@@ -19,9 +19,6 @@
     <Filter Include="Source\External\JSON">
       <UniqueIdentifier>{41cfc0d5-cf64-4906-aaf4-0a761c176b6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Components">
-      <UniqueIdentifier>{491f45fb-b12a-457a-a5db-9b8878bdd4c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Model Loading">
       <UniqueIdentifier>{4b5354c0-94bf-4869-870d-47eae1cb7c82}</UniqueIdentifier>
     </Filter>
@@ -31,48 +28,30 @@
     <Filter Include="Source\Graphics\Shaders">
       <UniqueIdentifier>{93c74bf0-a6cb-4008-acf2-036e5867c052}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\UI">
+      <UniqueIdentifier>{540bde04-fbba-4896-adc7-cf51f0108945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Modules">
+      <UniqueIdentifier>{25131eee-3489-4f23-bda8-473ec079a193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameObject">
+      <UniqueIdentifier>{c12b657c-2ae5-4539-987f-a2b5162a2545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameObject\Components">
+      <UniqueIdentifier>{491f45fb-b12a-457a-a5db-9b8878bdd4c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Helpers">
+      <UniqueIdentifier>{e1a717e7-07fe-4410-b388-16e910dda19f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{3e33fa9d-f2df-44c8-94e4-acc7476a39dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Color.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\glmath.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Light.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleAudio.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleCamera3D.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleRenderer3D.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleSceneIntro.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Primitive.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Log.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\MathGeoLib\Algorithm\GJK.cpp">
@@ -201,9 +180,6 @@
     <ClCompile Include="Source\External\MathGeoLib\Time\Clock.cpp">
       <Filter>Source\External\MathGeoLib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleUI.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\External\Imgui\imgui_impl_sdl.cpp">
       <Filter>Source\External\Imgui</Filter>
     </ClCompile>
@@ -234,9 +210,6 @@
     <ClCompile Include="Source\External\JSON parson\parson.c">
       <Filter>Source\External\JSON</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\EngineSystem.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -244,13 +217,10 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\GOC_MeshRenderer.cpp">
-      <Filter>Source\Components</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\GOC_Transform.cpp">
-      <Filter>Source\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UIFunctions.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Source\Model Loading</Filter>
@@ -265,54 +235,80 @@
       <Filter>Source\Model Loading</Filter>
     </ClCompile>
     <ClCompile Include="Source\GOC_Texture.cpp">
-      <Filter>Source\Components</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentCamera.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\AppData.cpp">
+      <Filter>Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ProjectPreferences.cpp" />
+    <ClCompile Include="Source\Assets.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hierarchy.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inspector.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Output.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ProjectPreferences.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIFunctions.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleUI.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GOC_Camera.cpp">
+      <Filter>Source\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleAudio.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleCamera3D.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleRenderer3D.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleSceneIntro.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Source\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>Source\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitive.cpp">
+      <Filter>Source\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glmath.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Log.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Color.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\glmath.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Globals.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleCamera3D.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleRenderer3D.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleSceneIntro.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Primitive.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Log.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\MathGeoLib\Algorithm\GJK.h">
@@ -543,9 +539,6 @@
     <ClInclude Include="Source\External\MathGeoLib\Time\Clock.h">
       <Filter>Source\External\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleUI.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3.h">
       <Filter>Source\External\Imgui</Filter>
     </ClInclude>
@@ -582,9 +575,6 @@
     <ClInclude Include="Source\External\JSON parson\parson.h">
       <Filter>Source\External\JSON</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -592,19 +582,13 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObjComponent.h">
-      <Filter>Source\Components</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\GOC_MeshRenderer.h">
-      <Filter>Source\Components</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\GOC_Transform.h">
-      <Filter>Source\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleAudio.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UIFunctions.h">
-      <Filter>Source</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\Mesh.h">
       <Filter>Source\Model Loading</Filter>
@@ -619,15 +603,80 @@
       <Filter>Source\Model Loading</Filter>
     </ClInclude>
     <ClInclude Include="Source\GOC_Texture.h">
-      <Filter>Source\Components</Filter>
+      <Filter>Source\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\Texture.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentCamera.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="Source\AppData.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ProjectPreferences.h" />
+    <ClInclude Include="Source\Assets.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hierarchy.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inspector.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Output.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectPreferences.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIFunctions.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleUI.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GOC_Camera.h">
+      <Filter>Source\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleAudio.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleCamera3D.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInput.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRenderer3D.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleSceneIntro.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleWindow.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Source\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Source\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Source\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitive.h">
+      <Filter>Source\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\glmath.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Log.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\External\MathGeoLib\Geometry\KDTree.inl">

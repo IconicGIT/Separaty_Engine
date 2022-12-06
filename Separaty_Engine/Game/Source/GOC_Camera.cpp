@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include "ComponentCamera.h"
+#include "GOC_Camera.h"
 #include "GameObject.h"
 
 #include "Geometry/Frustum.h"

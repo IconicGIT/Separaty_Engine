@@ -161,9 +161,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AppData.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Assets.cpp" />
     <ClCompile Include="Source\Color.cpp" />
-    <ClCompile Include="Source\ComponentCamera.cpp" />
+    <ClCompile Include="Source\GOC_Camera.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_draw.cpp" />
@@ -221,6 +223,8 @@
     <ClCompile Include="Source\GOC_MeshRenderer.cpp" />
     <ClCompile Include="Source\GOC_Texture.cpp" />
     <ClCompile Include="Source\GOC_Transform.cpp" />
+    <ClCompile Include="Source\Hierarchy.cpp" />
+    <ClCompile Include="Source\Inspector.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -233,6 +237,7 @@
     <ClCompile Include="Source\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source\ModuleUI.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\Output.cpp" />
     <ClCompile Include="Source\Primitive.cpp" />
     <ClCompile Include="Source\ProjectPreferences.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -243,9 +248,11 @@
     <ClCompile Include="Source\UIFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AppData.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Assets.h" />
     <ClInclude Include="Source\Color.h" />
-    <ClInclude Include="Source\ComponentCamera.h" />
+    <ClInclude Include="Source\GOC_Camera.h" />
     <ClInclude Include="Source\External\Imgui\imconfig.h" />
     <ClInclude Include="Source\External\Imgui\imgui.h" />
     <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3.h" />
@@ -341,6 +348,8 @@
     <ClInclude Include="Source\GOC_MeshRenderer.h" />
     <ClInclude Include="Source\GOC_Texture.h" />
     <ClInclude Include="Source\GOC_Transform.h" />
+    <ClInclude Include="Source\Hierarchy.h" />
+    <ClInclude Include="Source\Inspector.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Mesh.h" />
@@ -353,6 +362,7 @@
     <ClInclude Include="Source\ModuleSceneIntro.h" />
     <ClInclude Include="Source\ModuleUI.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\Output.h" />
     <ClInclude Include="Source\Primitive.h" />
     <ClInclude Include="Source\ProjectPreferences.h" />
     <ClInclude Include="Source\Scene.h" />

@@ -1,5 +1,5 @@
 #include "EngineSystem.h"
-#include "ComponentCamera.h"
+#include "GOC_Camera.h"
 
 EngineSystem::EngineSystem()
 {
