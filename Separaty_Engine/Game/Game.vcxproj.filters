@@ -267,6 +267,10 @@
     <ClCompile Include="Source\GOC_Texture.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ComponentCamera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ProjectPreferences.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -620,6 +624,10 @@
     <ClInclude Include="Source\Texture.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectPreferences.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\External\MathGeoLib\Geometry\KDTree.inl">

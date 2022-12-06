@@ -56,11 +56,13 @@ public:
 		return name;
 	}
 
-	void ChangeName(const char* changeName) 
+	void ChangeName(std::string changeName) 
 	{
 		this->name = changeName;
 	}
 
+
+	
 
 
 	std::vector<GameObjectComponent*> GetComponents() const

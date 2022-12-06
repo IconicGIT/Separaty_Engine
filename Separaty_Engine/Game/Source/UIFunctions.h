@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "MathGeoLib/Math/Quat.h"
+#include "ProjectPreferences.h"
 class EngineSystem;
 class GameObject;
 
@@ -18,7 +19,10 @@ public:
 
 	~UIFunctions();
 
+	bool Start();
 	update_status Update(float dt) override;
+
+	Preferences* showPreferences;
 
 	//Hierarchy
 	void DisplayTree(GameObject* go, int flags);
@@ -44,6 +48,7 @@ private:
 	std::vector<GameObject*> selectedGameObjects;
 	bool is_selected = false;
 
+	Frustum frustum;
 	
 	float3 position;
 	Quat rotation;

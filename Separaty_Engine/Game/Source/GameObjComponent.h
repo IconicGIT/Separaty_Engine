@@ -7,6 +7,7 @@ class GameObject;
 class GOC_MeshRenderer;
 class GOC_Transform;
 class GOC_Texture;
+class GOC_Camera;
 
 enum class GOC_Type
 {
@@ -14,6 +15,7 @@ enum class GOC_Type
 	GOC_TRANSFORM = 0,
 	GOC_MESH_RENDERER = 1,
 	GOC_TEXTURE = 2,
+	GOC_CAMERA = 3,
 };
 
 

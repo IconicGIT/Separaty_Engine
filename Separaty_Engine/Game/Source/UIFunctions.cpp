@@ -6,6 +6,7 @@
 #include "GOC_Transform.h"
 #include "GOC_MeshRenderer.h"
 #include "GOC_Texture.h"
+#include "ComponentCamera.h"
 
 #include "imgui_stdlib.h"
 #include "scene.h"
@@ -31,86 +32,21 @@ UIFunctions::~UIFunctions()
 
 }
 
+bool UIFunctions::Start()
+{
+	showPreferences = new Preferences();
+	showPreferences->Start();
+
+	return true;
+}
 
 update_status UIFunctions::Update(float dt)
 {
-	ImVec2 windowSize = ImVec2(0,0);
-
-	//for (gameObject->selected)
-	//{
-
-	//}
-
-
+	ImVec2 windowSize = ImVec2(0,0); 
 
 	//PROJECT PREFERENCES
-
-	if (App->ui->showPreferences)
-	{
-		ImGui::Begin("Preferences...", &App->ui->showPreferences);
-
-		if (ImGui::TreeNode("Style"))
-		{
-			ImGui::ShowStyleEditor();
-			ImGui::TreePop();
-			
-		}
-		ImGui::Separator();
-
-		if (ImGui::TreeNode("Window Settings"))
-		{
-			if (ImGui::TreeNode("Brightness"))
-			{
-				ImGui::SliderFloat("Brightness", &App->window->brightness, 0.001f, 1.000f); //NO FUNCIONA
-				//App->window->UpdateBrightness();
-				ImGui::TreePop();
-
-
-			}
-			ImGui::Separator();
-
-			if (ImGui::TreeNode("Window Size"))
-			{
-				if (ImGui::Checkbox("Full Screen", &App->window->fullScreen)) //FUNCIONA
-				{
-					App->window->SetFullscreen(App->window->fullScreen);
-				}
-				ImGui::SameLine();
-				if (ImGui::Checkbox("Full Desktop", &App->window->fullDesktop)) //FUNCIONA
-				{
-					App->window->SetFullscreen(App->window->fullDesktop);
-				}
-				ImGui::Separator();
-				if (ImGui::Checkbox("Resizable  ", &App->window->resizable)) //FUNCIONA
-				{
-					App->window->SetResizable(App->window->resizable);
-				}
-				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 //FUNCIONA
-				ImGui::SliderInt("Height", &App->window->height, 480, 1080); //FUNCIONA
-				//App->window->UpdateWindowSize();
-
-				ImGui::TreePop();
-			}
-			ImGui::Separator();
-
-			if (ImGui::TreeNode("Vsync"))
-			{
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Refresh rate: %d", App->window->maxFPS);
-				ImGui::SameLine();
-				if (ImGui::Checkbox("Vsync", &App->window->vsync))
-				{
-					App->window->SetVsync(App->window->vsync);
-				}
-				App->window->FPSGraph(dt, 60);
-				App->window->MSGraph(dt, 60);
-
-				ImGui::TreePop();
-			}
-			ImGui::TreePop();
-		}
-
-		ImGui::End();
-	}
+	showPreferences->Update(dt);
+	
 
 	//App DATA 
 	if (App->ui->showApplicationData)
@@ -736,6 +672,30 @@ update_status UIFunctions::Update(float dt)
 						
 
 
+					}
+				}
+				break;
+				case GOC_Type::GOC_CAMERA:
+				{
+					GOC_Camera* camera = (GOC_Camera*)component;
+					
+					if (ImGui::CollapsingHeader("Camera"))
+					{
+						const char* camType = frustum.type == PerspectiveFrustum ? "Perspective" : "Orthographic";
+						ImGui::Text("Camera type: ", camType);
+						ImGui::DragFloat("Far plane distance", &frustum.farPlaneDistance, 10, frustum.nearPlaneDistance, 2000.0f);
+						ImGui::DragFloat("Near plane distance", &frustum.nearPlaneDistance, 1, 0.1, frustum.farPlaneDistance);
+
+						float fov = frustum.verticalFov * RADTODEG;
+						if (ImGui::DragFloat("FOV", &fov, 1, 55, 120))
+						{
+							frustum.verticalFov = fov * DEGTORAD;
+							frustum.horizontalFov = 2.f * atan(tan(frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
+						}
+					}
+					else
+					{
+						ImGui::Text("Invalid camera type");
 					}
 				}
 				break;

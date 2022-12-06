@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\ComponentCamera.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\External\Imgui\imgui_draw.cpp" />
@@ -233,6 +234,7 @@
     <ClCompile Include="Source\ModuleUI.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
     <ClCompile Include="Source\Primitive.cpp" />
+    <ClCompile Include="Source\ProjectPreferences.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\EngineSystem.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
@@ -243,6 +245,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Color.h" />
+    <ClInclude Include="Source\ComponentCamera.h" />
     <ClInclude Include="Source\External\Imgui\imconfig.h" />
     <ClInclude Include="Source\External\Imgui\imgui.h" />
     <ClInclude Include="Source\External\Imgui\imgui_impl_opengl3.h" />
@@ -351,6 +354,7 @@
     <ClInclude Include="Source\ModuleUI.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
     <ClInclude Include="Source\Primitive.h" />
+    <ClInclude Include="Source\ProjectPreferences.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\EngineSystem.h" />
     <ClInclude Include="Source\Shader.h" />

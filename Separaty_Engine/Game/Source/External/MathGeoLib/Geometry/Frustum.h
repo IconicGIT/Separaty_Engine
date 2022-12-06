@@ -94,6 +94,7 @@ enum FrustumHandedness
 class Frustum
 {
 private:
+public:
 	/// Specifies whether this frustum is a perspective or an orthographic frustum.
 	/** [noscript] @todo Remove the noscript attribute. */
 	FrustumType type;
@@ -103,11 +104,11 @@ private:
 	FrustumHandedness handedness;
 	/// The eye point of this frustum.
 	/** Specifies the position of the camera (the eye point) for this frustum in world (global) space. */
-	vec pos;
+	float3 pos;
 	/// The normalized direction this frustum is watching towards. [similarOverload: pos]
 	/** This vector is specified in world (global) space. This vector is always normalized.
 		If you assign to this member directly, be sure to only assign normalized vectors. */
-	vec front;
+	float3 front;
 	/// The normalized up direction for this frustum. [similarOverload: pos]
 	/** This vector is specified in world (global) space. This vector is always normalized.
 		If you assign to this member directly, be sure to only assign normalized vectors.
@@ -116,7 +117,7 @@ private:
 		preserve the condition that front and up are always perpendicular.
 		@note In the _local_ space of the Frustum, the direction +Y is _always_ the up direction and cannot be changed. This
 		coincides to how Direct3D and OpenGL view and projection matrices are constructed. */
-	vec up;
+	float3 up;
 	/// Distance from the eye point to the front plane.
 	/** This parameter must be positive. If perspective projection is used, this parameter must be strictly positive
 		(0 is not allowed). If orthographic projection is used, 0 is possible (but uncommon, and not recommended).
@@ -158,8 +159,6 @@ private:
 	float3x4 worldMatrix;
 	float4x4 projectionMatrix;
 	float4x4 viewProjMatrix;
-
-public:
 	/// The default constructor creates an uninitialized Frustum object.
 	/** This means that the values of the members type, projectiveSpace, handedness, pos, front, up, nearPlaneDistance, farPlaneDistance, horizontalFov/orthographicWidth and
 		verticalFov/orthographicHeight are all NaN after creating a new Frustum using this

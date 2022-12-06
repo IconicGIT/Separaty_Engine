@@ -63,7 +63,7 @@ bool ModuleUI::Init()
 
 bool ModuleUI::Start()
 {
-	
+	uiFunctions->Start();
 
 	return true;
 }

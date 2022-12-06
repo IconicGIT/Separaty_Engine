@@ -74,6 +74,7 @@ bool Scene::Start()
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/baker_house.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 
+
 	for (GameObject* go : gameObjects)
 	{
 		GOC_Texture* texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
@@ -81,6 +82,11 @@ bool Scene::Start()
 		texture->UpdateMeshRendererTexture();
 	}
 
+	GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+	camera->AddComponent(GOC_Type::GOC_CAMERA);
+
+
+	
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
 

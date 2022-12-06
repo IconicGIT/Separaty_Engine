@@ -1,4 +1,5 @@
 #include "EngineSystem.h"
+#include "ComponentCamera.h"
 
 EngineSystem::EngineSystem()
 {
@@ -198,6 +199,15 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 		GOC_Texture* comp = new GOC_Texture(goAttached);
 		allGameObjectComponents.push_back((GOC_Texture*)comp);
 		return (GOC_Texture*)comp;
+	}
+	break;
+	case GOC_Type::GOC_CAMERA:
+	{
+		
+		GOC_Camera* comp = new GOC_Camera(goAttached);
+		allGameObjectComponents.push_back((GOC_Camera*)comp);
+		return (GOC_Camera*)comp;
+		
 	}
 	break;
 	default:
