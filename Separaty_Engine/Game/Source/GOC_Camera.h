@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Globals.h"
 #include <vector>
+#include "GameObjComponent.h";
 
 
 #include "Glew/include/GL/glew.h"
