@@ -14,14 +14,13 @@ public:
 
 	update_status Update(float dt)override;
 
+	void ResourceManagment(const char* root_directory, const char* extension_to_filter);
+
 	void LookFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
+
 
 private:
 	std::string name;
 
 	char* display;
-
-	const char* roots = "Assets/";
-
-	const char* extension_to_filter = ".meta";
 };
