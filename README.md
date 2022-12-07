@@ -274,11 +274,11 @@ The camera component has been well implemented and perfectly follows all its req
 
 On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected.
 
-
+The frustum culling is partially implemented, with the implementation of the detection of the points of the objects in process.
 
 - **Resource Management (includes inspector editing of component mesh & material)**
 
 There is an “Assets” window that shows all user assets by a simple tree viewer, however we have left it commented waiting to resolve a doubt in the following class.
 
-In addition, the screen where the imported assets are loaded can be found in the inspector. In each component of the object the appropriate asset is loaded properly once imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
+In addition, the screen where the imported assets are loaded can be found in the inspector. In each component we can found the appropriate asset loaded properly once imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
 
