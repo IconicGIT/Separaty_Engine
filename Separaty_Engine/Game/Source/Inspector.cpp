@@ -7,6 +7,7 @@
 #include "UIFunctions.h"
 #include "Inspector.h"
 #include "GOC_Camera.h"
+#include "ModuleCamera3D.h"
 
 #include "imgui_stdlib.h"
 
@@ -389,7 +390,7 @@ update_status Inspector::Update(float dt)
 					if (ImGui::CollapsingHeader("Camera"))
 					{
 						GOC_Camera* camera = (GOC_Camera*)component;
-						;
+	
 						const char* camType = camera->frustum.type == PerspectiveFrustum ? "Perspective" : "Orthographic";
 						ImGui::Text("Camera type: ", camType);
 						ImGui::DragFloat("Far plane distance", &camera->frustum.farPlaneDistance, 10, camera->frustum.nearPlaneDistance, 2000.0f);
@@ -401,6 +402,14 @@ update_status Inspector::Update(float dt)
 							camera->frustum.verticalFov = fov * DEGTORAD;
 							camera->frustum.horizontalFov = 2.f * atan(tan(camera->frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
 						}
+
+						ImGui::Checkbox("Editor Camera", &camera->isCurrent);
+												
+						if (camera->isCurrent)
+						{
+							App->camera->camera = camera;
+						}
+						
 					}
 					else
 					{

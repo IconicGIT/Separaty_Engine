@@ -31,8 +31,6 @@ private:
 	void CalculateViewMatrix();
 	void Zoom(const float& zoom_speed);
 
-	
-
 	//void SetZoomSpeed(const float& zoom_speed);
 	//float GetZoomSpeed() const;
 
@@ -42,9 +40,11 @@ public:
 	
 	vec3 X, Y, Z, Position, currentReference, rotateAroundReference;
 
+	GOC_Camera* camera;
+
 private:
 	/*LCG lcg;*/
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 
-	GOC_Camera* camera = nullptr;
+
 };

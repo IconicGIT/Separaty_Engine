@@ -54,6 +54,7 @@ public:
 
 	vec3 X, Y, Z, Position, Reference;
 
+	bool isCurrent = false;
 
 	vec3 front = (0, 0, 1);
 private:
