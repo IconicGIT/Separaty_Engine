@@ -242,15 +242,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - **Transformation and Game Object hierarchy**
 
-We have implemented the transforms and the game object hierarchy as requested in this Assignment, always trying to respect the parents and the childs since we believe that it is an important part to take into account when we talk about game objects.
+We have implemented the transforms and the game object hierarchy as requested in this Assignment, always trying to respect the parents and the childs since we believe that it is an important part to take into account when we talk about the transform of a game objects.
 
-We are also in the process of implementing an option to do Drag and Drop in the hierarchy itself, so that objects can be placed as parts and children of others directly from there.
+We are also in the process of implementing an option to do Drag and Drop the names of the game objects the hierarchy itself, in order to be able to place objects as parents/children of other objects directly from there.
 
 - **Custom file format**
 
 Still in progress.
 
-- Game viewport & editor viewport
+- **Game viewport & editor viewport**
 
 We have implemented a camera switch between the engine editor camera and the camera known as the game camera.
 
@@ -260,7 +260,7 @@ Despite this, we are still implementing a method to be able to visualize the 2 c
 
 At this point, both the camera and the scene are perfectly saved in the json file. 
 
-The only problem that we have found has been at the moment of loading back the information from the json file. As the saved json position is not implemented in the object position matrix. The same goes for scale and rotation.
+The only problem that we have found has been at the moment of loading back the information from the json file. As the saved json position is not implemented in the object transform matrix. The same goes for scale and rotation.
 
 - **Play / Stop**
 
@@ -277,4 +277,8 @@ On the other hand, we have implemented the mouse picking, but it should be noted
 
 
 - **Resource Management (includes inspector editing of component mesh & material)**
+
+There is an “Assets” window that shows all user assets by a simple tree viewer, however we have left it commented waiting to resolve a doubt in the following class.
+
+In addition, the screen where the imported assets are loaded can be found in the inspector. In each component of the object the appropriate asset is loaded properly once imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
 
