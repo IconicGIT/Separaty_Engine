@@ -4,6 +4,10 @@
 #include "glmath.h"
 #include "MathGeoLib.h"
 #include "MathGeoLibFwd.h"
+#include "GOC_Camera.h"
+
+#include "GameObject.h"
+#include "GameObjComponent.h"
 
 class ModuleCamera3D : public Module
 {
@@ -36,9 +40,11 @@ private:
 
 public:
 	
-	vec3 X, Y, Z, Position, Reference;
+	vec3 X, Y, Z, Position, currentReference, rotateAroundReference;
 
 private:
 	/*LCG lcg;*/
 	mat4x4 ViewMatrix, ViewMatrixInverse;
+
+	GOC_Camera* camera = nullptr;
 };

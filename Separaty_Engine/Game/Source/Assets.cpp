@@ -24,7 +24,7 @@ update_status Assets::Update(float dt)
 {
 	if (App->ui->assets)
 	{
-		ImGui::Begin("Assets", &App->ui->assets);
+		ImGui::Begin("Assets", &App->ui->assets, ImGuiWindowFlags_NoMove);
 
 		ImGui::End();
 	}

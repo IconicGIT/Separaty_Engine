@@ -15,8 +15,9 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-	Position = vec3(0.0f, 0.0f, 5.0f);
-	Reference = vec3(0.0f, 0.0f, 0.0f);
+	Position = vec3(0.0f, 0.0f, 1.0f);
+	currentReference = vec3(0.0f, 0.0f, 0.0f);
+	rotateAroundReference = vec3(0.0f, 0.0f, 0.0f);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -69,7 +70,7 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			if (go->selected)
 			{
-				LookAt(go->transform->GetPosition());
+				LookAt(go->transform->translationLocal.translation());
 			}
 			else
 			{
@@ -80,7 +81,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 
 	Position += newPos;
-	//Reference += newPos;
+	currentReference += newPos;
 
 	// Mouse motion ----------------
 
@@ -91,7 +92,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		float Sensitivity = 0.25f;
 
-		Position -= Reference;
+		Position -= currentReference;
 
 		if(dx != 0)
 		{
@@ -116,7 +117,38 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 		}
 
-		Position = Reference + Z * length(Position);
+		Position = currentReference + Z * length(Position);
+	}
+
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
+		float Sensitivity = 0.25f;
+
+		if (dx != 0)
+		{
+			float DeltaX = (float)dx * Sensitivity;
+
+			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		}
+
+		if (dy != 0)
+		{
+			float DeltaY = (float)dy * Sensitivity;
+
+			Y = rotate(Y, DeltaY, X);
+			Z = rotate(Z, DeltaY, X);
+
+			if (Y.y < 0.0f)
+			{
+				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = cross(Z, X);
+			}
+		}
 	}
 
 	//zoomSpeed = App->camera->GetZoomSpeed();
@@ -135,6 +167,10 @@ update_status ModuleCamera3D::Update(float dt)
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
+	glBegin(GL_POINT);
+	glVertex3f(currentReference.x, currentReference.y, currentReference.z);
+	glEnd();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -142,7 +178,7 @@ update_status ModuleCamera3D::Update(float dt)
 void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
 	this->Position = Position;
-	this->Reference = Reference;
+	this->currentReference = Reference;
 
 	Z = normalize(Position - Reference);
 	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
@@ -150,7 +186,7 @@ void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool Rota
 
 	if(!RotateAroundReference)
 	{
-		this->Reference = this->Position;
+		this->currentReference = this->Position;
 		this->Position += Z * 0.05f;
 	}
 
@@ -160,11 +196,13 @@ void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool Rota
 // -----------------------------------------------------------------
 void ModuleCamera3D::LookAt( const vec3 &Spot)
 {
-	Reference = Spot;
+	currentReference = Spot;
 
-	Z = normalize(Position - Reference);
+	Z = normalize(Position - currentReference);
 	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
 	Y = cross(Z, X);
+
+	Position = (Spot.x - 10, Spot.y + 2, Spot.z + 10);
 
 	CalculateViewMatrix();
 }
@@ -174,7 +212,7 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 void ModuleCamera3D::Move(const vec3 &Movement)
 {
 	Position += Movement;
-	Reference += Movement;
+	currentReference += Movement;
 
 	CalculateViewMatrix();
 }

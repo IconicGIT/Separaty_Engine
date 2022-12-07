@@ -28,9 +28,9 @@ update_status Output::Update(float dt)
 
 	if (App->ui->showOutput)
 	{
-		ImGui::Begin("Output", &App->ui->showOutput);
-		windowSize = ImVec2(App->ui->screenX, App->ui->screenY / 4);
-		ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.5f, (io.DisplaySize.y - windowSize.y)));
+		ImGui::Begin("Output", &App->ui->showOutput, ImGuiWindowFlags_NoMove);
+		windowSize = ImVec2(App->ui->screenX / 1.221, App->ui->screenY / 4);
+		ImGui::SetNextWindowPos(ImVec2(0, (io.DisplaySize.y - windowSize.y) + 0.80f));
 		ImGui::SetNextWindowSize(windowSize);
 		App->ui->PrintOutputList();
 

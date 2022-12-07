@@ -421,20 +421,24 @@ update_status ModuleUI::Update(float dt)
 			}
 			ImGui::Separator();
 			
-			
 			if (ImGui::MenuItem("Show Output"))
 			{
 				showOutput = !showOutput;
 			}
 			ImGui::Separator();
 
-			if (showOutput)
+			if (ImGui::MenuItem("Play & Stop"))
 			{
-				/*ImVec2 textSize = ImGui::CalcTextSize("Console");
-				ImVec2 windowSize = ImVec2(screenX, screenY / 4);
-				ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.5f, (io.DisplaySize.y - windowSize.y)));
-				ImGui::SetNextWindowSize(windowSize);*/
+				playStop = !playStop;
 			}
+
+			//if (showOutput)
+			//{
+			//	/*ImVec2 textSize = ImGui::CalcTextSize("Console");
+			//	ImVec2 windowSize = ImVec2(screenX, screenY / 4);
+			//	ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.5f, (io.DisplaySize.y - windowSize.y)));
+			//	ImGui::SetNextWindowSize(windowSize);*/
+			//}
 			ImGui::EndMenu();
 		}
 

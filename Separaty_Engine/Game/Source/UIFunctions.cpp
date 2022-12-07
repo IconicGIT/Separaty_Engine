@@ -48,11 +48,16 @@ bool UIFunctions::Start()
 	inspectorWindow->UImanager = this;
 	inspectorWindow->Start();
 
+	playStopWindow = new PlayStop();
+	playStopWindow->Start();
+
 	assetsWindow = new Assets();
 	assetsWindow->Start();
 
 	outputWindow = new Output();
 	outputWindow->Start();
+
+	
 
 	return true;
 }
@@ -72,9 +77,13 @@ update_status UIFunctions::Update(float dt)
 
 	inspectorWindow->Update(dt);
 
+	playStopWindow->Update(dt);
+
 	assetsWindow->Update(dt);
 
 	outputWindow->Update(dt);
+
+	
 
 
 	//NO SE QUE QUERRAS HACER CON LAS PRIMITIVES, DE MOMENTO LAS DEJO AQUI, PORQUE AUN SE TIENEN QUE MDOIFICAR Y DEMAS.

@@ -29,7 +29,7 @@ update_status Hierarchy::Update(float dt)
 	{
 		UImanager->selectedGameObjects = App->engineSystem->GetselectedGameObjects();
 
-		ImGui::Begin("Hierarchy", &App->ui->hierarchy);
+		ImGui::Begin("Hierarchy", &App->ui->hierarchy, ImGuiWindowFlags_NoMove);
 		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) * 0.0f, 18.9f));
 		ImGui::SetWindowSize(windowSize);
@@ -66,7 +66,7 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 {
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
-	DragAndDrop(go);
+	/*DragAndDrop(go);*/
 
 	Scene* currentScene = App->engineSystem->GetCurrentScene();
 

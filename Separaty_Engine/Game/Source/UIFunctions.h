@@ -10,6 +10,7 @@
 #include "Inspector.h"
 #include "Assets.h"
 #include "Output.h"
+#include "PlayStop.h"
 
 class EngineSystem;
 class GameObject;
@@ -34,6 +35,7 @@ public:
 	Inspector* inspectorWindow;
 	Assets* assetsWindow;
 	Output* outputWindow;
+	PlayStop* playStopWindow;
 
 	std::vector<GameObject*> selectedGameObjects;
 
