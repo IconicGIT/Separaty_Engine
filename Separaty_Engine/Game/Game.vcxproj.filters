@@ -240,9 +240,6 @@
     <ClCompile Include="Source\AppData.cpp">
       <Filter>Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Assets.cpp">
-      <Filter>Source\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Hierarchy.cpp">
       <Filter>Source\UI</Filter>
     </ClCompile>
@@ -304,6 +301,9 @@
       <Filter>Source\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Source\PlayStop.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets.cpp">
       <Filter>Source\UI</Filter>
     </ClCompile>
   </ItemGroup>

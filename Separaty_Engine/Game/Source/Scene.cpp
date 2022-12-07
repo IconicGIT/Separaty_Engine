@@ -215,13 +215,29 @@ bool Scene::CleanUp()
 
 }
 
-bool Scene::LoadState(JSON_Value* file)
-{
-	return true;
-
-}
-
 bool Scene::SaveState(JSON_Value* file) const
 {
+	for (GameObject* go : gameObjects)
+	{
+		if (go->parent == nullptr)
+		{
+			go->SaveState(file);
+		}
+		
+	}
+
 	return true;
 }
+bool Scene::LoadState(JSON_Value* file)
+{
+	for (GameObject* go : gameObjects)
+	{
+		if (go->parent == nullptr)
+		{
+			go->LoadState(file);
+		}
+	}
+
+	return true;
+}
+

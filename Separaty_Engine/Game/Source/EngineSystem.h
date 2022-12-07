@@ -13,7 +13,6 @@
 
 #include <Assimp/include/Importer.hpp>
 #include <Assimp/include/scene.h>
-#include <Assimp/include/postprocess.h>
 
 
 class Scene;
@@ -27,7 +26,6 @@ class EngineSystem : public Module
 public:
 	EngineSystem();
 	~EngineSystem();
-
 
 	bool Start();
 	bool Init();
@@ -51,6 +49,8 @@ public:
 
 	bool LoadState(JSON_Value* file) override;
 	bool SaveState(JSON_Value* file) const override;
+
+	bool Save();
 
 	GameObject* CreateNewGameObject();
 	GameObjectComponent* CreateNewGOC(GameObject* goAttached, GOC_Type type);

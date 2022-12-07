@@ -59,10 +59,6 @@ bool EngineSystem::Init()
 	imageExtensionsAccepted.push_back("jpg");
 	imageExtensionsAccepted.push_back("bmp");
 
-
-	
-
-
 	return ret;
 
 }
@@ -402,14 +398,26 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir)
 	return ret;
 }
 
+bool EngineSystem::SaveState(JSON_Value* file) const
+{
+	for (Scene* var : scenes)
+	{
+		var->SaveState(file);
+	}
+	return true;
+}
 
 bool EngineSystem::LoadState(JSON_Value* file)
 {
+	for (Scene* var : scenes)
+	{
+		var->LoadState(file);
+	}
 	return true;
-
 }
 
-bool EngineSystem::SaveState(JSON_Value* file) const
+bool EngineSystem::Save() 
 {
+
 	return true;
 }

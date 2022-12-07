@@ -118,17 +118,71 @@ bool GameObject::CleanUp()
 }
 
 
+bool GameObject::SaveState(JSON_Value* file) const
+{
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	json_object_dotset_string(json_object(file), "gameObjects", buf);
+	json_serialize_to_file(file, "Config.json");
+
+	json_object_dotset_number(json_object(file), std::string(name + " Position.x").c_str(), (double)transform->translationLocal.translation().x);
+	json_object_dotset_number(json_object(file), std::string(name + " Position.y").c_str(), (double)transform->translationLocal.translation().y);
+	json_object_dotset_number(json_object(file), std::string(name + " Position.z").c_str(), (double)transform->translationLocal.translation().z);
+
+	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.x", (double).x);
+	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.y", (double)X.y);
+	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.z", (double)X.z);
+
+	json_object_dotset_number(json_object(file), "object.Scale.x", (double)transform->scalingLocal.scaling().x);
+	json_object_dotset_number(json_object(file), "object.Scale.y", (double)transform->scalingLocal.scaling().y);
+	json_object_dotset_number(json_object(file), "object.Scale.z", (double)transform->scalingLocal.scaling().z);
+
+	json_serialize_to_file(file, "Config.json");
+
+	for (GameObject* go : children)
+	{
+		go->SaveState(file);
+	}
+	return true;
+}
+
 bool GameObject::LoadState(JSON_Value* file)
 {
 
+	std::string name = this->name;
+	const char* buf = name.c_str();
+
+	mat4x4 translation = IdentityMatrix;
+
+	translation.translate(json_object_dotget_number(json_object(file), std::string(name + " Position.x").c_str()), json_object_dotget_number(json_object(file), std::string(name + " Position.y").c_str()), json_object_dotget_number(json_object(file), std::string(name + " Position.z").c_str()));
+	
+	transform->transformLocal = translation;
+
+	transform->ApplyTransformations();
+
+	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.x", (double).x);
+	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.y", (double)X.y);
+	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.z", (double)X.z);
+
+	mat4x4 scaling = IdentityMatrix;
+
+	scaling.scale(json_object_dotget_number(json_object(file), "object.Scale.x"), json_object_dotget_number(json_object(file), "object.Scale.y"), json_object_dotget_number(json_object(file), "object.Scale.z"));
+
+	transform->scalingLocal = scaling;
+
+	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
+
+	
+	
+
+	for (GameObject* go : children)
+	{
+		go->LoadState(file);
+	}
 	return true;
 }
 
-bool GameObject::SaveState(JSON_Value* file) const
-{
-
-	return true;
-}
 
 void GameObject::AddComponent(GOC_Type type)
 {
