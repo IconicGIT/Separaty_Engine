@@ -260,15 +260,21 @@ Despite this, we are still implementing a method to be able to visualize the 2 c
 
 At this point, both the camera and the scene are perfectly saved in the json file. 
 
-The only problem that we have found has been at the moment of loading back the info. from the json file. As the saved json position is not implemented in the object position matrix.
+The only problem that we have found has been at the moment of loading back the information from the json file. As the saved json position is not implemented in the object position matrix. The same goes for scale and rotation.
 
 - **Play / Stop**
 
 We have implemented the change of camera at the time of pressing play/stop for seeing the scene through the game camera.
 
-In addition to having left the timer ready for when we have to see changes in real time at game mode.
+In addition to having left the timer and the velocity of it ready, for when we have to use it to see changes in real time at game mode.
 
 - **Camera (10% each): component, mouse pick, frustum culling**
+
+The camera component has been well implemented and perfectly follows all its required functionalities. The transformation, the changes in the FOV and Near/Far planes and the camera change are working correctly.
+
+On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected.
+
+
 
 - **Resource Management (includes inspector editing of component mesh & material)**
 
