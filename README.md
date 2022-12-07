@@ -65,7 +65,11 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 In Game Objects you find the different lists of all the creatable objects. In them you can select the object to create.
 
-![GameObjects List](https://user-images.githubusercontent.com/73245381/198844039-76b7b75b-762f-46ff-9172-70343522dda0.png)
+![Game Objects](https://user-images.githubusercontent.com/73245381/206081462-c663abb8-496a-4cac-b8c4-ae510c56a7d5.png)
+
+- **Create Empty**: Create an empty object
+
+![Create Empty](https://user-images.githubusercontent.com/73245381/206081696-ccbec5e0-88c3-4b12-b595-4f79a5c36a05.png)
 
 - **Create 3D Objects**: List of all available primitives
 
@@ -177,9 +181,11 @@ Here you can find all the information about the Engine. In addition to direct li
 
 - **Hold Shift**: Duplicate movement speed
 
-- **Right Click**: Orbit around the selected object
+- **Right Click + Left ALT**: Orbit around the selected object
 
     (If an object is not selected) Orbit around the center of the scene
+    
+- **Left Click + Left ALT**: Camera rotation
 
 - **Mouse Wheel**: Zoom In/Out
 
@@ -229,5 +235,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-### {AdditionalLicenses}
