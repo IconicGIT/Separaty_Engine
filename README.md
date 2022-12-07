@@ -65,7 +65,7 @@ On this part you can find all the Edit functionalities available in the Engine a
 
 In Game Objects you find the different lists of all the creatable objects. In them you can select the object to create.
 
-![Game Objects](https://user-images.githubusercontent.com/73245381/206081462-c663abb8-496a-4cac-b8c4-ae510c56a7d5.png)
+![Game Objects](https://user-images.githubusercontent.com/73245381/206083048-7628989a-6046-450a-adbb-2d3e5329babc.png)
 
 - **Create Empty**: Create an empty object
 
@@ -143,15 +143,17 @@ On the View Tab, you will find all the things related with the visualitzation of
 
 In the windows section you can find all the Editor Windows that can be used to working in the Project.  
 
-![Window](https://user-images.githubusercontent.com/73245381/198846172-5d45aaa9-ee9a-4e73-91fe-7eb0c1d51e19.png)
+![Window](https://user-images.githubusercontent.com/73245381/206082227-3ac99ed4-2956-4740-bf4d-3118755b102a.png)
 
-- **Hierarchy**: Opens the Hierarchy Windows
+- **Hierarchy**: Opens the Hierarchy Window
 
-- **Inspector**: Opens the Inspector Windows
+- **Inspector**: Opens the Inspector Window
 
-- **Assets**: Opens the Assets Windows
+- **Assets**: Opens the Assets Window
 
 - **Show Output**: Opens the Debug Console
+
+- **Play & Stop**: Opens the Play & Stop Window
 
 ### Help
 
