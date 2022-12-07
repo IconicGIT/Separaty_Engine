@@ -237,3 +237,38 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Task 2
+
+- **Transformation and Game Object hierarchy**
+
+We have implemented the transforms and the game object hierarchy as requested in this Assignment, always trying to respect the parents and the childs since we believe that it is an important part to take into account when we talk about game objects.
+
+We are also in the process of implementing an option to do Drag and Drop in the hierarchy itself, so that objects can be placed as parts and children of others directly from there.
+
+- **Custom file format**
+
+Still in progress.
+
+- Game viewport & editor viewport
+
+We have implemented a camera switch between the engine editor camera and the camera known as the game camera.
+
+Despite this, we are still implementing a method to be able to visualize the 2 cameras at the same time.
+
+- **Scene serialization**
+
+At this point, both the camera and the scene are perfectly saved in the json file. 
+
+The only problem that we have found has been at the moment of loading back the info. from the json file. As the saved json position is not implemented in the object position matrix.
+
+- **Play / Stop**
+
+We have implemented the change of camera at the time of pressing play/stop for seeing the scene through the game camera.
+
+In addition to having left the timer ready for when we have to see changes in real time at game mode.
+
+- **Camera (10% each): component, mouse pick, frustum culling**
+
+- **Resource Management (includes inspector editing of component mesh & material)**
+
