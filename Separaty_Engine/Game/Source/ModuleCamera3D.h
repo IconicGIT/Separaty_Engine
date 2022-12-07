@@ -10,6 +10,9 @@
 #include "GameObjComponent.h"
 #include "EngineSystem.h" 
 
+class EngineSystem;
+
+
 class ModuleCamera3D : public Module
 {
 public:
