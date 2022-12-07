@@ -32,8 +32,8 @@ update_status Inspector::Update(float dt)
 	if (App->ui->inspector)
 	{
 		/*WindowGameObjectInfo windowGameObjectInfo = gameObject->windowGameObjectInfo;*/
-		ImGui::Begin("Inspector", &App->ui->inspector);
-		windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - App->ui->screenY / 4 - 17.0);
+		ImGui::Begin("Inspector", &App->ui->inspector, ImGuiWindowFlags_NoMove);
+        windowSize = ImVec2(App->ui->screenX / 5.5f, App->ui->screenY - 18.0f);
 		ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) + 0.80f, 18.9f));
 		ImGui::SetWindowSize(windowSize);
 
@@ -156,60 +156,56 @@ update_status Inspector::Update(float dt)
 							aiQuaternion rotationQuat(rotatorQuat.w, rotatorQuat.x, rotatorQuat.y, rotatorQuat.z);
 
 
-							aiMatrix4x4* tempMat = new aiMatrix4x4;
-
-							aiVector3D* tempScale = new aiVector3D(1, 1, 1);
+							aiMatrix3x3* tempMat3 = new aiMatrix3x3;
 
 							aiQuaternion* tempRotationQuat = new aiQuaternion(rotationQuat);
 
-							aiVector3D* tempPosition = new aiVector3D(0, 0, 0);
-
-
-							aiMatrix4FromScalingQuaternionPosition(tempMat, tempScale, tempRotationQuat, tempPosition);
-
+							//aiMatrix4FromScalingQuaternionPosition(tempMat, tempScale, tempRotationQuat, tempPosition);
+							aiMatrix3FromQuaternion(tempMat3, tempRotationQuat);
 
 							mat4x4 resMat = IdentityMatrix;
 
-							resMat[0] = (float)tempMat->a1;
-							resMat[1] = (float)tempMat->a2;
-							resMat[2] = (float)tempMat->a3;
-							resMat[3] = (float)tempMat->a4;
+							resMat[0] = (float)tempMat3->a1;
+							resMat[1] = (float)tempMat3->a2;
+							resMat[2] = (float)tempMat3->a3;
+							resMat[3] = 0;
 
-							resMat[4] = (float)tempMat->b1;
-							resMat[5] = (float)tempMat->b2;
-							resMat[6] = (float)tempMat->b3;
-							resMat[7] = (float)tempMat->b4;
+							resMat[4] = (float)tempMat3->b1;
+							resMat[5] = (float)tempMat3->b2;
+							resMat[6] = (float)tempMat3->b3;
+							resMat[7] = 0;
 
-							resMat[8] = (float)tempMat->c1;
-							resMat[9] = (float)tempMat->c2;
-							resMat[10] = (float)tempMat->c3;
-							resMat[11] = (float)tempMat->c4;
+							resMat[8] = (float)tempMat3->c1;
+							resMat[9] = (float)tempMat3->c2;
+							resMat[10] = (float)tempMat3->c3;
+							resMat[11] = 0;
 
-							resMat[12] = (float)tempMat->d1;
-							resMat[13] = (float)tempMat->d2;
-							resMat[14] = (float)tempMat->d3;
-							resMat[15] = (float)tempMat->d4;
+							resMat[12] = 0;
+							resMat[13] = 0;
+							resMat[14] = 0;
+							resMat[15] = 1;
 
 							resMat.transpose();
 
 							if (editingModeWorld)
 							{
 								editorObject->transform->rotationLocal = resMat;
+								editorObject->transform->rotationQuatLocal = Quat(tempRotationQuat->x, tempRotationQuat->y, tempRotationQuat->z, tempRotationQuat->w);
+
 
 							}
 							else
 							{
 								editorObject->transform->rotationLocal = resMat;
+								editorObject->transform->rotationQuatLocal = Quat(tempRotationQuat->x, tempRotationQuat->y, tempRotationQuat->z, tempRotationQuat->w);
 
 
 
 							}
 							editorObject->transform->ApplyTransformations();
 
-							delete tempMat;
-							delete tempScale;
+							delete tempMat3;
 							delete tempRotationQuat;
-							delete tempPosition;
 
 							//* 57.29578
 						}

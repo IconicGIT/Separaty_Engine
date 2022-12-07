@@ -11,7 +11,7 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached)
 	gameObject = gameObjectAttached;
 
 	frustum.type = PerspectiveFrustum;
-	frustum.handedness = FrustumHandedness::FrustumLeftHanded;
+	frustum.handedness = FrustumHandedness::FrustumRightHanded;
 
 	if (gameObject != nullptr && gameObject->transform != nullptr)
 	{
@@ -51,33 +51,76 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached)
 
 bool GOC_Camera::Execute()
 {
+
+	UpdateFrustum();
+
+
 	frustum.GetCornerPoints(bboxPoints);
-
-
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		for (size_t i = 0; i < 8; i++)
-		{
-			std::cout << std::to_string(bboxPoints[i].x) << " " << std::to_string(bboxPoints[i].y) << " " << std::to_string(bboxPoints[i].z) << std::endl;
-		}
-	}
 
 	DrawCube(bboxPoints, Color(0, 1, 0, 1));
 	return true;
 }
-void GOC_Camera::UpdateFrust(GameObject* gameObject)
+void GOC_Camera::UpdateFrustum()
 {
 	CalculateViewMatrix();
 
 	if (gameObject != nullptr && gameObject->transform != nullptr)
 	{
-		vec3 a = this->gameObject->transform->transformWorld.translation();
-		X = vec3(a.x, 0, 0);
-		X = vec3(0, a.y, 0);
-		X = vec3(0, 0, a.z);
+		vec3 pos = gameObject->transform->transformWorld.translation();
+		mat4x4 rot = gameObject->transform->rotationLocal;
+		
 
-		Position = a;
-		Reference = vec3(0.0f, 0.0f, 0.0f);
+		mat3x3 rotMat = mat3x3({ 1,0,0,0,1,0,0,0,1 });
+
+		rotMat[0] = rot[0];
+		rotMat[1] = rot[1];
+		rotMat[2] = rot[2];
+
+		rotMat[3] = rot[4];
+		rotMat[4] = rot[5];
+		rotMat[5] = rot[6];
+
+		rotMat[6] = rot[8];
+		rotMat[7] = rot[9];
+		rotMat[8] = rot[10];
+
+		X = vec3(rotMat[0], rotMat[1], rotMat[2]);
+		Y = vec3(rotMat[3], rotMat[4], rotMat[5]);
+		Z = vec3(rotMat[6], rotMat[7], rotMat[8]);
+
+		//float dx = 0, dy = 0;
+
+		//dy = -1;
+
+		//if (dx != 0)
+		//{
+		//	float DeltaX = (float)dx;
+
+		//	X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		//	Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		//	Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		//}
+
+		//if (dy != 0)
+		//{
+		//	float DeltaY = (float)dy;
+
+		//	Y = rotate(Y, DeltaY, X);
+		//	Z = rotate(Z, DeltaY, X);
+
+		//	/*if (Y.y < 0.0f)
+		//	{
+		//		Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+		//		Y = cross(Z, X);
+		//	}*/
+		//}
+		Position = pos;
+
+
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		{
+			int a = 0;
+		}
 	}
 	else
 	{
@@ -92,6 +135,7 @@ void GOC_Camera::UpdateFrust(GameObject* gameObject)
 	frustum.pos = float3(Position.x, Position.y, Position.z);
 	frustum.front = float3(Z.x, Z.y, Z.z);
 	frustum.up = float3(Y.x, Y.y, Y.z);
+	
 
 }
 
@@ -146,6 +190,8 @@ void GOC_Camera::DrawCube(static float3* corners, Color color)
 	glColor4f(color.r, color.g, color.b, color.a);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glDisable(GL_CULL_FACE);
 
 	glBegin(GL_QUADS);
 

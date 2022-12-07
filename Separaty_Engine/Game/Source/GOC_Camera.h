@@ -22,7 +22,7 @@ class GOC_Camera : public GameObjectComponent
 public:
 	GOC_Camera(GameObject* gameObjectAttached);
 
-	void UpdateFrust(GameObject* gameObject);
+	void UpdateFrustum();
 
 
 	bool Execute();
@@ -53,6 +53,8 @@ public:
 
 	vec3 X, Y, Z, Position, Reference;
 
+
+	vec3 front = (0, 0, 1);
 private:
 
 	vec bboxPoints[8];

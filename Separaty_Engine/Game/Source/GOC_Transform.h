@@ -113,11 +113,13 @@ public:
 
 	mat4x4 translationWorld = IdentityMatrix;
 	mat4x4 rotationWorld = IdentityMatrix;
+	Quat rotationQuatWorld = Quat({ 0,0,0,1 });
 	float3 rotationEulerWorld = float3(0, 0, 0);
 	mat4x4 scalingWorld = IdentityMatrix;
 	mat4x4 transformWorld = IdentityMatrix;
 
 	mat4x4 translationLocal = IdentityMatrix;
+	Quat rotationQuatLocal = Quat({ 0,0,0,1 });
 	float3 rotationEulerLocal= float3(0, 0, 0);
 	mat4x4 rotationLocal = IdentityMatrix;
 	mat4x4 scalingLocal = IdentityMatrix;
