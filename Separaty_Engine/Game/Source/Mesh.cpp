@@ -51,16 +51,15 @@ void Mesh::SetupMesh()
 
     for (size_t i = 0; i < vertices.size(); i++)
     {
-       float3 vec;
-       vec.x = vertices[i].Position.x;
-       vec.y = vertices[i].Position.y;
-       vec.z = vertices[i].Position.z;
+        float3 vec;
+        vec.x = vertices[i].Position.x;
+        vec.y = vertices[i].Position.y;
+        vec.z = vertices[i].Position.z;
 
 
         bboxVertices[i] = vec;
 
         float3 v = float3(bboxVertices[i]);
-        //printf("%f %f %f \n", v.x, v.y, v.z);
     }
 
     
@@ -68,24 +67,7 @@ void Mesh::SetupMesh()
     bbox.Enclose(bboxVertices, vertices.size());
     bbox.GetCornerPoints(bboxPoints);
 
-    //glGenVertexArrays(1, &bboxVAO);
-    //glGenBuffers(1, &bboxVBO);
-    //glGenBuffers(1, &bboxEBO);
 
-    //glBindVertexArray(bboxVAO);
-    //glBindBuffer(GL_ARRAY_BUFFER, bboxVBO);
-
-    //glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex), &bboxPoints[0], GL_STATIC_DRAW);
-
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bboxEBO);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, 8 * sizeof(unsigned int), &bboxPoints[0], GL_STATIC_DRAW);
-
-    //// vertex positions
-    //glEnableVertexAttribArray(0);
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    //// vertex normals
-    //glEnableVertexAttribArray(1);
-    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
     delete[] bboxVertices;
 }
 

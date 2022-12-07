@@ -8,6 +8,7 @@
 
 #include "GameObject.h"
 #include "GameObjComponent.h"
+#include "EngineSystem.h" 
 
 class ModuleCamera3D : public Module
 {
@@ -39,6 +40,7 @@ private:
 
 	void CalculateViewMatrix();
 	void Zoom(const float& zoom_speed);
+	void MousePick();
 
 	//void SetZoomSpeed(const float& zoom_speed);
 	//float GetZoomSpeed() const;
@@ -48,15 +50,13 @@ private:
 public:
 
 
-
 	GameObject* gameObject;
 
 	bool isCurrent = false;
 
 	GOC_Camera* camera;
-	GOC_MeshRenderer* goMesh;
 	GOC_Camera* goCamera;
-
+	 
 	vec3 X, Y, Z, Position, currentReference;
 private:
 

@@ -61,13 +61,14 @@ public:
     bool drawBbox = true;
 
     std::string name;
+    AABB bbox;
+
 private:
     //  render data
     unsigned int VAO, VBO, EBO;
 
     unsigned int bboxVAO, bboxVBO, bboxEBO;
    
-    AABB bbox;
     vec bboxPoints[8];
 
     void SetupMesh();

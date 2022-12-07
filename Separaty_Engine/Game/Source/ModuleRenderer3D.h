@@ -36,5 +36,6 @@ public:
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	float fov = 60;
 	Gl_Attributes atributes;
 };

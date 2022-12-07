@@ -14,6 +14,8 @@
 #include "glmath.h"
 #include "EngineSystem.h"
 
+class EngineSystem;
+
 class Model
 {
 public:

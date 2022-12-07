@@ -57,6 +57,8 @@ public:
 	vec3 X, Y, Z, Position, Reference;
 	vec bboxPoints[8];
 	Color frustumColor;
+
+	bool drawFrustum = true;;
 private:
 
 

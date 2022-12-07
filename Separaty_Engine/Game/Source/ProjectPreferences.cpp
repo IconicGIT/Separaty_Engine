@@ -86,6 +86,12 @@ update_status Preferences::Update(float dt)
 			}
 			ImGui::TreePop();
 		}
+		if (ImGui::TreeNode("Camera Settings"))
+		{
+			ImGui::SliderFloat("Field of View", &App->renderer3D->fov, 1, 179.99f);
+
+			ImGui::TreePop();
+		}
 
 		ImGui::End();
 	}

@@ -55,15 +55,21 @@ bool GOC_Camera::Execute()
 
 	UpdateFrustum();
 
-
 	frustum.GetCornerPoints(bboxPoints);
 
-	DrawCube(bboxPoints, frustumColor);
+	if (drawFrustum)
+	{
+		DrawCube(bboxPoints, frustumColor);
+
+	}
 	return true;
 }
 void GOC_Camera::UpdateFrustum()
 {
 	//CalculateViewMatrix();
+
+	frustum.verticalFov = App->renderer3D->fov * DEGTORAD;
+	frustum.horizontalFov = 2.f * atan(tan(frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
 
 	if (gameObject != nullptr)
 	{
@@ -75,7 +81,6 @@ void GOC_Camera::UpdateFrustum()
 		Z = vec3(rot[8], rot[9], rot[10]);
 
 		Position = pos;
-
 	}
 
 	frustum.pos = float3(Position.x, Position.y, Position.z);

@@ -32,7 +32,6 @@ bool ModuleCamera3D::Start()
 	gameObject->AddComponent(GOC_Type::GOC_CAMERA);
 
 	gameObject->Start();
-	goMesh = (GOC_MeshRenderer*)gameObject->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
 	goCamera = (GOC_Camera*)gameObject->GetComponent(GOC_Type::GOC_CAMERA);
 	goCamera->frustumColor = Color(0, 0, 1, 1);
@@ -40,7 +39,9 @@ bool ModuleCamera3D::Start()
 	goCamera->frustum.nearPlaneDistance = 2;
 	goCamera->frustum.farPlaneDistance = 20;
 	goCamera->frustum.verticalFov = 60 * DEGTORAD;
-	goCamera->frustum.horizontalFov = 60/*2.f * atan(tan(goCamera->frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT))*/;
+	goCamera->frustum.horizontalFov = 60;
+
+	goCamera->drawFrustum = false;
 	return ret;
 }
 
@@ -58,11 +59,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		goMesh->SetMesh(&App->engineSystem->GetAllMeshes()[1]);
-
-	}
 	vec3 newPos(0,0,0);
 	float speed = 10.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -169,27 +165,18 @@ update_status ModuleCamera3D::Update(float dt)
 			
 		}
 
-		//zoomSpeed = App->camera->GetZoomSpeed();
-		//App->camera->GetZoomSpeed(zoomSpeed);
-
 		if (App->input->GetMouseZ() != 0)
 		{
 			Zoom(zoomSpeed);
 		}
 
-		
 
-		/*float wheel = (float)App->input->GetMouseZ();
-		if (wheel != 0 && camera != nullptr)
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			float3 zoom = (camera->frustum.front * wheel * zoomSpeed);
-			vec3 currentCameraPosition = camera->GetGameObject()->transform->translationLocal.translation();
+			MousePick();
+		}
 
 
-			camera->GetGameObject()->transform->translationLocal.translate(zoom.x + currentCameraPosition.x, zoom.y + currentCameraPosition.y, zoom.z + currentCameraPosition.z);
-
-			camera->GetGameObject()->transform->ApplyTransformations();
-		}*/
 
 		// Recalculate matrix -------------
 		CalculateViewMatrix();
@@ -231,6 +218,38 @@ update_status ModuleCamera3D::Update(float dt)
 	gameObject->Update(dt);
 	return UPDATE_CONTINUE;
 }
+
+void ModuleCamera3D::MousePick()
+{
+
+
+	float tab_width = App->window->height;
+	float tab_height = App->window->height;
+
+	float2 screen_mouse_pos = float2((float)App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
+	float2 norm_screen_pos = float2(screen_mouse_pos.x / tab_width, screen_mouse_pos.y / tab_height);
+	float2 world_mouse_pos = float2(norm_screen_pos.x * (float)App->window->height, norm_screen_pos.y * (float)App->window->height);
+
+	float normalized_x = (world_mouse_pos.x / App->window->height - 0.5f) * 2;
+	float normalized_y = (world_mouse_pos.y / App->window->height - 0.5f) * 2;
+
+	LineSegment picking = goCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+
+
+	//Object part
+	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+	{
+		GOC_MeshRenderer* goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+
+		if (picking.Intersects(goRenderer->GetMesh().bbox))
+		{
+			go->selected = true;
+		}
+	}
+}
+
+
+
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
@@ -295,21 +314,6 @@ void ModuleCamera3D::Zoom(const float& zoom_speed)
 	this->zoomSpeed = zoom_speed;
 }
 
-//void ModuleCamera3D::Zoom()
-//{
-//	Position -= Z * App->input->GetMouseZ() * zoomSpeed;
-//}
-
-//void ModuleCamera3D::SetZoomSpeed(const float& zoom_speed)
-//{
-//	this->zoomSpeed = zoom_speed;
-//}
-
-//float ModuleCamera3D::GetZoomSpeed() const
-//{
-//	return zoomSpeed;
-//}
-
 bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 {
 
@@ -324,6 +328,11 @@ bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 	json_object_dotset_number(json_object(file), "modules.Camera.Position.x", (double)Position.x);
 	json_object_dotset_number(json_object(file), "modules.Camera.Position.y", (double)Position.y);
 	json_object_dotset_number(json_object(file), "modules.Camera.Position.z", (double)Position.z);
+
+	json_object_dotset_number(json_object(file), "modules.Camera.Reference.x", (double)currentReference.x);
+	json_object_dotset_number(json_object(file), "modules.Camera.Reference.y", (double)currentReference.y);
+	json_object_dotset_number(json_object(file), "modules.Camera.Reference.z", (double)currentReference.z);
+
 
 	json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.x", (double)X.x);
 	json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.y", (double)X.y);
@@ -351,6 +360,27 @@ bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 bool  ModuleCamera3D::LoadState(JSON_Value* file)
 {
 	const char* n = json_object_dotget_string(json_object(file), "modules.Camera.name");
+
+
+	Position.x = json_object_dotget_number(json_object(file), "modules.Camera.Position.x");
+	Position.y = json_object_dotget_number(json_object(file), "modules.Camera.Position.y");
+	Position.z = json_object_dotget_number(json_object(file), "modules.Camera.Position.z");
+
+	currentReference.x = json_object_dotget_number(json_object(file), "modules.Camera.Reference.x");
+	currentReference.y = json_object_dotget_number(json_object(file), "modules.Camera.Reference.y");
+	currentReference.z = json_object_dotget_number(json_object(file), "modules.Camera.Reference.z");
+
+	X.x = json_object_dotget_number(json_object(file), "modules.Camera.Direction.X.x");
+	X.y = json_object_dotget_number(json_object(file), "modules.Camera.Direction.X.y");
+	X.z = json_object_dotget_number(json_object(file), "modules.Camera.Direction.X.z");
+
+	Y.x = json_object_dotget_number(json_object(file), "modules.Camera.Direction.Y.x");
+	Y.y = json_object_dotget_number(json_object(file), "modules.Camera.Direction.Y.y");
+	Y.z = json_object_dotget_number(json_object(file), "modules.Camera.Direction.Y.z");
+
+	Z.x = json_object_dotget_number(json_object(file), "modules.Camera.Direction.Z.x");
+	Z.y = json_object_dotget_number(json_object(file), "modules.Camera.Direction.Z.y");
+	Z.z = json_object_dotget_number(json_object(file), "modules.Camera.Direction.Z.z");
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", n));
 

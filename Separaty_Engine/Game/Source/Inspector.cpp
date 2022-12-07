@@ -412,7 +412,9 @@ update_status Inspector::Update(float dt)
 								App->camera->SetCamera(camera);
 							}
 						}
-												
+
+						ImGui::Checkbox("Draw Frustum", &camera->drawFrustum);
+
 						
 						
 					}
