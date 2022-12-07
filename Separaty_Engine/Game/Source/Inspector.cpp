@@ -67,6 +67,7 @@ update_status Inspector::Update(float dt)
 				ImGui::SameLine();
 				ImGui::InputText("##Name", &editorObject->name);
 				ImGui::Checkbox("Active", &editorObject->enabled);
+			
 			}
 			// Current game object (the one we have selected at the moment)
 			for (GameObjectComponent* component : editorObject->GetComponents())
@@ -421,6 +422,7 @@ update_status Inspector::Update(float dt)
 				{
 					GOC_MeshRenderer* renderer = (GOC_MeshRenderer*)component;
 
+
 					if (ImGui::CollapsingHeader("Mesh Renderer"))
 					{
 						ImGui::Text("Mesh Name:");
@@ -440,14 +442,19 @@ update_status Inspector::Update(float dt)
 							ImGui::TreePop();
 						}
 
-						bool drawBBox = renderer->GetMesh().GetDrawBoundingBox();
+						/*bool drawBBox = renderer->GetMesh().drawBbox;*/
 
-						if (ImGui::Checkbox("Draw Bounding Box", &drawBBox))
+
+					/*	if (ImGui::Checkbox("Draw Box", &renderer->GetMesh().drawBbox))
+						{
+							renderer->GetMesh().SetDrawBoundingBox(drawBBox);
+						}*/
+
+						/*if (ImGui::Checkbox("Draw Bounding Box", &drawBBox))
 						{
 							renderer->GetMesh().SetDrawBoundingBox(&drawBBox);
 
-						}
-
+						}*/
 
 						/*
 						for (Texture& tex : materiatel.textures) {
@@ -552,7 +559,7 @@ update_status Inspector::Update(float dt)
 								/*char* tex_name = nullptr;
 								strncpy_s(tex_name, tex.name.length() - 4, tex.name.c_str(), tex.name.length() - 4);*/
 
-								if (std::strcmp(tex.name.c_str(), name.c_str()) == 0)
+								if (std::strcmp(tex.name.c_str(), newTex_name.c_str()) == 0)
 								{
 									texture->SetTexture(tex);
 									texture->UpdateMeshRendererTexture(true);

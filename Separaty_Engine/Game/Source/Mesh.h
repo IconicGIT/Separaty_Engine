@@ -58,13 +58,15 @@ public:
         drawBbox = draw;
     }
 
+    bool drawBbox = true;
+
     std::string name;
 private:
     //  render data
     unsigned int VAO, VBO, EBO;
 
     unsigned int bboxVAO, bboxVBO, bboxEBO;
-    bool drawBbox = true;
+   
     AABB bbox;
     vec bboxPoints[8];
 
