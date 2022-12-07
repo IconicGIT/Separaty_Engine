@@ -17,7 +17,6 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 
 	Position = vec3(0.0f, 0.0f, 1.0f);
 	currentReference = vec3(0.0f, 0.0f, 0.0f);
-	rotateAroundReference = vec3(0.0f, 0.0f, 0.0f);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -29,7 +28,19 @@ bool ModuleCamera3D::Start()
 	DEBUG_LOG("Setting up the camera");
 	bool ret = true;
 	
+	gameObject = App->engineSystem->CreateNewGameObject();
+	gameObject->AddComponent(GOC_Type::GOC_CAMERA);
 
+	gameObject->Start();
+	goMesh = (GOC_MeshRenderer*)gameObject->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+
+	goCamera = (GOC_Camera*)gameObject->GetComponent(GOC_Type::GOC_CAMERA);
+	goCamera->frustumColor = Color(0, 0, 1, 1);
+
+	goCamera->frustum.nearPlaneDistance = 2;
+	goCamera->frustum.farPlaneDistance = 20;
+	goCamera->frustum.verticalFov = 60 * DEGTORAD;
+	goCamera->frustum.horizontalFov = 60/*2.f * atan(tan(goCamera->frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT))*/;
 	return ret;
 }
 
@@ -37,7 +48,7 @@ bool ModuleCamera3D::Start()
 bool ModuleCamera3D::CleanUp()
 {
 	DEBUG_LOG("Cleaning camera");
-
+	gameObject->CleanUp();
 	return true;
 }
 
@@ -47,7 +58,11 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		goMesh->SetMesh(&App->engineSystem->GetAllMeshes()[1]);
 
+	}
 	vec3 newPos(0,0,0);
 	float speed = 10.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -162,7 +177,7 @@ update_status ModuleCamera3D::Update(float dt)
 			Zoom(zoomSpeed);
 		}
 
-
+		
 
 		/*float wheel = (float)App->input->GetMouseZ();
 		if (wheel != 0 && camera != nullptr)
@@ -180,6 +195,40 @@ update_status ModuleCamera3D::Update(float dt)
 		CalculateViewMatrix();
 	}
 
+	if (camera != nullptr)
+	{
+
+		goCamera->frustum.nearPlaneDistance = camera->frustum.nearPlaneDistance;
+		goCamera->frustum.farPlaneDistance = camera->frustum.farPlaneDistance;
+		goCamera->frustum.verticalFov = camera->frustum.verticalFov;
+		goCamera->frustum.horizontalFov = camera->frustum.horizontalFov;
+
+		Position = camera->Position;
+		X = -camera->X;
+		Y = camera->Y;
+		Z = -camera->Z;
+
+		camera->frustum.GetCornerPoints(goCamera->bboxPoints);
+		camera->DrawCube(goCamera->bboxPoints, Color(0, 0, 1, 1));
+	}
+
+	gameObject->transform->translationLocal.translate(Position.x, Position.y, Position.z);
+
+	
+
+	gameObject->transform->rotationLocal[0] = -X.x;		gameObject->transform->rotationLocal[1] = -X.y;		gameObject->transform->rotationLocal[1] = -X.z;
+	gameObject->transform->rotationLocal[4] = Y.x;		gameObject->transform->rotationLocal[5] = Y.y;		gameObject->transform->rotationLocal[6] = Y.z;
+	gameObject->transform->rotationLocal[8] = -Z.x;		gameObject->transform->rotationLocal[9] = -Z.y;		gameObject->transform->rotationLocal[10] = -Z.z;
+
+	
+
+	gameObject->transform->ApplyTransformations();
+
+	//goCamera->X = X;
+	//goCamera->Y = Y;
+	//goCamera->Z = Z;
+
+	gameObject->Update(dt);
 	return UPDATE_CONTINUE;
 }
 

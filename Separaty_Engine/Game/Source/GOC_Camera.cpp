@@ -11,7 +11,7 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached)
 	gameObject = gameObjectAttached;
 
 	frustum.type = PerspectiveFrustum;
-	frustum.handedness = FrustumHandedness::FrustumRightHanded;
+	frustum.handedness = FrustumHandedness::FrustumLeftHanded;
 
 	if (gameObject != nullptr && gameObject->transform != nullptr)
 	{
@@ -47,6 +47,7 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached)
 	frustum.verticalFov = 60.0f * DEGTORAD;
 	frustum.horizontalFov = 2.f * atan(tan(frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
 
+	frustumColor = Color(0, 1, 0, 1);
 }
 
 bool GOC_Camera::Execute()
@@ -57,79 +58,24 @@ bool GOC_Camera::Execute()
 
 	frustum.GetCornerPoints(bboxPoints);
 
-	DrawCube(bboxPoints, Color(0, 1, 0, 1));
+	DrawCube(bboxPoints, frustumColor);
 	return true;
 }
 void GOC_Camera::UpdateFrustum()
 {
-	CalculateViewMatrix();
+	//CalculateViewMatrix();
 
-	if (gameObject != nullptr && gameObject->transform != nullptr)
+	if (gameObject != nullptr)
 	{
 		vec3 pos = gameObject->transform->transformWorld.translation();
 		mat4x4 rot = gameObject->transform->rotationLocal;
-		
 
-		mat3x3 rotMat = mat3x3({ 1,0,0,0,1,0,0,0,1 });
+		X = vec3(rot[0], rot[1], rot[2]);
+		Y = vec3(rot[4], rot[5], rot[6]);
+		Z = vec3(rot[8], rot[9], rot[10]);
 
-		rotMat[0] = rot[0];
-		rotMat[1] = rot[1];
-		rotMat[2] = rot[2];
-
-		rotMat[3] = rot[4];
-		rotMat[4] = rot[5];
-		rotMat[5] = rot[6];
-
-		rotMat[6] = rot[8];
-		rotMat[7] = rot[9];
-		rotMat[8] = rot[10];
-
-		X = vec3(rotMat[0], rotMat[1], rotMat[2]);
-		Y = vec3(rotMat[3], rotMat[4], rotMat[5]);
-		Z = vec3(rotMat[6], rotMat[7], rotMat[8]);
-
-		//float dx = 0, dy = 0;
-
-		//dy = -1;
-
-		//if (dx != 0)
-		//{
-		//	float DeltaX = (float)dx;
-
-		//	X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-		//	Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-		//	Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-		//}
-
-		//if (dy != 0)
-		//{
-		//	float DeltaY = (float)dy;
-
-		//	Y = rotate(Y, DeltaY, X);
-		//	Z = rotate(Z, DeltaY, X);
-
-		//	/*if (Y.y < 0.0f)
-		//	{
-		//		Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-		//		Y = cross(Z, X);
-		//	}*/
-		//}
 		Position = pos;
 
-
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-		{
-			int a = 0;
-		}
-	}
-	else
-	{
-		X = vec3(1.0f, 0.0f, 0.0f);
-		Y = vec3(0.0f, 1.0f, 0.0f);
-		Z = vec3(0.0f, 0.0f, 1.0f);
-
-		Position = vec3(0.0f, 0.0f, 5.0f);
-		Reference = vec3(0.0f, 0.0f, 0.0f);
 	}
 
 	frustum.pos = float3(Position.x, Position.y, Position.z);
@@ -226,5 +172,6 @@ void GOC_Camera::DrawCube(static float3* corners, Color color)
 	glVertex3fv((GLfloat*)&corners[1]);
 
 	glEnd();
+
 
 }

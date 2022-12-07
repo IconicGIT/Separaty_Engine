@@ -24,10 +24,10 @@ public:
 	GOC_Camera(GameObject* gameObjectAttached);
 
 	void UpdateFrustum();
+	void DrawCube(static float3* corners, Color color);
 
 
 	bool Execute();
-	void DrawCube(static float3* corners, Color color);
 
 
 	float4x4 GetViewMatrix();
@@ -50,16 +50,15 @@ public:
 	float verticalFov = 0.0f;
 	float horizontalFov = 0.0f;
 
-	float3 position = float3::zero;
 
-	vec3 X, Y, Z, Position, Reference;
 
 	bool isCurrent = false;
 
-	vec3 front = (0, 0, 1);
+	vec3 X, Y, Z, Position, Reference;
+	vec bboxPoints[8];
+	Color frustumColor;
 private:
 
-	vec bboxPoints[8];
 
 	/*LCG lcg;*/
 	mat4x4 ViewMatrix, ViewMatrixInverse;

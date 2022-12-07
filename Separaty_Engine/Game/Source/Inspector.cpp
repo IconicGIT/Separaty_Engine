@@ -260,7 +260,7 @@ update_status Inspector::Update(float dt)
 						}
 
 
-						float3 debugRot = editorObject->transform->rotationEulerWorld;
+						/*float3 debugRot = editorObject->transform->rotationEulerWorld;
 						if (!editingModeWorld)
 							debugRot = editorObject->transform->rotationEulerLocal;
 
@@ -381,7 +381,7 @@ update_status Inspector::Update(float dt)
 						ImGui::SameLine();
 						ImGui::Text(std::to_string(debugMat3[14]).c_str());
 						ImGui::SameLine();
-						ImGui::Text(std::to_string(debugMat3[15]).c_str());
+						ImGui::Text(std::to_string(debugMat3[15]).c_str());*/
 					}
 				}
 				break;
@@ -404,12 +404,16 @@ update_status Inspector::Update(float dt)
 							camera->frustum.horizontalFov = 2.f * atan(tan(camera->frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
 						}
 
-						ImGui::Checkbox("Editor Camera", &camera->isCurrent);
-												
-						if (camera->isCurrent)
+						if (ImGui::Checkbox("Editor Camera", &camera->isCurrent))
 						{
-							App->camera->camera = camera;
+							App->camera->SetCamera(nullptr);
+							if (camera->isCurrent)
+							{
+								App->camera->SetCamera(camera);
+							}
 						}
+												
+						
 						
 					}
 					else
@@ -556,8 +560,6 @@ update_status Inspector::Update(float dt)
 
 							for (Texture tex : App->engineSystem->GetAllTextures())
 							{
-								/*char* tex_name = nullptr;
-								strncpy_s(tex_name, tex.name.length() - 4, tex.name.c_str(), tex.name.length() - 4);*/
 
 								if (std::strcmp(tex.name.c_str(), newTex_name.c_str()) == 0)
 								{

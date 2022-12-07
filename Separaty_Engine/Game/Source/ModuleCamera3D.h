@@ -26,6 +26,15 @@ public:
 	void Move(const vec3 &Movement);
 	mat4x4 GetViewMatrix();
 
+	void SetCamera(GOC_Camera* camera)
+	{
+		if (this->camera != nullptr)
+		{
+			this->camera->isCurrent = false;
+		}
+		this->camera = camera;
+	}
+
 private:
 
 	void CalculateViewMatrix();
@@ -37,12 +46,21 @@ private:
 	float zoomSpeed = 0.5f;
 
 public:
-	
-	vec3 X, Y, Z, Position, currentReference, rotateAroundReference;
+
+
+
+	GameObject* gameObject;
+
+	bool isCurrent = false;
 
 	GOC_Camera* camera;
+	GOC_MeshRenderer* goMesh;
+	GOC_Camera* goCamera;
 
+	vec3 X, Y, Z, Position, currentReference;
 private:
+
+
 	/*LCG lcg;*/
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 

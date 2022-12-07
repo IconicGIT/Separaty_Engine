@@ -226,8 +226,6 @@ bool EngineSystem::LoadModel(char* path)
 	{
 		lastBar = path_s.find_last_of("/");
 	}
-	else
-		return false;
 
 	std::string name = path_s.substr(lastBar + 1);
 
@@ -243,21 +241,43 @@ bool EngineSystem::LoadModel(char* path)
 	{
 		for (Mesh mesh : modelToAdd->GetMeshes())
 		{
-			mesh.name = name;
+			std::string tempName = name;
+			tempName += std::to_string(meshNr);
+			mesh.name = tempName;
 
 			App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", mesh.name.c_str()));
 
 			GameObject* meshGo = go->CreateChildren();
-			std::string meshGoName = mesh.name + std::to_string(meshNr);
+
+			std::string meshGoName = mesh.name;
 			meshGo->name = meshGoName;
 
+			bool alreadyLoaded = false;
+
 			renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-			renderer->SetMesh(&mesh);
-			renderer->SetTextures(mesh.textures);
+			for (Mesh m : allMeshes)
+			{
+				if (std::strncmp(m.name.c_str(), mesh.name.c_str(), mesh.name.length()) == 0)
+				{
+					
+					App->ui->AppendToOutput(DEBUG_LOG("Mesh [%s] already loaded! [path: %s]", m.name.c_str(), path));
+					alreadyLoaded = true;
+					renderer->SetMesh(&m);
+					renderer->SetTextures(m.textures);
+				}
+			}
 
+			if (!alreadyLoaded)
+			{
+				renderer->SetMesh(&mesh);
+				renderer->SetTextures(mesh.textures);
+				allMeshes.push_back(mesh);
 
-
-			allMeshes.push_back(mesh);
+			}
+			else
+			{
+				App->ui->AppendToOutput(DEBUG_LOG("Mesh [%s] loaded! [path: %s]", mesh.name.c_str(), path));
+			}
 			meshNr++;
 		}
 	}
@@ -274,8 +294,6 @@ bool EngineSystem::LoadModel(char* path)
 		renderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 		renderer->SetMesh(&mesh);
 		renderer->SetTextures(mesh.textures);
-
-
 		
 		allMeshes.push_back(mesh);
 	}
@@ -369,7 +387,7 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir)
 			else
 			{
 				ret = true;
-				App->ui->AppendToOutput(DEBUG_LOG("Texture [%s] is already loaded. [path: %s]", name.c_str(), draggedFileDir));
+				App->ui->AppendToOutput(DEBUG_LOG("Texture [%s] is already loaded! [path: %s]", name.c_str(), draggedFileDir));
 			}
 
 			
