@@ -7,8 +7,6 @@
 class EngineSystem;
 class GameObject;
 
-//test
-class GameObjComponent;
 class GOC_MeshRenderer;
 
 class Scene : public Module
@@ -37,6 +35,7 @@ public:
 
 	GameObject* GetSelectedGameObject();
 	
+	void EraseGameObjectFromList(GameObject* gameObject);
 
 	std::vector<GameObject*> gameObjects;
 	uint sceneID;

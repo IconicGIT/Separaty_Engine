@@ -5,8 +5,10 @@
 
 #include "Geometry/Frustum.h"
 
-GOC_Camera::GOC_Camera(GameObject* gameObjectAttached)
+GOC_Camera::GOC_Camera(GameObject* gameObjectAttached, int id)
 {
+	this->id = id;
+
 	GOC_type = GOC_Type::GOC_CAMERA;
 	gameObject = gameObjectAttached;
 

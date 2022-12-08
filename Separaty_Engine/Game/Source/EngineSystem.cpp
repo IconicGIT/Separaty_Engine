@@ -185,16 +185,22 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	
 	switch (type)
 	{
+	case GOC_Type::GOC_TRANSFORM:
+	{
+		GOC_Transform* comp = new GOC_Transform(goAttached, allGameObjectComponents.size());
+		allGameObjectComponents.push_back(comp);
+		return (GOC_Transform*)comp;
+	}
 	case GOC_Type::GOC_MESH_RENDERER:
 	{
-		GOC_MeshRenderer* comp = new GOC_MeshRenderer(goAttached, goAttached->transform->Get4x4Matrix());
+		GOC_MeshRenderer* comp = new GOC_MeshRenderer(goAttached, goAttached->transform->Get4x4Matrix(), allGameObjectComponents.size());
 		allGameObjectComponents.push_back(comp);
-		return comp;
+		return (GOC_MeshRenderer*)comp;
 	}
 	break;
 	case GOC_Type::GOC_TEXTURE:
 	{
-		GOC_Texture* comp = new GOC_Texture(goAttached);
+		GOC_Texture* comp = new GOC_Texture(goAttached, allGameObjectComponents.size());
 		allGameObjectComponents.push_back((GOC_Texture*)comp);
 		return (GOC_Texture*)comp;
 	}
@@ -202,7 +208,7 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	case GOC_Type::GOC_CAMERA:
 	{
 		
-		GOC_Camera* comp = new GOC_Camera(goAttached);
+		GOC_Camera* comp = new GOC_Camera(goAttached, allGameObjectComponents.size());
 		allGameObjectComponents.push_back((GOC_Camera*)comp);
 		return (GOC_Camera*)comp;
 		
@@ -213,6 +219,43 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	}
 
 	
+}
+
+
+void EngineSystem::EraseGameObjectComponentFromGameObject(GameObject* gameobject)
+{
+	for (GameObjectComponent* comp : gameobject->GetComponents())
+	{
+		for (size_t i = 0; i < allGameObjectComponents.size(); i++)
+		{
+			if (allGameObjectComponents[i]->GetID() == comp->GetID())
+			{
+				allGameObjectComponents.erase(allGameObjectComponents.begin() + i);
+			}
+		}
+
+	}
+}
+
+void EngineSystem::EraseGameObjectFromScenes(GameObject* gameObject)
+{
+	for (Scene* scene : scenes)
+	{
+		scene->EraseGameObjectFromList(gameObject);
+	}
+
+}
+
+void EngineSystem::EraseGameObjectFromEngine(GameObject* gameObject)
+{
+	for (size_t i = 0; i < allGameObjects.size(); i++)
+	{
+		if (allGameObjects[i]->GetID() == gameObject->GetID())
+		{
+			allGameObjects.erase(allGameObjects.begin() + i);
+		}
+	}
+
 }
 
 bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameobject)

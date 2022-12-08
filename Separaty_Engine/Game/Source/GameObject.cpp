@@ -1,5 +1,5 @@
 #include "GameObject.h"
-
+#include "ModuleInput.h"
 
 GameObject::GameObject(uint id, EngineSystem* system, bool start_enabled)
 {
@@ -14,8 +14,8 @@ GameObject::~GameObject()
 
 bool GameObject::Init()
 {
-	transform = new GOC_Transform(this); 
-	components.push_back(transform);
+	AddComponent(GOC_Type::GOC_TRANSFORM);
+	transform = (GOC_Transform*)components[0];
 	return true;
 }
 
@@ -24,27 +24,7 @@ bool GameObject::Start()
 	AddComponent(GOC_Type::GOC_MESH_RENDERER);
 	AddComponent(GOC_Type::GOC_TEXTURE);
 
-	std::vector<Vertex> vertices;
-	vertices.push_back((Vertex)(vec3(1.0, 1.0, 1.0)));
-	vertices.push_back((Vertex)(vec3(0.0f, 1.0, 1.0)));
-	vertices.push_back((Vertex)(vec3(1.0, 1.0, 0.0f)));
-	vertices.push_back((Vertex)(vec3(0.0f, 1.0, 0.0f)));
-	vertices.push_back((Vertex)(vec3(1.0, 0.0f, 1.0)));
-	vertices.push_back((Vertex)(vec3(0.0f, 0.0f, 1.0)));
-	vertices.push_back((Vertex)(vec3(0.0f, 0.0f, 0.0f)));
-	vertices.push_back((Vertex)(vec3(1.0, 0.0f, 0.0f)));
-	
 
-	std::vector<uint> indices = {  // note that we start from 0!
-		3, 2, 6, 7, 4, 2, 0,
-		3, 1, 6, 5, 4, 1, 0
-	};
-
-	GOC_MeshRenderer* meshRenderer =  (GOC_MeshRenderer*)GetComponent(GOC_Type::GOC_MESH_RENDERER);
-
-	Mesh* mesh = new Mesh(vertices, indices);
-
-	//meshRenderer->SetMesh(mesh);
 
 	return true;
 }
@@ -62,40 +42,25 @@ update_status GameObject::Update(float dt)
 		ret = item->Execute();
 		item_it++;
 	}
-
-	/*if (parent != nullptr)
+	
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
-		transform->SetPos(parent->transform->GetPosition().x + transform->GetPosition().x,
-			parent->transform->GetPosition().y + transform->GetPosition().y,
-			parent->transform->GetPosition().z + transform->GetPosition().z);
+		App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
 
-		transform->SetScale(parent->transform->GetScale().x * transform->GetScale().x,
-			parent->transform->GetScale().y * transform->GetScale().y,
-			parent->transform->GetScale().z * transform->GetScale().z);
-
-	}*/
-
-	/*if (!children.empty())
-	{
-		for (GameObject* child : children)
+		for (GameObjectComponent* comp : components)
 		{
-			child->transform->SetPos(transform->GetPosition().x + child->transform->GetPosition().x,
-				transform->GetPosition().y + child->transform->GetPosition().y,
-				transform->GetPosition().z + child->transform->GetPosition().z);
+			App->ui->AppendToOutput(DEBUG_LOG("    %i", comp->GetID()));
 
-			child->transform->SetScale(transform->GetScale().x * child->transform->GetScale().x,
-				transform->GetScale().y * child->transform->GetScale().y,
-				transform->GetScale().z * child->transform->GetScale().z);
 		}
-	}*/
 
+		App->ui->AppendToOutput(DEBUG_LOG("Engine components: %i", App->engineSystem->GetAllGameObjectComponents().size()));
+	}
 
 	return UPDATE_CONTINUE;
 }
 
 update_status GameObject::PostUpdate(float dt)
 {
-	/*RenderAxis();*/
 
 	return UPDATE_CONTINUE;
 }
@@ -117,6 +82,34 @@ bool GameObject::CleanUp()
 	return true;
 }
 
+void GameObject::Delete()
+{
+	//delete children
+	for (GameObject* child : children)
+	{
+		child->Delete();
+	}
+
+	//delete components associated with gameobject
+	DeleteComponents();
+
+	//delete self from engineSystem and scene
+	App->engineSystem->EraseGameObjectFromScenes(this);
+	App->engineSystem->EraseGameObjectFromEngine(this);
+
+	//call clean
+	CleanUp();
+	//delete self;
+	delete this;
+
+}
+
+void GameObject::DeleteComponents()
+{
+	//erase components from engineSystem
+	App->engineSystem->EraseGameObjectComponentFromGameObject(this);
+
+}
 
 bool GameObject::SaveState(JSON_Value* file) const
 {
@@ -191,17 +184,12 @@ void GameObject::AddComponent(GOC_Type type)
 	{
 		if (component->GetGOC_Type() == type)
 		{
-			App->ui->AppendToOutput(DEBUG_LOG("There already exists a component of that type in %s!", name));
+			App->ui->AppendToOutput(DEBUG_LOG("There already exists a component of that type in %s!", name.c_str()));
 			return;
-		}
-		else
-		{
-			GameObjectComponent* comp = engineSystem->CreateNewGOC(this, type);
-			components.push_back(comp);
-			return;
-
 		}
 	}
+	GameObjectComponent* comp = engineSystem->CreateNewGOC(this, type);
+	components.push_back(comp);
 
 }
 
@@ -255,53 +243,53 @@ void GameObject::RemoveChild(GameObject* child)
 	}
 }
 
-void GameObject::Delete()
-{
-	//erase children
-	for (GameObject* child : children)
-	{
-		child->Delete();
-	}
-	children.clear();
-
-
-
-	for (GameObjectComponent* component : components)
-	{
-		std::vector<GameObjectComponent*>::iterator posGoc;
-		for (GameObjectComponent* goc : App->engineSystem->GetAllGameObjectComponents())
-		{
-			if (goc->GetGameObject()->id == id)
-			{
-				App->engineSystem->GetAllGameObjectComponents().erase(posGoc);
-			}
-			posGoc++;
-		}
-
-		delete component;
-	}
-	components.clear();
-
-
-
-	std::vector<GameObject*>::iterator pos;
-	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
-	{
-		if (go->id == id)
-		{
-			App->engineSystem->GetCurrentScene()->gameObjects.erase(pos);
-		}
-		pos++;
-	}
-
-	std::vector<GameObject*>::iterator pos1;
-	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
-	{
-		if (go->id == id)
-		{
-			App->engineSystem->GetAllGameObjects().erase(pos1);
-		}
-		pos++;
-	}
-
-}
+//void GameObject::Delete()
+//{
+//	//erase children
+//	for (GameObject* child : children)
+//	{
+//		child->Delete();
+//	}
+//	children.clear();
+//
+//
+//
+//	for (GameObjectComponent* component : components)
+//	{
+//		std::vector<GameObjectComponent*>::iterator posGoc;
+//		for (GameObjectComponent* goc : App->engineSystem->GetAllGameObjectComponents())
+//		{
+//			if (goc->GetGameObject()->id == id)
+//			{
+//				App->engineSystem->GetAllGameObjectComponents().erase(posGoc);
+//			}
+//			posGoc++;
+//		}
+//
+//		delete component;
+//	}
+//	components.clear();
+//
+//
+//
+//	std::vector<GameObject*>::iterator pos;
+//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+//	{
+//		if (go->id == id)
+//		{
+//			App->engineSystem->GetCurrentScene()->gameObjects.erase(pos);
+//		}
+//		pos++;
+//	}
+//
+//	std::vector<GameObject*>::iterator pos1;
+//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+//	{
+//		if (go->id == id)
+//		{
+//			App->engineSystem->GetAllGameObjects().erase(pos1);
+//		}
+//		pos++;
+//	}
+//
+//}

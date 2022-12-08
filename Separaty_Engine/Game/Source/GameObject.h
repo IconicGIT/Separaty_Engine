@@ -82,6 +82,7 @@ public:
 	std::string name;
 
 private:
+	void DeleteComponents();
 	EngineSystem* engineSystem;
 	//This should not be here... but where???
 	//double pointers??

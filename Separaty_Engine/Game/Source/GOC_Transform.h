@@ -10,7 +10,7 @@ class GameObjectComponent;
 class GOC_Transform : public GameObjectComponent
 {
 public:
-	GOC_Transform(GameObject* gameObjectAttached);
+	GOC_Transform(GameObject* gameObjectAttached, int id);
 	~GOC_Transform();
 
 

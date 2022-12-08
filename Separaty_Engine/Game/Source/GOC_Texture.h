@@ -12,8 +12,10 @@ class Texture;
 class GOC_Texture : public GameObjectComponent
 {
 public:
-	GOC_Texture(GameObject* gameObjectAttached) 
+	GOC_Texture(GameObject* gameObjectAttached, int id)
 	{
+		this->id = id;
+
 		GOC_type = GOC_Type::GOC_TEXTURE;
 		gameObject = gameObjectAttached;
 	}

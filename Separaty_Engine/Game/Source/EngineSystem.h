@@ -89,6 +89,10 @@ public:
 		return selectedGameObjects;
 	}
 
+	void EraseGameObjectComponentFromGameObject(GameObject* gameobject);
+
+	void EraseGameObjectFromScenes(GameObject* gameObject);
+	void EraseGameObjectFromEngine(GameObject* gameObject);
 
 private:
 	

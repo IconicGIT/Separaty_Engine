@@ -2,8 +2,9 @@
 
 
 
-GOC_Transform::GOC_Transform(GameObject* gameObjectAttached)
+GOC_Transform::GOC_Transform(GameObject* gameObjectAttached, int id)
 {
+	this->id = id;
 	transformWorld = IdentityMatrix;
 	transformLocal = IdentityMatrix;
 	GOC_type = GOC_Type::GOC_TRANSFORM;

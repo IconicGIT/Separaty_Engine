@@ -30,7 +30,7 @@ class Camera;
 class GOC_MeshRenderer : public GameObjectComponent
 {
 public:
-	GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform);
+	GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform, int id);
 	~GOC_MeshRenderer();
 
 

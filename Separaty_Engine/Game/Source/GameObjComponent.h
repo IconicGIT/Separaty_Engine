@@ -25,6 +25,7 @@ class GameObjectComponent
 public:
 	GameObjectComponent()
 	{
+		id = -1;
 		enabled = true;
 		GOC_type = GOC_Type::GOC_NULL;
 	}
@@ -34,7 +35,7 @@ public:
 	}
 
 protected:
-	uint id;
+	int id;
 	std::string name;
 	bool enabled;
 	GameObject* gameObject;
@@ -73,6 +74,11 @@ public:
 	GameObject* GetGameObject() const
 	{
 		return gameObject;
+	}
+
+	int GetID() const
+	{
+		return id;
 	}
 
 };

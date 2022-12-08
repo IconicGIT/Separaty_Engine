@@ -2,8 +2,10 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 
-GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform)
+GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transform, int id)
 {
+	this->id = id;
+
 	this->transform = transform;
 	gameObject = gameObjectAttached;
 	GOC_type = GOC_Type::GOC_MESH_RENDERER;

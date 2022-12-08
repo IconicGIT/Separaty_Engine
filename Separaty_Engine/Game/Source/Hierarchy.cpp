@@ -112,19 +112,9 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 
 		ImGui::Dummy(ImVec2(0, 0));
 		ImGui::SameLine();
-		if (ImGui::MenuItem("Delete", "", false, false))
+		if (ImGui::MenuItem("Delete", "", false, true))
 		{
-			//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
-			//	{
-
-			//		if (go->GetID() == go->selected && go->GetID() != -1)
-			//		{
-			//			/*go->Delete();*/
-			//			go->selected = 0;
-
-			//		}
-
-			//	}
+			go->Delete();
 		}
 		ImGui::TreePop();
 

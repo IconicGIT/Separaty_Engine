@@ -21,7 +21,7 @@ class GameObjectComponent;
 class GOC_Camera : public GameObjectComponent
 {
 public:
-	GOC_Camera(GameObject* gameObjectAttached);
+	GOC_Camera(GameObject* gameObjectAttached, int id);
 
 	void UpdateFrustum();
 	void DrawCube(static float3* corners, Color color);

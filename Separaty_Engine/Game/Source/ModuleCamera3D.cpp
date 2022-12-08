@@ -35,7 +35,6 @@ bool ModuleCamera3D::Start()
 
 	//gameObject->Start();
 
-	goCamera->frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumRightHanded);
 
 	goCamera = (GOC_Camera*)gameObject->GetComponent(GOC_Type::GOC_CAMERA);
 	goCamera->frustumColor = Color(0, 0, 1, 1);
@@ -44,6 +43,9 @@ bool ModuleCamera3D::Start()
 	goCamera->frustum.farPlaneDistance = 20;
 	goCamera->frustum.verticalFov = 60 * DEGTORAD;
 	goCamera->frustum.horizontalFov = 60 * DEGTORAD;
+	goCamera->frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceD3D, FrustumRightHanded);
+
+
 
 	goCamera->drawFrustum = false;
 	goCamera->gameCamera = true;
