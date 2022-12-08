@@ -120,8 +120,7 @@ update_status ModuleUI::Update(float dt)
 			{
 
 			}
-
-			if (ImGui::MenuItem("Load", "CTRL + L", false, false))
+			if (ImGui::MenuItem("Load", "CTRL + L"))
 			{
 				App->LoadGameRequest();
 			}

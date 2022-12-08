@@ -81,7 +81,7 @@ bool Scene::Start()
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/baker_house.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 
-	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/Street_environment_V01.FBX");
+	/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/Street_environment_V01.FBX");*/
 
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building-01_c.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building-06_-c-.png");
@@ -141,8 +141,8 @@ bool Scene::Start()
 	//	texture->UpdateMeshRendererTexture();
 	//}
 
-	//Game Object 3 (parent)
-	{
+	/*Game Object 3 (parent)*/
+	
 	//{
 
 	//	go = gameObjects[3];
@@ -668,7 +668,34 @@ bool Scene::Start()
 
 	//	go->transform->ApplyTransformations();
 	//}
-	}
+
+		go = gameObjects[3];
+		
+		go->transform->translationLocal.translate(63.5, 26.25, -60.75);
+
+		go->transform->rotationEulerLocal = float3(28.7 * DEGTORAD, -43.15 * DEGTORAD, 18.5 * DEGTORAD);
+		go->transform->rotationLocal[0] = 0.691864;		go->transform->rotationLocal[1] = -0.033135;		go->transform->rotationLocal[2] = 0.721267;
+		go->transform->rotationLocal[4] = -0.231495;		go->transform->rotationLocal[5] = 0.936031;		go->transform->rotationLocal[6] = 0.265060;
+		go->transform->rotationLocal[8] = -0.683911;		go->transform->rotationLocal[9] = -0.350355;		go->transform->rotationLocal[10] = 0.639936;
+
+		go->transform->ApplyTransformations();
+
+		go = gameObjects[4];
+
+		go->transform->translationLocal.translate(0, 23.5, 85);
+
+		go->transform->rotationEulerLocal = float3(-20.65 * DEGTORAD, -180 * DEGTORAD, 0 * DEGTORAD);
+		go->transform->rotationLocal[0] = -1;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 0;
+		go->transform->rotationLocal[4] = 0;		go->transform->rotationLocal[5] = 0.935752;		go->transform->rotationLocal[6] = -0.352658;
+		go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = -0.352658;		go->transform->rotationLocal[10] = -0.935753;
+
+		go->transform->ApplyTransformations();
+
+
+
+
+
+	
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
 	return ret;
 }
