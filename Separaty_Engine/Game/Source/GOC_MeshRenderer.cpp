@@ -24,11 +24,14 @@ void GOC_MeshRenderer::SetMesh(std::vector<Vertex> vertices, std::vector<unsigne
 {
 	myMesh.vertices = vertices;
 	myMesh.indices = indices;
+	//myMesh.renderer = this;
+
 }
 
 void GOC_MeshRenderer::SetMesh(Mesh* mesh)
 {
 	myMesh = *mesh;
+	//myMesh.renderer = this;
 }
 
 

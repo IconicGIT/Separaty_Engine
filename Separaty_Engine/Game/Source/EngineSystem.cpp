@@ -215,7 +215,7 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	
 }
 
-bool EngineSystem::LoadModel(char* path)
+bool EngineSystem::LoadModel(char* path, bool createGameobject)
 {
 	std::string path_s = path;
 	
@@ -229,9 +229,16 @@ bool EngineSystem::LoadModel(char* path)
 
 
 	Model* modelToAdd = new Model(path, this);
-	GameObject* go = App->engineSystem->currentScene->CreateNewGameObject();
-
+	GameObject* go = nullptr;
 	GOC_MeshRenderer* renderer = nullptr;
+
+	if (createGameobject)
+	{
+		go = App->engineSystem->currentScene->CreateNewGameObject();
+		
+	}
+
+	
 
 	int meshNr = 0;
 
@@ -245,30 +252,44 @@ bool EngineSystem::LoadModel(char* path)
 
 			App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", mesh.name.c_str()));
 
-			GameObject* meshGo = go->CreateChildren();
+			GameObject* meshGo = nullptr;
+				if (go != nullptr)
+				{
+					std::string meshGoName = mesh.name;
+					meshGo = go->CreateChildren();
+					meshGo->name = meshGoName;
+					renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
-			std::string meshGoName = mesh.name;
-			meshGo->name = meshGoName;
+				}
+
+			
 
 			bool alreadyLoaded = false;
 
-			renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 			for (Mesh m : allMeshes)
 			{
 				if (std::strncmp(m.name.c_str(), mesh.name.c_str(), mesh.name.length()) == 0)
 				{
 					
 					App->ui->AppendToOutput(DEBUG_LOG("Mesh [%s] already loaded! [path: %s]", m.name.c_str(), path));
+					if (meshGo != nullptr)
+					{
+						renderer->SetMesh(&m);
+						renderer->SetTextures(m.textures);
+					}
+
 					alreadyLoaded = true;
-					renderer->SetMesh(&m);
-					renderer->SetTextures(m.textures);
+
 				}
 			}
 
 			if (!alreadyLoaded)
 			{
-				renderer->SetMesh(&mesh);
-				renderer->SetTextures(mesh.textures);
+				if (meshGo != nullptr)
+				{
+					renderer->SetMesh(&mesh);
+					renderer->SetTextures(mesh.textures);
+				}
 				allMeshes.push_back(mesh);
 
 			}
@@ -286,12 +307,15 @@ bool EngineSystem::LoadModel(char* path)
 
 		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", mesh.name.c_str()));
 
-		std::string meshGoName = mesh.name + std::to_string(meshNr);
-		go->name = meshGoName;
+		if (createGameobject)
+		{
+			std::string meshGoName = mesh.name + std::to_string(meshNr);
+			go->name = meshGoName;
 
-		renderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-		renderer->SetMesh(&mesh);
-		renderer->SetTextures(mesh.textures);
+			renderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+			renderer->SetMesh(&mesh);
+			renderer->SetTextures(mesh.textures);
+		}
 		
 		allMeshes.push_back(mesh);
 	}
@@ -320,7 +344,7 @@ bool EngineSystem::LoadModel(char* path)
 }
 
 
-bool EngineSystem::LoadFromPath(char* draggedFileDir)
+bool EngineSystem::LoadFromPath(char* draggedFileDir, bool createGameobject)
 {
 	bool ret = false;
 	std::string sDraggedFileDir = draggedFileDir;
@@ -336,7 +360,7 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir)
 		a = strncmp(fileExtension.c_str(), ext.c_str(), fileExtension.length());
 		if ( a == 0)
 		{
-			LoadModel(draggedFileDir);
+			LoadModel(draggedFileDir, createGameobject);
 			ret = true;
 
 			return ret;

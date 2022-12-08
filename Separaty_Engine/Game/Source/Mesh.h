@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "MathGeoLib/Geometry/AABB.h"
 #include "Color.h"
+
 struct Vertex {
 
     Vertex(){}
@@ -63,10 +64,13 @@ public:
     std::string name;
     AABB bbox;
     vec bboxPoints[8];
+    vec bboxOriginalPoints[8];
+    //GOC_MeshRenderer* renderer;
 
 private:
     //  render data
     unsigned int VAO, VBO, EBO;
+    
    
 
     void SetupMesh();

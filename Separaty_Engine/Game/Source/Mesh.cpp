@@ -65,6 +65,7 @@ void Mesh::SetupMesh()
     
 
     bbox.Enclose(bboxVertices, vertices.size());
+    bbox.GetCornerPoints(bboxOriginalPoints);
     bbox.GetCornerPoints(bboxPoints);
 
 
@@ -99,7 +100,14 @@ void Mesh::Draw(Shader& shader, bool wireframeActive)
     }
 
    
-    //glActiveTexture(GL_TEXTURE0);
+    
+
+   /* for (size_t i = 0; i < 8; i++)
+    {
+        bboxPoints[i].x = bboxOriginalPoints[i].x + renderer->GetGameObject()->transform->translationLocal.translation().x;
+        bboxPoints[i].y = bboxOriginalPoints[i].y + renderer->GetGameObject()->transform->translationLocal.translation().y;
+        bboxPoints[i].x = bboxOriginalPoints[i].x + renderer->GetGameObject()->transform->translationLocal.translation().z;
+    }*/
     
 
     glPolygonMode(GL_FRONT, GL_LINE);

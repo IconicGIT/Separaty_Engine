@@ -55,7 +55,7 @@ public:
 	GameObject* CreateNewGameObject();
 	GameObjectComponent* CreateNewGOC(GameObject* goAttached, GOC_Type type);
 
-	bool LoadFromPath(char* draggedFileDir);
+	bool LoadFromPath(char* draggedFileDir,bool createGameobject = true);
 
 	std::vector<Mesh> GetAllMeshes() const
 	{
@@ -92,7 +92,7 @@ public:
 
 private:
 	
-	bool LoadModel(char* path);
+	bool LoadModel(char* path, bool createGameobject = true);
 
 
 	int scenes_id = 0;

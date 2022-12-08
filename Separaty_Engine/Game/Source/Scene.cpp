@@ -92,6 +92,14 @@ bool Scene::Start()
 	go->transform->translationLocal.translate(0, 0, 15);
 	go->transform->ApplyTransformations();
 
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Capsule.fbx", false);
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cone.fbx", false);
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cube.fbx", false);
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cylinder.fbx", false);
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Plane.fbx", false);
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Pyramid.fbx", false);
+	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Sphere.fbx", false);
+
 	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/street2.FBX");
 	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building 01_c.tga");
 	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building 06_c .tga");
