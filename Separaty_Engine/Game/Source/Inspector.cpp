@@ -59,7 +59,10 @@ update_status Inspector::Update(float dt)
 
 				ImGui::Text("Name:");
 				ImGui::SameLine();
-				ImGui::InputText("##Name", &editorObject->name);
+
+				char n[50];
+				sprintf_s(n, 50, editorObject->name.c_str());
+				ImGui::InputText("##Name", n, 50);
 				ImGui::Checkbox("Active", &editorObject->enabled);
 			
 			}
