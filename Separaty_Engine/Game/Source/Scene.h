@@ -46,6 +46,8 @@ private:
 	bool active;
 	EngineSystem * engineSystem;
 
+	vec3 X, Y, Z;
+
 	bool loadedBasics = false;
 };
 

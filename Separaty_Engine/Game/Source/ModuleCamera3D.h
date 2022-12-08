@@ -34,7 +34,7 @@ public:
 	{
 		if (this->camera != nullptr)
 		{
-			this->camera->isCurrent = false;
+			this->camera->gameCamera = false;
 		}
 		this->camera = camera;
 	}

@@ -44,7 +44,7 @@ bool ModuleCamera3D::Start()
 	goCamera->frustum.horizontalFov = 60 * DEGTORAD;
 
 	goCamera->drawFrustum = false;
-	goCamera->isCurrent = true;
+	goCamera->gameCamera = true;
 	return ret;
 }
 

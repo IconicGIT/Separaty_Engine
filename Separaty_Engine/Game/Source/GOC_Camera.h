@@ -92,7 +92,8 @@ public:
 	}
 
 
-	bool isCurrent = false;
+	bool editorCamera = true;
+	bool gameCamera = false;
 
 	vec3 X, Y, Z, Position, Reference;
 	vec bboxPoints[8];

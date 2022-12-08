@@ -75,6 +75,17 @@ bool Scene::Start()
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
 
+	/*App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/Street_environment_V01.FBX");
+
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building-01_c.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building-06_c-.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building-06_-c.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building_016_c.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building_025_c.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building03_c.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building05-_c.png");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building_V02_C.png");*/
+
 
 	GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 	camera->AddComponent(GOC_Type::GOC_CAMERA);
@@ -91,6 +102,7 @@ bool Scene::Start()
 	go = gameObjects[6];
 	go->transform->translationLocal.translate(0, 0, 15);
 	go->transform->ApplyTransformations();
+
 
 	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Capsule.fbx", false);
 	App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cone.fbx", false);
@@ -110,8 +122,6 @@ bool Scene::Start()
 	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building05 _c.tga");
 
 
-
-
 	for (GameObject* go : gameObjects)
 	{
 		GOC_Texture* texture = nullptr;
@@ -120,14 +130,128 @@ bool Scene::Start()
 		texture->UpdateMeshRendererTexture();
 	}
 
-	
+
+	//
+	//GOC_Texture* texture = nullptr;
+
+	//go = gameObjects[9];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[4]);
+	//texture->UpdateMeshRendererTexture();
+
+	//go->transform->translationLocal.translate(19.15, 0, 23);
+	//go->transform->ApplyTransformations();
 
 
-	
+	//go->transform->rotationLocal[0] = 0;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 1;
+	//go->transform->rotationLocal[4] = 1;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = 0;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+
+	//go->transform->ApplyTransformations();
+
+	////Game Object 10
+
+	//go = gameObjects[10];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[7]);
+	//texture->UpdateMeshRendererTexture();
+	// 
+	//go->transform->translationLocal.translate(19.15, 0, -27);
+	//
+
+	//go->transform->rotationLocal[0] = 0;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 1;
+	//go->transform->rotationLocal[4] = 1;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = 0;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+	//
+	//go->transform->ApplyTransformations();
+
+	////Game Object 11
+
+	//go = gameObjects[11];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[9]);
+	//texture->UpdateMeshRendererTexture();
+	//
+	//go->transform->translationLocal.translate(19.15, 0, 23);
+	//go->transform->ApplyTransformations();
+
+
+	//go->transform->rotationLocal[0] = 1;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 0;
+	//go->transform->rotationLocal[4] = 0;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = -1;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+	//
+	//go->transform->ApplyTransformations();
+
+	////Game Object 12
+
+	//go = gameObjects[12];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[5]);
+	//texture->UpdateMeshRendererTexture();
+
+	//go->transform->translationLocal.translate(38, 0, 18.20);
+	//go->transform->ApplyTransformations();
+
+
+	//go->transform->rotationLocal[0] = 1;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 0;
+	//go->transform->rotationLocal[4] = 0;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = -1;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+
+	//go->transform->ApplyTransformations();
+
+	////Game Object 13
+
+	//go = gameObjects[13];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[5]);
+	//texture->UpdateMeshRendererTexture();
+
+	//go->transform->translationLocal.translate(38, 0, 18.20);
+	//go->transform->ApplyTransformations();
+
+
+	//go->transform->rotationLocal[0] = 1;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 0;
+	//go->transform->rotationLocal[4] = 0;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = -1;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+
+	//go->transform->ApplyTransformations();
+
+	////Game Object 14
+
+	//go = gameObjects[14];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[5]);
+	//texture->UpdateMeshRendererTexture();
+
+	//go->transform->translationLocal.translate(0, 0, 0);
+	//go->transform->ApplyTransformations();
+
+
+	//go->transform->rotationLocal[0] = 1;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 0;
+	//go->transform->rotationLocal[4] = 0;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = -1;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+
+	//go->transform->ApplyTransformations();
+
+	////Game Object 15
+
+	//go = gameObjects[15];
+	//texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+	//texture->SetTexture(App->engineSystem->GetAllTextures()[5]);
+	//texture->UpdateMeshRendererTexture();
+
+	//go->transform->translationLocal.translate(0, 0, 0);
+	//go->transform->ApplyTransformations();
+
+
+	//go->transform->rotationLocal[0] = 1;		go->transform->rotationLocal[1] = 0;		go->transform->rotationLocal[2] = 0;
+	//go->transform->rotationLocal[4] = 0;		go->transform->rotationLocal[5] = 0;		go->transform->rotationLocal[6] = -1;
+	//go->transform->rotationLocal[8] = 0;		go->transform->rotationLocal[9] = 1;		go->transform->rotationLocal[10] = 0;
+
+	//go->transform->ApplyTransformations();
+
 
 	App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
-
-
 
 	return ret;
 }

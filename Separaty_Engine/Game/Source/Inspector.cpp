@@ -411,11 +411,23 @@ update_status Inspector::Update(float dt)
 							camera->frustum.horizontalFov = 2.f * atan(tan(camera->frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
 						}
 
-						if (ImGui::Checkbox("Editor Camera", &camera->isCurrent))
+						if (ImGui::Checkbox("Editor Camera", &camera->editorCamera))
+						{
+							if (!camera->gameCamera)
+							{
+								camera->editorCamera = false;
+								camera->gameCamera = true;
+								
+							}
+						}
+
+						if (ImGui::Checkbox("Game Camera", &camera->gameCamera))
 						{
 							App->camera->SetCamera(nullptr);
-							if (camera->isCurrent)
+							if (camera->gameCamera)
 							{
+								camera->editorCamera = true;
+								camera->gameCamera = false;
 								App->camera->SetCamera(camera);
 							}
 						}
