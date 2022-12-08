@@ -32,8 +32,8 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp(); 
-	bool LoadState(JSON_Value* file) override;
-	bool SaveState(JSON_Value* file) const override;
+	bool LoadState(JSON_Value* file, std::string root = "") override;
+	bool SaveState(JSON_Value* file, std::string root = "") const override;
 
 	uint GetID() const
 	{
@@ -82,14 +82,9 @@ public:
 	std::string name;
 
 private:
-	void DeleteComponents();
-	EngineSystem* engineSystem;
-	//This should not be here... but where???
-	//double pointers??
-	std::vector<GameObjectComponent*> components;
 
-	//temp vars
-	float a = 0;
+	EngineSystem* engineSystem;
+	std::vector<GameObjectComponent*> components;
 
 };
 

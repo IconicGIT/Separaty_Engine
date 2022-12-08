@@ -201,7 +201,7 @@ void ModuleWindow::MSGraph(float dt, int size)
 	}
 }
 
-bool  ModuleWindow::SaveState(JSON_Value* file) const
+bool  ModuleWindow::SaveState(JSON_Value* file, std::string root) const
 {
 
 	std::string name = this->name;
@@ -225,7 +225,7 @@ bool  ModuleWindow::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool  ModuleWindow::LoadState(JSON_Value* file)
+bool  ModuleWindow::LoadState(JSON_Value* file, std::string root)
 {
 	const char* n = json_object_dotget_string(json_object(file), "modules.Window.name");
 

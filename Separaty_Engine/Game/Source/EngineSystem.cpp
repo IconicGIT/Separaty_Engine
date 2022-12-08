@@ -491,7 +491,7 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir, bool createGameobject)
 	return ret;
 }
 
-bool EngineSystem::SaveState(JSON_Value* file) const
+bool EngineSystem::SaveState(JSON_Value* file, std::string root) const
 {
 	for (Scene* var : scenes)
 	{
@@ -500,7 +500,7 @@ bool EngineSystem::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool EngineSystem::LoadState(JSON_Value* file)
+bool EngineSystem::LoadState(JSON_Value* file, std::string root)
 {
 	for (Scene* var : scenes)
 	{

@@ -91,7 +91,8 @@ void GameObject::Delete()
 	}
 
 	//delete components associated with gameobject
-	DeleteComponents();
+	App->engineSystem->EraseGameObjectComponentFromGameObject(this);
+
 
 	//delete self from engineSystem and scene
 	App->engineSystem->EraseGameObjectFromScenes(this);
@@ -104,37 +105,32 @@ void GameObject::Delete()
 
 }
 
-void GameObject::DeleteComponents()
-{
-	//erase components from engineSystem
-	App->engineSystem->EraseGameObjectComponentFromGameObject(this);
 
-}
 
-bool GameObject::SaveState(JSON_Value* file) const
+bool GameObject::SaveState(JSON_Value* file, std::string root) const
 {
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
-	json_object_dotset_string(json_object(file), std::string(name + " info.name").c_str(), std::string(name).c_str());
+	json_object_dotset_string(json_object(file), std::string(root + name + " info.name").c_str(), std::string(name).c_str());
 
 
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.position.x").c_str(), (double)transform->translationLocal.translation().x);
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.position.y").c_str(), (double)transform->translationLocal.translation().y);
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.position.z").c_str(), (double)transform->translationLocal.translation().z);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.position.x").c_str(), (double)transform->translationLocal.translation().x);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.position.y").c_str(), (double)transform->translationLocal.translation().y);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.position.z").c_str(), (double)transform->translationLocal.translation().z);
 
 	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.x", (double).x);
 	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.y", (double)X.y);
 	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.z", (double)X.z);
 
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.rotationRad.x").c_str(), (double)transform->rotationEulerLocal.x);
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.rotationRad.y").c_str(), (double)transform->rotationEulerLocal.y);
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.rotationRad.z").c_str(), (double)transform->rotationEulerLocal.z);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.rotationRad.x").c_str(), (double)transform->rotationEulerLocal.x);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.rotationRad.y").c_str(), (double)transform->rotationEulerLocal.y);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.rotationRad.z").c_str(), (double)transform->rotationEulerLocal.z);
 
 
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.scale.x").c_str(), (double)transform->scalingLocal.scaling().x);
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.scale.y").c_str(), (double)transform->scalingLocal.scaling().y);
-	json_object_dotset_number(json_object(file), std::string(name + " info.transform.scale.z").c_str(), (double)transform->scalingLocal.scaling().z);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.scale.x").c_str(), (double)transform->scalingLocal.scaling().x);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.scale.y").c_str(), (double)transform->scalingLocal.scaling().y);
+	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.scale.z").c_str(), (double)transform->scalingLocal.scaling().z);
 
 	json_serialize_to_file(file, "Config.json");
 
@@ -145,7 +141,7 @@ bool GameObject::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool GameObject::LoadState(JSON_Value* file)
+bool GameObject::LoadState(JSON_Value* file, std::string root)
 {
 
 
@@ -154,15 +150,15 @@ bool GameObject::LoadState(JSON_Value* file)
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
-	name = json_object_dotget_string(json_object(file), std::string(name + " info.name").c_str());
+	name = json_object_dotget_string(json_object(file), std::string(root + name + " info.name").c_str());
 
 	//load position
 	mat4x4 translation = IdentityMatrix;
 
 	vec3 newPos = vec3(
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.position.x").c_str()),
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.position.y").c_str()),
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.position.z").c_str())
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.position.x").c_str()),
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.position.y").c_str()),
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.position.z").c_str())
 		);
 
 
@@ -173,9 +169,9 @@ bool GameObject::LoadState(JSON_Value* file)
 	//Load rotation
 
 	vec3 rotRad = vec3(
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.rotationRad.x").c_str()),
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.rotationRad.y").c_str()),
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.rotationRad.z").c_str())
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.rotationRad.x").c_str()),
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.rotationRad.y").c_str()),
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.rotationRad.z").c_str())
 	);
 	
 	Quat rotatorQuat = Quat::FromEulerXYZ(rotRad.x, rotRad.y, rotRad.z);
@@ -221,9 +217,9 @@ bool GameObject::LoadState(JSON_Value* file)
 	mat4x4 scaling = IdentityMatrix;
 
 	vec3 newScale = vec3(
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.scale.x").c_str()),
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.scale.y").c_str()),
-		json_object_dotget_number(json_object(file), std::string(name + " info.transform.scale.z").c_str())
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.scale.x").c_str()),
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.scale.y").c_str()),
+		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.scale.z").c_str())
 	);
 
 	scaling.scale(newScale.x, newScale.y, newScale.z);

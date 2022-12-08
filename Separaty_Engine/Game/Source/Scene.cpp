@@ -835,26 +835,26 @@ void Scene::EraseGameObjectFromList(GameObject* gameObject)
 
 
 
-bool Scene::SaveState(JSON_Value* file) const
+bool Scene::SaveState(JSON_Value* file, std::string root) const
 {
 	for (GameObject* go : gameObjects)
 	{
 		if (go->parent == nullptr)
 		{
-			go->SaveState(file);
+			go->SaveState(file, std::string("scene_" + name + ".gameObjects."));
 		}
 		
 	}
 
 	return true;
 }
-bool Scene::LoadState(JSON_Value* file)
+bool Scene::LoadState(JSON_Value* file, std::string root)
 {
 	for (GameObject* go : gameObjects)
 	{
 		if (go->parent == nullptr)
 		{
-			go->LoadState(file);
+			go->LoadState(file, std::string("scene_" + name + ".gameObjects."));
 		}
 	}
 

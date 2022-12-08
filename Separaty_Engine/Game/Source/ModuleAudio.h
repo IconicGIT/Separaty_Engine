@@ -14,8 +14,8 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	bool LoadState(JSON_Value* file) override;
-	bool SaveState(JSON_Value* file) const override;
+	bool LoadState(JSON_Value* file, std::string root = "") override;
+	bool SaveState(JSON_Value* file, std::string root = "") const override;
 
 
 	// Play a music file

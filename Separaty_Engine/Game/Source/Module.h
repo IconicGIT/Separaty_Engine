@@ -50,12 +50,12 @@ public:
 		return true; 
 	}
 
-	virtual bool LoadState(JSON_Value* file)
+	virtual bool LoadState(JSON_Value* file, std::string root = "")
 	{
 		return true;
 	}
 
-	virtual bool SaveState(JSON_Value* file) const
+	virtual bool SaveState(JSON_Value* file, std::string root = "") const
 	{
 		return true;
 	}

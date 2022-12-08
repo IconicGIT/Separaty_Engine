@@ -132,7 +132,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 //TODO 9: And change the color of the colliding bodies, so we can visualize it working!
 
 
-bool  ModuleSceneIntro::SaveState(JSON_Value* file) const
+bool  ModuleSceneIntro::SaveState(JSON_Value* file, std::string root) const
 {
 
 	std::string name = this->name;
@@ -154,7 +154,7 @@ bool  ModuleSceneIntro::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool  ModuleSceneIntro::LoadState(JSON_Value* file)
+bool  ModuleSceneIntro::LoadState(JSON_Value* file, std::string root)
 {
 	const char* n = json_object_dotget_string(json_object(file), "modules.Scene.name");
 

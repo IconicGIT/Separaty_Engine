@@ -163,8 +163,8 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	return true;
 }
 
-bool  ModuleAudio::SaveState(JSON_Value* file) const
-{
+bool  ModuleAudio::SaveState(JSON_Value* file, std::string root) const
+{											 
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
@@ -184,7 +184,7 @@ bool  ModuleAudio::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool  ModuleAudio::LoadState(JSON_Value* file)
+bool  ModuleAudio::LoadState(JSON_Value* file, std::string root)
 {
 	const char* n = json_object_dotget_string(json_object(file), "modules.Audio.name");
 

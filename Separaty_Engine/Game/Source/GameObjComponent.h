@@ -81,5 +81,10 @@ public:
 		return id;
 	}
 
+	void SaveState() const
+	{
+
+	}
+
 };
 

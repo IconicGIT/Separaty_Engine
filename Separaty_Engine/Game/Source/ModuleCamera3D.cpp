@@ -292,7 +292,7 @@ void ModuleCamera3D::MousePick()
 	float tab_width = App->window->width;
 	float tab_height = App->window->height;
 
-	float2 screen_mouse_pos = float2((float)App->window->width - App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
+	float2 screen_mouse_pos = float2(/*(float)App->window->width - */App->input->GetMouseX(), /*(float)App->window->height - */(float)App->input->GetMouseY());
 	float2 norm_screen_pos = float2(screen_mouse_pos.x / tab_width, screen_mouse_pos.y / tab_height);
 	float2 world_mouse_pos = float2(norm_screen_pos.x * (float)App->window->width, norm_screen_pos.y * (float)App->window->height);
 
@@ -303,15 +303,20 @@ void ModuleCamera3D::MousePick()
 
 
 	//Object part
+
+	std::vector<GameObject*> goTravessed;
 	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 	{
 		GOC_MeshRenderer* goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
 		if (picking.Intersects(goRenderer->GetMesh().bbox))
 		{
-			go->selected = !go->selected;
+			goTravessed.push_back(goRenderer->GetGameObject());
+			/*go->selected = !go->selected;*/
 		}
 	}
+	if (goTravessed.size() > 0)
+		int a = 0;
 }
 
 
@@ -379,7 +384,7 @@ void ModuleCamera3D::Zoom(const float& zoom_speed)
 	this->zoomSpeed = zoom_speed;
 }
 
-bool  ModuleCamera3D::SaveState(JSON_Value* file) const
+bool  ModuleCamera3D::SaveState(JSON_Value* file, std::string root) const
 {
 
 
@@ -422,7 +427,7 @@ bool  ModuleCamera3D::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool  ModuleCamera3D::LoadState(JSON_Value* file)
+bool  ModuleCamera3D::LoadState(JSON_Value* file, std::string root)
 {
 	const char* n = json_object_dotget_string(json_object(file), "modules.Camera.name");
 

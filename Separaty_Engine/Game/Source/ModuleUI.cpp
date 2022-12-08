@@ -621,7 +621,7 @@ bool ModuleUI::CleanUp()
 	return true;
 }
 
-bool  ModuleUI::SaveState(JSON_Value* file) const
+bool  ModuleUI::SaveState(JSON_Value* file, std::string root) const
 {
 	std::string name = this->name;
 	const char* buf = name.c_str();
@@ -642,7 +642,7 @@ bool  ModuleUI::SaveState(JSON_Value* file) const
 	return true;
 }
 
-bool  ModuleUI::LoadState(JSON_Value* file)
+bool  ModuleUI::LoadState(JSON_Value* file, std::string root)
 {
 	const char* n = json_object_dotget_string(json_object(file), "modules.UI.name");
 
