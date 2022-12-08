@@ -39,6 +39,13 @@ public:
 		this->camera = camera;
 	}
 
+
+	vec3 prevPos;
+	vec3 prevReference;
+	vec3 prevX;
+	vec3 prevY;
+	vec3 prevZ;
+
 private:
 
 	void CalculateViewMatrix();

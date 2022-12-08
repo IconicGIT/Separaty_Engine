@@ -70,6 +70,9 @@ update_status Inspector::Update(float dt)
 			
 			}
 			// Current game object (the one we have selected at the moment)
+
+
+			bool transformUpdated = false;
 			for (GameObjectComponent* component : editorObject->GetComponents())
 			{
 
@@ -108,6 +111,7 @@ update_status Inspector::Update(float dt)
 						ImGui::Text("Translation");
 						if (ImGui::DragFloat3(" ", &newPosition[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
+							transformUpdated = true;
 							this->position = newPosition;
 
 							if (editingModeWorld)
@@ -142,6 +146,8 @@ update_status Inspector::Update(float dt)
 						ImGui::Text("Rotation");
 						if (ImGui::DragFloat3("", &newRotationEuler[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
+							transformUpdated = true;
+
 							newRotationEuler.x = DEGTORAD * newRotationEuler.x;
 							newRotationEuler.y = DEGTORAD * newRotationEuler.y;
 							newRotationEuler.z = DEGTORAD * newRotationEuler.z;
@@ -233,6 +239,7 @@ update_status Inspector::Update(float dt)
 						ImGui::Text("Scale");
 						if (ImGui::DragFloat3("  ", &newScale[0], 0.05f, 0.0f, 0.0f, "%.2f"))
 						{
+							transformUpdated = true;
 
 							if (editingModeWorld)
 							{
@@ -387,10 +394,10 @@ update_status Inspector::Update(float dt)
 				break;
 				case GOC_Type::GOC_CAMERA:
 				{
+					GOC_Camera* camera = (GOC_Camera*)component;
 
 					if (ImGui::CollapsingHeader("Camera"))
 					{
-						GOC_Camera* camera = (GOC_Camera*)component;
 	
 						const char* camType = camera->frustum.type == PerspectiveFrustum ? "Perspective" : "Orthographic";
 						ImGui::Text("Camera type: ", camType);
@@ -417,10 +424,29 @@ update_status Inspector::Update(float dt)
 
 						
 						
+						
 					}
-					else
+
+					if (transformUpdated)
 					{
-						ImGui::Text("Invalid camera type");
+
+
+						for (GameObject* toDraw : App->engineSystem->GetCurrentScene()->gameObjects)
+						{
+							GOC_MeshRenderer* renderer = nullptr;
+							renderer = (GOC_MeshRenderer*)toDraw->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+
+							bool test = camera->frustum.Contains(renderer->GetMesh().bbox);
+
+							if (test)
+								renderer->canDraw = true;
+							else
+								renderer->canDraw = false;
+
+						}
+
+
+
 					}
 				}
 				break;

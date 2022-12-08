@@ -62,14 +62,12 @@ public:
 
     std::string name;
     AABB bbox;
+    vec bboxPoints[8];
 
 private:
     //  render data
     unsigned int VAO, VBO, EBO;
-
-    unsigned int bboxVAO, bboxVBO, bboxEBO;
    
-    vec bboxPoints[8];
 
     void SetupMesh();
     void DrawCube(static float3* corners, Color color);

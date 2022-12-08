@@ -12,6 +12,7 @@ GOC_MeshRenderer::GOC_MeshRenderer(GameObject* gameObjectAttached, mat4x4 transf
 	selctedShader = new Shader("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
 
 	
+	
 
 }
 
@@ -40,7 +41,8 @@ void GOC_MeshRenderer::SetTextures(std::vector<Texture*> textures)
 
 	}
 
-	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	GOC_Texture* tex = nullptr;
+	tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
 	if (tex != nullptr)
 		tex->SetTextures(myMesh.textures);
 
@@ -55,7 +57,8 @@ void GOC_MeshRenderer::SetTextures(std::vector<Texture> textures)
 
 	}
 	
-	GOC_Texture* tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
+	GOC_Texture* tex = nullptr;
+	tex = (GOC_Texture*)gameObject->GetComponent(GOC_Type::GOC_TEXTURE);
 	if (tex != nullptr)
 		tex->SetTextures(myMesh.textures);
 }
@@ -100,6 +103,7 @@ void GOC_MeshRenderer::AddTexture(Texture texture)
 
 void GOC_MeshRenderer::Render()
 {
+	goCamera = (GOC_Camera*)App->engineSystem->GetAllGameObjects()[0]->GetComponent(GOC_Type::GOC_CAMERA);
 
 	if (!myMesh.vertices.empty())
 	{
@@ -122,7 +126,9 @@ void GOC_MeshRenderer::Render()
 
 		myShader->SetMat4x4("model", gameObject->transform->Get4x4Matrix());
 
-		myMesh.Draw(*myShader, App->renderer3D->atributes.Wireframe);
+		
+		if (canDraw)
+			myMesh.Draw(*myShader, App->renderer3D->atributes.Wireframe);
 
 		myShader->Unuse();
 	}

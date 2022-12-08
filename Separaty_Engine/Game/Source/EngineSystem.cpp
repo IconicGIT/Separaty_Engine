@@ -52,12 +52,14 @@ bool EngineSystem::Init()
 		}
 	}
 
+	modelExtensionsAccepted.push_back("FBX");
 	modelExtensionsAccepted.push_back("fbx");
 	modelExtensionsAccepted.push_back("obj");
 
 	imageExtensionsAccepted.push_back("png");
 	imageExtensionsAccepted.push_back("jpg");
 	imageExtensionsAccepted.push_back("bmp");
+	imageExtensionsAccepted.push_back("tga");
 
 	return ret;
 

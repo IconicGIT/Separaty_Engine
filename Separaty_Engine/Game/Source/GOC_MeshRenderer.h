@@ -24,6 +24,7 @@ class GameObject;
 class Mesh;
 class Model;
 class Shader;
+class Camera;
 
 
 class GOC_MeshRenderer : public GameObjectComponent
@@ -51,6 +52,9 @@ public:
 		return  myMesh;
 	}
 
+	GOC_Camera* goCamera;
+
+	bool canDraw = true;
 private:
 
 	mat4x4 transform;

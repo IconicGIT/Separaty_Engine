@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
+#include "PlayStop.h"
+#include "ModuleUI.h"
 
 #include "Scene.h"
 
@@ -15,8 +17,8 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-	Position = vec3(0.0f, 0.0f, 1.0f);
-	currentReference = vec3(0.0f, 0.0f, 0.0f);
+	Position = vec3(0.0f, 0.0f, -1.0f);
+	currentReference = vec3(0.0f, 0.0f, 1.0f);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -31,7 +33,7 @@ bool ModuleCamera3D::Start()
 	gameObject = App->engineSystem->CreateNewGameObject();
 	gameObject->AddComponent(GOC_Type::GOC_CAMERA);
 
-	gameObject->Start();
+	//gameObject->Start();
 
 	goCamera = (GOC_Camera*)gameObject->GetComponent(GOC_Type::GOC_CAMERA);
 	goCamera->frustumColor = Color(0, 0, 1, 1);
@@ -39,9 +41,10 @@ bool ModuleCamera3D::Start()
 	goCamera->frustum.nearPlaneDistance = 2;
 	goCamera->frustum.farPlaneDistance = 20;
 	goCamera->frustum.verticalFov = 60 * DEGTORAD;
-	goCamera->frustum.horizontalFov = 60;
+	goCamera->frustum.horizontalFov = 60 * DEGTORAD;
 
 	goCamera->drawFrustum = false;
+	goCamera->isCurrent = true;
 	return ret;
 }
 
@@ -182,7 +185,13 @@ update_status ModuleCamera3D::Update(float dt)
 		CalculateViewMatrix();
 	}
 
-	if (camera != nullptr)
+
+
+	goCamera->frustum.verticalFov = App->renderer3D->fov * DEGTORAD;
+	goCamera->frustum.horizontalFov = 2.f * atan(tan(goCamera->frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
+
+
+	if (camera != nullptr && App->ui->uiFunctions->playStopWindow->play)
 	{
 
 		goCamera->frustum.nearPlaneDistance = camera->frustum.nearPlaneDistance;
@@ -198,6 +207,37 @@ update_status ModuleCamera3D::Update(float dt)
 		camera->frustum.GetCornerPoints(goCamera->bboxPoints);
 		camera->DrawCube(goCamera->bboxPoints, Color(0, 0, 1, 1));
 	}
+	else
+	{
+		/*if (!goCamera->isCurrent)
+		{
+			Position = prevPos;
+			currentReference = prevReference;
+			X = prevX;
+			Y = prevY;
+			Z = prevZ;
+
+			camera = goCamera;
+			goCamera->isCurrent = true;
+		}
+		*/
+
+	}
+
+	
+
+
+	//if (goCamera == camera)
+	//{
+	//	
+
+	//	prevPos = Position;
+	//	prevReference = currentReference;
+	//	prevX = X;
+	//	prevY = Y;
+	//	prevZ = Z;
+
+	//}
 
 	gameObject->transform->translationLocal.translate(Position.x, Position.y, Position.z);
 
@@ -223,23 +263,21 @@ void ModuleCamera3D::MousePick()
 {
 
 
-	float tab_width = App->window->height;
-	float tab_height = App->window->height;
+	float2 mousePos = float2((float)App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
+	float2 scrPos = float2(mousePos.x / App->window->width, mousePos.y / App->window->height);
+	float2 mousePosWorld = float2(scrPos.x * (float)App->window->height, scrPos.y * (float)App->window->height);
 
-	float2 screen_mouse_pos = float2((float)App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
-	float2 norm_screen_pos = float2(screen_mouse_pos.x / tab_width, screen_mouse_pos.y / tab_height);
-	float2 world_mouse_pos = float2(norm_screen_pos.x * (float)App->window->height, norm_screen_pos.y * (float)App->window->height);
+	float x_ = (mousePosWorld.x / App->window->width - 0.5f) * 2;
+	float y_ = (mousePosWorld.y / App->window->height - 0.5f) * 2;
 
-	float normalized_x = (world_mouse_pos.x / App->window->height - 0.5f) * 2;
-	float normalized_y = (world_mouse_pos.y / App->window->height - 0.5f) * 2;
-
-	LineSegment picking = goCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+	LineSegment picking = goCamera->frustum.UnProjectLineSegment(x_, y_);
 
 
 	//Object part
 	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 	{
-		GOC_MeshRenderer* goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		GOC_MeshRenderer* goRenderer = nullptr;
+		goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
 		if (picking.Intersects(goRenderer->GetMesh().bbox))
 		{

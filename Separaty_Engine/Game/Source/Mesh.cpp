@@ -100,18 +100,7 @@ void Mesh::Draw(Shader& shader, bool wireframeActive)
 
    
     //glActiveTexture(GL_TEXTURE0);
-    if (!wireframeActive)
-    {
-        glPolygonMode(GL_FRONT, GL_FILL);
-    }
-
-
-    // draw mesh
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-    //glBindTexture(GL_TEXTURE_2D, 0);
-    //glDisable(GL_TEXTURE_2D);
+    
 
     glPolygonMode(GL_FRONT, GL_LINE);
 
@@ -119,6 +108,19 @@ void Mesh::Draw(Shader& shader, bool wireframeActive)
     {
         DrawCube(bboxPoints, Color(1, 1, 1, 1));
     }
+
+    if (!wireframeActive)
+    {
+        glPolygonMode(GL_FRONT, GL_FILL);
+    }
+    // draw mesh
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+    //glBindTexture(GL_TEXTURE_2D, 0);
+    //glDisable(GL_TEXTURE_2D);
+
+    
 
 
 

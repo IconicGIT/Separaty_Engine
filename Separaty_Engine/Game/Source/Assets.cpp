@@ -17,7 +17,7 @@
 
 Assets::Assets()
 {
-    name = "Assets";
+	name = "Assets";
 
 	display = new char[MAX_DIRECTORY_SIZE];
 
@@ -32,21 +32,21 @@ Assets::~Assets()
 
 update_status Assets::Update(float dt)
 {
-    if (App->ui->assets)
-    {
-        ImGui::Begin("Assets", &App->ui->assets, ImGuiWindowFlags_NoMove);
+	if (App->ui->assets)
+	{
+		ImGui::Begin("Assets", &App->ui->assets, ImGuiWindowFlags_NoMove);
 
-        if (ImGui::TreeNode("Assets/"))
-        {
+		if (ImGui::TreeNode("Assets/"))
+		{
 			ResourceManagment("Assets/", ".meta");
 
 			ImGui::TreePop();
-        }
+		}
 
-        ImGui::End();
-    }
+		ImGui::End();
+	}
 
-    return UPDATE_CONTINUE;
+	return UPDATE_CONTINUE;
 }
 
 void Assets::ResourceManagment(const char* roots, const char* extension_to_filter)

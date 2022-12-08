@@ -18,7 +18,7 @@ public:
 
 	void LookFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;
 
-
+	const char* roots;
 private:
 	std::string name;
 

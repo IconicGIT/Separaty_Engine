@@ -68,22 +68,51 @@ bool Scene::Start()
 		}
 	}
 
-
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/default_texture.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/checker_pattern.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/baker_house.png");
 	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
+	App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/baker_house.fbx");
+
+
+	GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+	camera->AddComponent(GOC_Type::GOC_CAMERA);
+	camera->name = "Camera";
+
+	GameObject* go = gameObjects[0];
+	go->transform->translationLocal.translate(20, 0, 15);
+	go->transform->ApplyTransformations();
+
+	go = gameObjects[3];
+	go->transform->translationLocal.translate(-20, 0, 15);
+	go->transform->ApplyTransformations();
+
+	go = gameObjects[6];
+	go->transform->translationLocal.translate(0, 0, 15);
+	go->transform->ApplyTransformations();
+
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Models/street2.FBX");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building 01_c.tga");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building 06_c .tga");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building 06_ c.tga");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building_016_c.tga");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building_025_c.tga");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building03_c.tga");
+	//App->engineSystem->LoadFromPath((char*)"Assets/Project_1/Assets/Textures/building05 _c.tga");
+
+
 
 
 	for (GameObject* go : gameObjects)
 	{
-		GOC_Texture* texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		GOC_Texture* texture = nullptr;
+		texture = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
 		texture->SetTexture(App->engineSystem->GetAllTextures()[2]);
 		texture->UpdateMeshRendererTexture();
 	}
 
-	GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
-	camera->AddComponent(GOC_Type::GOC_CAMERA);
+	
 
 
 	

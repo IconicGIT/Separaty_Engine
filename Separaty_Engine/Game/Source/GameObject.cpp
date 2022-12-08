@@ -216,7 +216,7 @@ GameObjectComponent* GameObject::GetComponent(GOC_Type type)
 		}
 	}
 
-	App->ui->AppendToOutput(DEBUG_LOG("There is not any component of that type in %s!", name));
+	//App->ui->AppendToOutput(DEBUG_LOG("There is not any component of that type in %s!", name.c_str()));
 
 }
 

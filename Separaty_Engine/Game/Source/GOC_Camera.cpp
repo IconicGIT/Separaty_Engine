@@ -68,9 +68,6 @@ void GOC_Camera::UpdateFrustum()
 {
 	//CalculateViewMatrix();
 
-	frustum.verticalFov = App->renderer3D->fov * DEGTORAD;
-	frustum.horizontalFov = 2.f * atan(tan(frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
-
 	if (gameObject != nullptr)
 	{
 		vec3 pos = gameObject->transform->transformWorld.translation();

@@ -15,7 +15,8 @@ void GOC_Texture::UpdateMeshRendererTexture(bool updateInGameObjectChildren)
 	{
 		for (GameObject* child : gameObject->GetChildren())
 		{
-			GOC_MeshRenderer* renderer = (GOC_MeshRenderer*)child->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+			GOC_MeshRenderer* renderer = nullptr;
+			renderer = (GOC_MeshRenderer*)child->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 			renderer->SetTextures(textures);
 		}
 	}
