@@ -75,7 +75,9 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 	//	ImGui::Dummy(ImVec2(5, 0));
 	//	ImGui::SameLine();
 	//}
-	if (ImGui::TreeNode(go->name.c_str()))
+
+	std::string hierarchyName = go->name + "##" + std::to_string(go->id);
+	if (ImGui::TreeNode(hierarchyName.c_str()))
 	{
 		//for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
 		//{

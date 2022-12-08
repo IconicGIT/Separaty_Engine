@@ -11,7 +11,7 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached)
 	gameObject = gameObjectAttached;
 
 	frustum.type = PerspectiveFrustum;
-	frustum.handedness = FrustumHandedness::FrustumLeftHanded;
+	frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumLeftHanded);
 
 	if (gameObject != nullptr && gameObject->transform != nullptr)
 	{

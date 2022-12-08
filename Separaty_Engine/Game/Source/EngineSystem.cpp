@@ -215,7 +215,7 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 	
 }
 
-bool EngineSystem::LoadModel(char* path, bool createGameobject)
+bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameobject)
 {
 	std::string path_s = path;
 	
@@ -244,9 +244,13 @@ bool EngineSystem::LoadModel(char* path, bool createGameobject)
 
 	if (modelToAdd->GetMeshes().size() > 1)
 	{
+		char* name_ = new char[512];
+		strncpy_s(name_, 512, name.c_str(), name.length() - extension.length() - 1);
+
 		for (Mesh mesh : modelToAdd->GetMeshes())
 		{
-			std::string tempName = name;
+
+			std::string tempName = name_;
 			tempName += std::to_string(meshNr);
 			mesh.name = tempName;
 
@@ -298,18 +302,25 @@ bool EngineSystem::LoadModel(char* path, bool createGameobject)
 				App->ui->AppendToOutput(DEBUG_LOG("Mesh [%s] loaded! [path: %s]", mesh.name.c_str(), path));
 			}
 			meshNr++;
+
 		}
+		delete[] name_;
+
 	}
 	else
 	{
+
+		char* name_ = new char[512];
+		strncpy_s(name_, 512, name.c_str(), name.length() - extension.length() - 1);
+
 		Mesh mesh = modelToAdd->GetMeshes()[0];
-		mesh.name = name;
+		mesh.name = name_;
 
 		App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", mesh.name.c_str()));
 
 		if (createGameobject)
 		{
-			std::string meshGoName = mesh.name + std::to_string(meshNr);
+			std::string meshGoName = mesh.name /*+ std::to_string(meshNr)*/;
 			go->name = meshGoName;
 
 			renderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
@@ -318,6 +329,8 @@ bool EngineSystem::LoadModel(char* path, bool createGameobject)
 		}
 		
 		allMeshes.push_back(mesh);
+		delete[] name_;
+
 	}
 
 	
@@ -360,7 +373,7 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir, bool createGameobject)
 		a = strncmp(fileExtension.c_str(), ext.c_str(), fileExtension.length());
 		if ( a == 0)
 		{
-			LoadModel(draggedFileDir, createGameobject);
+			LoadModel(draggedFileDir, ext, createGameobject);
 			ret = true;
 
 			return ret;

@@ -186,11 +186,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	ProjectionMatrix = perspective(fov, (float)App->window->width / (float)App->window->height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
-
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -216,6 +212,7 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
+
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

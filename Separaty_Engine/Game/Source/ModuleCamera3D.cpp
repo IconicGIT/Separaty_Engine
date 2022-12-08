@@ -35,6 +35,8 @@ bool ModuleCamera3D::Start()
 
 	//gameObject->Start();
 
+	goCamera->frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumRightHanded);
+
 	goCamera = (GOC_Camera*)gameObject->GetComponent(GOC_Type::GOC_CAMERA);
 	goCamera->frustumColor = Color(0, 0, 1, 1);
 

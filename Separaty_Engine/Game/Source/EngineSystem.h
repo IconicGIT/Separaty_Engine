@@ -92,7 +92,7 @@ public:
 
 private:
 	
-	bool LoadModel(char* path, bool createGameobject = true);
+	bool LoadModel(char* path, std::string extension ,bool createGameobject = true);
 
 
 	int scenes_id = 0;
