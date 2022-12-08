@@ -85,18 +85,11 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+		LookAt(vec3(0, 0, 0));
+		if (!App->engineSystem->GetselectedGameObjects().empty())
 		{
-			if (go->selected)
-			{
-				LookAt(go->transform->translationLocal.translation());
-			}
-			else
-			{
-				LookAt(0);
-			}
+			LookAt(App->engineSystem->GetselectedGameObjects().at(App->engineSystem->GetselectedGameObjects().size() - 1)->transform->translationWorld.translation());
 		}
-		
 	}
 
 	Position += newPos;

@@ -88,9 +88,13 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 			DisplayTree(go->GetChildren()[i], flags);
 		}
 
-		UImanager->selectedGameObjects.push_back(go);
+		if (!go->selected)
+		{
+			UImanager->selectedGameObjects.push_back(go);
+			App->engineSystem->AddToGameObjectsSelected(go);
+			go->selected = true;
+		}
 
-		go->selected = true;
 
 
 		ImGui::Dummy(ImVec2(8, 0));
@@ -121,7 +125,12 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 	}
 	else
 	{
-		go->selected = false;
+		if (go->selected)
+		{
+			App->engineSystem->RemoveFromGameObjectsSelected(go);
+			go->selected = false;
+		}
+
 	}
 }
 

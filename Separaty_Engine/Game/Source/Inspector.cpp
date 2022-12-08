@@ -52,13 +52,7 @@ update_status Inspector::Update(float dt)
 
 		if (!UImanager->selectedGameObjects.empty())
 		{
-			GameObject* editorObject = UImanager->selectedGameObjects[0];
-
-			/*if (UImanager->selectedGameObjects.size() > 1)
-			{
-				editorObject = ghostObject;
-
-			}*/
+			GameObject* editorObject = UImanager->selectedGameObjects.at(UImanager->selectedGameObjects.size() - 1);
 
 			if (ImGui::CollapsingHeader("Information"))
 			{
@@ -465,10 +459,10 @@ update_status Inspector::Update(float dt)
 
 							bool test = camera->frustum.Contains(renderer->GetMesh().bbox);
 
-							if (test)
+							/*if (test)
 								renderer->canDraw = true;
 							else
-								renderer->canDraw = false;
+								renderer->canDraw = false;*/
 
 						}
 

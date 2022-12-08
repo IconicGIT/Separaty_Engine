@@ -258,6 +258,17 @@ void EngineSystem::EraseGameObjectFromEngine(GameObject* gameObject)
 
 }
 
+void EngineSystem::RemoveFromGameObjectsSelected(GameObject* toRemove)
+{
+	for (size_t i = 0; i < selectedGameObjects.size(); i++)
+	{
+		if (selectedGameObjects[i]->GetID() == toRemove->GetID())
+		{
+			selectedGameObjects.erase(selectedGameObjects.begin() + i);
+		}
+	}
+}
+
 bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameobject)
 {
 	std::string path_s = path;

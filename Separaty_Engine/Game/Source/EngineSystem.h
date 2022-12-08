@@ -84,6 +84,8 @@ public:
 		selectedGameObjects.push_back(toAdd);
 	}
 
+	void RemoveFromGameObjectsSelected(GameObject* toRemove);
+
 	std::vector<GameObject*> GetselectedGameObjects() const
 	{
 		return selectedGameObjects;

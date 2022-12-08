@@ -42,7 +42,7 @@ update_status GameObject::Update(float dt)
 		ret = item->Execute();
 		item_it++;
 	}
-	
+	/*
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 		App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
@@ -54,7 +54,7 @@ update_status GameObject::Update(float dt)
 		}
 
 		App->ui->AppendToOutput(DEBUG_LOG("Engine components: %i", App->engineSystem->GetAllGameObjectComponents().size()));
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
