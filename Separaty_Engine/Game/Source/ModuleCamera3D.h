@@ -32,11 +32,11 @@ public:
 
 	void SetCamera(GOC_Camera* camera)
 	{
-		if (this->camera != nullptr)
-		{
-			this->camera->gameCamera = false;
-		}
-		this->camera = camera;
+		//if (this->currentCamera != nullptr)
+		//{
+		//	this->currentCamera->useCameraWhileInPlay = false;
+		//}
+		this->currentCamera = camera;
 	}
 
 
@@ -64,7 +64,8 @@ public:
 
 	bool isCurrent = false;
 
-	GOC_Camera* camera;
+	GOC_Camera* currentCamera;
+	GOC_Camera* mainCamera;
 	GOC_Camera* goCamera;
 	 
 	vec3 X, Y, Z, Position, currentReference;

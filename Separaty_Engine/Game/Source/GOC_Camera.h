@@ -92,8 +92,8 @@ public:
 	}
 
 
-	bool editorCamera = true;
-	bool gameCamera = false;
+	bool isCurrentCamera = false;
+	bool useCameraWhileInPlay = false;
 
 	vec3 X, Y, Z, Position, Reference;
 	vec bboxPoints[8];

@@ -405,37 +405,80 @@ update_status Inspector::Update(float dt)
 							camera->frustum.horizontalFov = 2.f * atan(tan(camera->frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
 						}
 
-						if (!App->ui->uiFunctions->playStopWindow->play)
+
+						if (ImGui::Checkbox("Set as Main Camera", &camera->isCurrentCamera))
 						{
-							if (camera->editorCamera == true)
+							if (camera->isCurrentCamera)
 							{
-								if (ImGui::Checkbox("Editor Camera", &camera->editorCamera))
+								for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 								{
-									camera->gameCamera = true;
-									camera->editorCamera = false;
+									for (GameObjectComponent* comp : go->GetComponents())
+									{
+										if (comp->GetGOC_Type() == GOC_Type::GOC_CAMERA && editorObject->GetID() != go->GetID())
+										{
+											GOC_Camera* goCam = (GOC_Camera*)comp;
+											goCam->isCurrentCamera = false;
+										}
+									}
 								}
 							}
-							
-							if (camera->gameCamera == true)
-							{
-								App->camera->SetCamera(nullptr);
-								App->camera->SetCamera(camera);
-								if (ImGui::Checkbox("Game Camera", &camera->gameCamera))
-								{
-									camera->editorCamera = true;
-									camera->gameCamera = false;
-								}
-							}
-							
 						}
+
+
+						bool useCamInPlay = camera->useCameraWhileInPlay;
+						if (App->ui->uiFunctions->playStopWindow->play)
+						{
+							if (ImGui::Checkbox("Use Camera", &useCamInPlay))
+							{
+								int a = 0;
+							}
+						}
+						else
+						{
+							//camera->useCameraWhileInPlay = camera->isCurrentCamera;
+						}
+
+						camera->useCameraWhileInPlay = useCamInPlay;
+
+						App->camera->SetCamera(nullptr);
+						if (camera->isCurrentCamera)
+						{
+							App->camera->SetCamera(camera);
+						}
+
+						//if (!App->ui->uiFunctions->playStopWindow->play)
+						//{
+						//	if (camera->isCurrentCamera == true)
+						//	{
+						//		if (ImGui::Checkbox("Editor Camera", &camera->isCurrentCamera))
+						//		{
+						//			camera->useCameraWhileInPlay = true;
+						//			camera->isCurrentCamera = false;
+						//		}
+						//	}
+						//	
+						//	if (camera->useCameraWhileInPlay == true)
+						//	{
+						//		App->camera->SetCamera(nullptr);
+						//		App->camera->SetCamera(camera);
+						//		if (ImGui::Checkbox("Game Camera", &camera->useCameraWhileInPlay))
+						//		{
+						//			camera->isCurrentCamera = true;
+						//			camera->useCameraWhileInPlay = false;
+						//		}
+						//	}
+							
+						
+
+						
 				/*		else
 						{
 							App->camera->SetCamera(nullptr);
 							App->camera->SetCamera(camera);
-							if (ImGui::Checkbox("Game Camera", &camera->gameCamera))
+							if (ImGui::Checkbox("Game Camera", &camera->useCameraWhileInPlay))
 							{
-								camera->editorCamera = true;
-								camera->gameCamera = false;
+								camera->isCurrentCamera = true;
+								camera->useCameraWhileInPlay = false;
 							}
 							
 						}*/
@@ -465,11 +508,9 @@ update_status Inspector::Update(float dt)
 								renderer->canDraw = false;*/
 
 						}
-
-
-
 					}
 				}
+
 				break;
 				case GOC_Type::GOC_MESH_RENDERER:
 				{

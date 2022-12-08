@@ -105,7 +105,11 @@ bool Scene::Start()
 
 	GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
 	camera->AddComponent(GOC_Type::GOC_CAMERA);
-	camera->name = "Camera";
+	camera->name = "Camera 1";
+
+	camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+	camera->AddComponent(GOC_Type::GOC_CAMERA);
+	camera->name = "Camera 2";
 
 
 	//SCENE INITIIALIZATION

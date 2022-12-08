@@ -49,7 +49,7 @@ bool ModuleCamera3D::Start()
 
 
 	goCamera->drawFrustum = false;
-	goCamera->gameCamera = true;
+	goCamera->useCameraWhileInPlay = true;
 	return ret;
 }
 
@@ -189,21 +189,22 @@ update_status ModuleCamera3D::Update(float dt)
 	goCamera->frustum.horizontalFov = 2.f * atan(tan(goCamera->frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
 
 
-	if (camera != nullptr && App->ui->uiFunctions->playStopWindow->play)
+
+	if (currentCamera != nullptr && App->ui->uiFunctions->playStopWindow->play && currentCamera->useCameraWhileInPlay)
 	{
 
-		goCamera->frustum.nearPlaneDistance = camera->frustum.nearPlaneDistance;
-		goCamera->frustum.farPlaneDistance = camera->frustum.farPlaneDistance;
-		goCamera->frustum.verticalFov = camera->frustum.verticalFov;
-		goCamera->frustum.horizontalFov = camera->frustum.horizontalFov;
+		goCamera->frustum.nearPlaneDistance = currentCamera->frustum.nearPlaneDistance;
+		goCamera->frustum.farPlaneDistance = currentCamera->frustum.farPlaneDistance;
+		goCamera->frustum.verticalFov = currentCamera->frustum.verticalFov;
+		goCamera->frustum.horizontalFov = currentCamera->frustum.horizontalFov;
 
-		Position = camera->Position;
-		X = -camera->X;
-		Y = camera->Y;
-		Z = -camera->Z;
+		Position = currentCamera->Position;
+		X = -currentCamera->X;
+		Y = currentCamera->Y;
+		Z = -currentCamera->Z;
 
-		camera->frustum.GetCornerPoints(goCamera->bboxPoints);
-		camera->DrawCube(goCamera->bboxPoints, Color(0, 0, 1, 1));
+		currentCamera->frustum.GetCornerPoints(goCamera->bboxPoints);
+		currentCamera->DrawCube(goCamera->bboxPoints, Color(0, 0, 1, 1));
 	}
 	else
 	{
@@ -256,34 +257,62 @@ update_status ModuleCamera3D::Update(float dt)
 	gameObject->Update(dt);
 	return UPDATE_CONTINUE;
 }
+//
+//void ModuleCamera3D::MousePick()
+//{
+//
+//
+//	float2 mousePos = float2((float)App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
+//	float2 scrPos = float2(mousePos.x / App->window->width, mousePos.y / App->window->height);
+//	float2 mousePosWorld = float2(scrPos.x * (float)App->window->height, scrPos.y * (float)App->window->height);
+//
+//	float x_ = (mousePosWorld.x / App->window->width - 0.5f) * 2;
+//	float y_ = (mousePosWorld.y / App->window->height - 0.5f) * 2;
+//
+//	LineSegment picking = goCamera->frustum.UnProjectLineSegment(x_, y_);
+//
+//
+//	//Object part
+//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
+//	{
+//		GOC_MeshRenderer* goRenderer = nullptr;
+//		goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+//
+//		if (picking.Intersects(goRenderer->GetMesh().bbox))
+//		{
+//			go->selected = true;
+//		}
+//	}
+//}
 
 void ModuleCamera3D::MousePick()
 {
 
 
-	float2 mousePos = float2((float)App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
-	float2 scrPos = float2(mousePos.x / App->window->width, mousePos.y / App->window->height);
-	float2 mousePosWorld = float2(scrPos.x * (float)App->window->height, scrPos.y * (float)App->window->height);
+	float tab_width = App->window->width;
+	float tab_height = App->window->height;
 
-	float x_ = (mousePosWorld.x / App->window->width - 0.5f) * 2;
-	float y_ = (mousePosWorld.y / App->window->height - 0.5f) * 2;
+	float2 screen_mouse_pos = float2((float)App->window->width - App->input->GetMouseX(), (float)App->window->height - (float)App->input->GetMouseY());
+	float2 norm_screen_pos = float2(screen_mouse_pos.x / tab_width, screen_mouse_pos.y / tab_height);
+	float2 world_mouse_pos = float2(norm_screen_pos.x * (float)App->window->width, norm_screen_pos.y * (float)App->window->height);
 
-	LineSegment picking = goCamera->frustum.UnProjectLineSegment(x_, y_);
+	float normalized_x = (world_mouse_pos.x / App->window->width - 0.5f) * 2;
+	float normalized_y = (world_mouse_pos.y / App->window->height - 0.5f) * 2;
+
+	LineSegment picking = goCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 
 
 	//Object part
 	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 	{
-		GOC_MeshRenderer* goRenderer = nullptr;
-		goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		GOC_MeshRenderer* goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
 		if (picking.Intersects(goRenderer->GetMesh().bbox))
 		{
-			go->selected = true;
+			go->selected = !go->selected;
 		}
 	}
 }
-
 
 
 
