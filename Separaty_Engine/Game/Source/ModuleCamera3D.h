@@ -55,7 +55,7 @@ private:
 	//void SetZoomSpeed(const float& zoom_speed);
 	//float GetZoomSpeed() const;
 
-	float zoomSpeed = 0.5f;
+	float zoomSpeed = 2.0f;
 
 public:
 

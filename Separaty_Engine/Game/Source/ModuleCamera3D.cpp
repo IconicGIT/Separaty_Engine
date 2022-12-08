@@ -17,8 +17,8 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-	Position = vec3(0.0f, 0.0f, -1.0f);
-	currentReference = vec3(0.0f, 0.0f, 1.0f);
+	Position = vec3(50.0f, 50.0, 50.0f);
+	currentReference = vec3(0.0f, 0.0f, 0.0f);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -35,6 +35,7 @@ bool ModuleCamera3D::Start()
 
 	//gameObject->Start();
 
+	/*goCamera->frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumRightHanded);*/
 
 	goCamera = (GOC_Camera*)gameObject->GetComponent(GOC_Type::GOC_CAMERA);
 	goCamera->frustumColor = Color(0, 0, 1, 1);
@@ -67,9 +68,9 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	vec3 newPos(0,0,0);
-	float speed = 10.0f * dt;
+	float speed = 50.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 20.0f * dt;
+		speed = 100.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 	if(App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y -= speed;

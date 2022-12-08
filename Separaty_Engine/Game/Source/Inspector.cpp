@@ -411,26 +411,41 @@ update_status Inspector::Update(float dt)
 							camera->frustum.horizontalFov = 2.f * atan(tan(camera->frustum.verticalFov * 0.5f) * (float(App->window->width) / App->window->height));
 						}
 
-						if (ImGui::Checkbox("Editor Camera", &camera->editorCamera))
+						if (!App->ui->uiFunctions->playStopWindow->play)
 						{
-							if (!camera->gameCamera)
+							if (camera->editorCamera == true)
 							{
-								camera->editorCamera = false;
-								camera->gameCamera = true;
-								
+								if (ImGui::Checkbox("Editor Camera", &camera->editorCamera))
+								{
+									camera->gameCamera = true;
+									camera->editorCamera = false;
+								}
 							}
+							
+							if (camera->gameCamera == true)
+							{
+								App->camera->SetCamera(nullptr);
+								App->camera->SetCamera(camera);
+								if (ImGui::Checkbox("Game Camera", &camera->gameCamera))
+								{
+									camera->editorCamera = true;
+									camera->gameCamera = false;
+								}
+							}
+							
 						}
-
-						if (ImGui::Checkbox("Game Camera", &camera->gameCamera))
+				/*		else
 						{
 							App->camera->SetCamera(nullptr);
-							if (camera->gameCamera)
+							App->camera->SetCamera(camera);
+							if (ImGui::Checkbox("Game Camera", &camera->gameCamera))
 							{
 								camera->editorCamera = true;
 								camera->gameCamera = false;
-								App->camera->SetCamera(camera);
 							}
-						}
+							
+						}*/
+						
 
 						ImGui::Checkbox("Draw Frustum", &camera->drawFrustum);
 
