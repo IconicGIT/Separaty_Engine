@@ -4,8 +4,6 @@
 
 Texture LoadTexture(std::string file_path)
 {
-	
-
 	unsigned int texture;
 
 	glGenTextures(1, &texture);

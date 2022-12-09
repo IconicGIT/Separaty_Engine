@@ -11,7 +11,7 @@
 #include <filesystem>
 
 
-#define MAX_DIRECTORY_SIZE 500
+
 
 //ASSETS WINDOW
 
@@ -19,9 +19,9 @@ Assets::Assets()
 {
 	name = "Assets";
 
-	display = new char[MAX_DIRECTORY_SIZE];
+	display = new char[500];
 
-	sprintf_s(display, MAX_DIRECTORY_SIZE, "%s", "Assets/");
+	sprintf_s(display, 500, "%s", "Assets/");
 }
 
 
@@ -57,7 +57,7 @@ void Assets::ResourceManagment(const char* roots, const char* extension_to_filte
 
 	std::string root_dir = roots;
 
-	LookFiles(root_dir.c_str(), file, directory);
+	/*LookFiles(root_dir.c_str(), file, directory);*/
 
 	for (size_t i = 0; i < directory.size(); i++)
 	{
@@ -80,7 +80,7 @@ void Assets::ResourceManagment(const char* roots, const char* extension_to_filte
 		{
 			if (ImGui::IsItemClicked())
 			{
-				sprintf_s(display, MAX_DIRECTORY_SIZE, "%s%s", root_dir.c_str(), file[i].c_str());
+				sprintf_s(display, 500, "%s%s", root_dir.c_str(), file[i].c_str());
 			}
 
 			ImGui::TreePop();

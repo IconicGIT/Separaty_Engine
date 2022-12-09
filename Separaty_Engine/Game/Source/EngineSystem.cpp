@@ -513,6 +513,241 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir, bool createGameobject)
 	return ret;
 }
 
+bool EngineSystem::Save_Mesh(Mesh* mesh, char** pointer)
+{
+	float* meshVertices = new float[sizeof(float*) * mesh->vertices.size() * 3];
+
+	int MeshSize = mesh->vertices.size() * 3;
+
+	for (size_t i = 0; i < mesh->vertices.size(); i++)
+	{
+		meshVertices[i] = mesh->vertices[i].Position.x;
+		meshVertices[i + 1] = mesh->vertices[i].Position.y;
+		meshVertices[i + 2] = mesh->vertices[i].Position.z;
+	}
+
+	uint* meshIndices = new uint[sizeof(uint*) * mesh->indices.size()];
+
+	for (size_t i = 0; i < mesh->indices.size(); i++)
+	{
+		meshIndices[i] = mesh->indices[i];
+	}
+
+	uint ranges[2] = {mesh->indices.size(), mesh->vertices.size() };
+	uint size = sizeof(ranges) + sizeof(uint) * mesh->indices.size() + sizeof(float) * mesh->vertices.size() * 3;
+	char* fileBuffer = new char[size]; // Allocate
+	char* cursor = fileBuffer;
+	uint bytes = sizeof(ranges); // First store ranges
+	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+	// Store indices
+	bytes = sizeof(uint) * mesh->indices.size();
+	memcpy(cursor, meshIndices, bytes);
+	cursor += bytes;
+
+	/*std::string filePath;
+	if (mesh->objMain_->name_ == "child")
+	{
+		filePath = std::string("Library/Meshes/") + mesh->objMain_->name_.c_str() + std::to_string(childPostfix) + std::string(MESH_FILE_EXTENSION);
+		childPostfix++;
+	}
+	else
+	{
+		filePath = std::string("Library/Meshes/") + mesh->objMain_->name_.c_str() + std::string(MESH_FILE_EXTENSION);
+	}
+
+	PHYSFS_file* fs_file;
+
+	fs_file = PHYSFS_openWrite(filePath.c_str());
+
+	if (fs_file != nullptr)
+	{
+		uint written = (uint)PHYSFS_write(fs_file, fileBuffer, 1, size);
+		if (written != size)
+		{
+			LOG("PhysFS error while writing to file %s: %s", filePath, PHYSFS_getLastError());
+		}
+
+		bool closesCorrectly = PHYSFS_close(fs_file);
+		if (closesCorrectly == false)
+		{
+			LOG("PhysFS error while closing file %s: %s", filePath, PHYSFS_getLastError());
+		}
+	}
+	else
+	{
+		LOG("PhysFS error while opening file %s: %s", filePath, PHYSFS_getLastError());
+	}
+
+	filePath.clear();
+	Load_Mesh(mesh, cursor);*/
+
+
+	return true;
+}
+
+bool EngineSystem::Load_Mesh(Mesh* mesh, char* pointer)
+{
+	char* cursor = pointer;
+
+	float* meshVertices = new float[sizeof(float*) * mesh->vertices.size() * 3];
+
+	int MeshSize = mesh->vertices.size() * 3;
+
+	for (size_t i = 0; i < mesh->vertices.size(); i++)
+	{
+		meshVertices[i] = mesh->vertices[i].Position.x;
+		meshVertices[i + 1] = mesh->vertices[i].Position.y;
+		meshVertices[i + 2] = mesh->vertices[i].Position.z;
+	}
+
+	uint* meshIndices = new uint[sizeof(uint*) * mesh->indices.size()];
+
+	for (size_t i = 0; i < mesh->indices.size(); i++)
+	{
+		meshIndices[i] = mesh->indices[i];
+	}
+
+	// amount of indices / vertices / colors / normals / texture_coords
+	uint ranges[5];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+	cursor += bytes;
+	/*mesh->indices.size() = ranges[0];
+	mesh->vertices.size() = ranges[1];*/
+
+	// Load indices
+	bytes = sizeof(uint) * mesh->indices.size();
+	meshIndices = new uint[mesh->indices.size()];
+	memcpy(meshIndices, cursor, bytes);
+	cursor += bytes;
+
+	// Load vertices
+	bytes = sizeof(uint) * mesh->vertices.size();
+	meshVertices = new float[mesh->vertices.size()];
+	memcpy(meshVertices, cursor, bytes);
+	cursor += bytes;
+
+
+
+
+
+	return true;
+}
+
+bool EngineSystem::Save_Texture(Texture* texture, char** pointer)
+{
+	//ilEnable(IL_FILE_OVERWRITE);
+	//ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+
+	//ILuint size = ilSaveL(IL_PNG, nullptr, 0);
+
+	//if (size > 0)
+	//{
+	//	ILubyte* data = new ILubyte[size];
+
+	//	if (ilSaveL(IL_PNG, data, size) > 0)
+	//	{
+	//		std::string filePath;
+	//		//filePath = std::string("Library/Textures/") + texture->objMain_->name_.c_str() + std::string(TEXTURE_FILE_EXTENSION);
+	//		filePath = std::string("Library/Textures/") + std::to_string(textPostfix) + std::string(TEXTURE_FILE_EXTENSION);
+	//		textPostfix++;
+
+	//		PHYSFS_file* fs_file;
+
+	//		fs_file = PHYSFS_openWrite(filePath.c_str());
+
+	//		if (fs_file != nullptr)
+	//		{
+	//			char* fileBuffer = (char*)data;
+	//			uint written = (uint)PHYSFS_write(fs_file, fileBuffer, 1, size);
+	//			if (written != size)
+	//			{
+	//				LOG("PhysFS error while writing to file %s: %s", filePath, PHYSFS_getLastError());
+	//			}
+
+	//			bool closesCorrectly = PHYSFS_close(fs_file);
+	//			if (closesCorrectly == false)
+	//			{
+	//				LOG("PhysFS error while closing file %s: %s", filePath, PHYSFS_getLastError());
+	//			}
+	//		}
+	//		else
+	//		{
+	//			LOG("PhysFS error while opening file %s: %s", filePath, PHYSFS_getLastError());
+	//		}
+
+	//		filePath.clear();
+	//	}
+	//}
+
+	//Load_Texture(texture, pointer, size);
+	return true;
+}
+
+bool Load_Texture(Texture* texture, char** pointer, uint size)
+{
+	//ILuint il_image = 0;																				
+	//ilGenImages(1, &il_image);																		
+	//ilBindImage(il_image);
+
+	//success = ilLoadL(IL_TYPE_UNKNOWN, (const void*)pointer, size);
+
+	//if (success == true)
+	//{
+	//	uint color_channels = ilGetInteger(IL_IMAGE_CHANNELS);
+	//	if (color_channels == 3)
+	//	{
+	//		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);											
+	//	}
+	//	else if (color_channels == 4)
+	//	{
+	//		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);										
+	//	}																								
+	//	else
+	//	{
+	//		LOG("Texture has less than 3 color channels!");
+	//	}
+	//}
+
+	//if (success == true)
+	//{
+	//	ILinfo il_info;
+	//	iluGetImageInfo(&il_info);
+
+	//	ilGenImages(1, (ILuint*)&texture->objectTexture->image_ID);
+	//	ilBindImage(texture->objectTexture->image_ID);
+
+	//	if (il_info.Origin == IL_ORIGIN_UPPER_LEFT) iluFlipImage();
+
+	//	texture->objectTexture->texture_ID = ilutGLBindTexImage();
+
+	//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	//	glGenTextures(1, (GLuint*)&texture->objectTexture->texture_ID);
+	//	glBindTexture(GL_TEXTURE_2D, texture->objectTexture->texture_ID);
+
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+
+	//	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+	//	glGenerateMipmap(GL_TEXTURE_2D);
+	//	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	//texture->objectTexture->width = il_info.Width;
+	//	//texture->objectTexture->height = il_info.Height;
+	//	//texture->objectTexture->image_ID = il_info.Id;
+	//	//texture->objectTexture->format = il_info.Format;
+	//}
+
+	//ilDeleteImages(1, &il_image);
+
+	return true;
+}
+
 bool EngineSystem::SaveState(JSON_Value* file, std::string root) const
 {
 	for (Scene* var : scenes)

@@ -55,6 +55,15 @@ public:
 	GameObject* CreateNewGameObject();
 	GameObjectComponent* CreateNewGOC(GameObject* goAttached, GOC_Type type);
 
+	bool Save_Mesh(Mesh* mesh, char** pointer);
+
+	bool Load_Mesh(Mesh* mesh, char* pointer);
+
+	bool Save_Texture(Texture* texture, char** pointer);
+
+	bool Load_Texture(Texture* texture, char** pointer, uint size);
+
+	
 	bool LoadFromPath(char* draggedFileDir,bool createGameobject = true);
 
 	std::vector<Mesh> GetAllMeshes() const
