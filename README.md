@@ -158,7 +158,23 @@ In addition to the functionalities of adding childs and removing objects.
 ![InspectorClosed](https://user-images.githubusercontent.com/73245381/206710532-a9ac584a-b310-4139-b95b-7f05bef5682d.PNG)
 ![Inspector](https://user-images.githubusercontent.com/73245381/206708610-f76c54e6-d6f2-4d61-ba7a-084ded31a094.png)
 
-In the inspector window you can find all the components that each object in the scene has. As it can be seen in the images, each object has an information window about it, a transform window to move the object around the scene, a mesh window to change his mesh and a texture window to texturize it.
+In the inspector window you can find all the components that each object in the scene has. As it can be seen in the images, each object ha:
+
+An information window about it
+
+A transform window to move the object around the scene
+
+A mesh window to change his mesh 
+
+A texture window to texturize it.
+
+In addition to having an extra component if we have selected a camera type game object.
+
+![Camera](https://user-images.githubusercontent.com/73245381/206739055-467e31f7-db93-43b9-9a56-ff84ab2c55c9.PNG)
+
+In this component you can modify both the near and far planes of the frustum, in addition to the FOV of the camera.
+
+As well as allowing interaction through cameras, since it allows you to choose the view port once you are in game mode. This is done by first selecting the option to set the camera as main camera and later selecting the use camera option, in order to indicate that you want to have its point of view.
 
 - **Assets**: Opens the Assets Window
 
