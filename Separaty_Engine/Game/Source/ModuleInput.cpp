@@ -87,6 +87,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	mouse_x_motion = mouse_y_motion = 0;
 
+	windowChanged = false;
 	bool quit = false;
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
@@ -113,8 +114,11 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_WINDOWEVENT:
 			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+					windowChanged = true;
+				}
 			}
 			break;
 
@@ -122,6 +126,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				dropped_filedir = e.drop.file;
 				fileJustDropped = true;
 			}
+			break;
 		}
 	}
 

@@ -69,6 +69,8 @@ public:
 		return fileJustDropped;
 	}
 
+	bool windowChanged;
+
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
