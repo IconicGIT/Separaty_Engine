@@ -71,6 +71,10 @@ public:
 
 	void UpdateMeshRendererTexture(bool updateInGameObjectChildren = false);
 
+
+	bool LoadState(JSON_Value* file, std::string root = "") override;
+	bool SaveState(JSON_Value* file, std::string root = "") const override;
+
 private:
 
 	std::vector<Texture*> textures;

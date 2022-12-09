@@ -88,11 +88,7 @@ void GameObject::Delete()
 	for (size_t i = 0; i < children.size(); i++)
 	{
 		children[i]->Delete();
-		if (children.size() > 0)
-		{
-			children.erase(children.begin() + i);
-			i--;
-		}
+		i--;
 	}
 
 	//detach from parent
@@ -123,32 +119,72 @@ bool GameObject::SaveState(JSON_Value* file, std::string root) const
 	std::string name = this->name;
 	const char* buf = name.c_str();
 
-	json_object_dotset_string(json_object(file), std::string(root + name + " info.name").c_str(), std::string(name).c_str());
+	json_object_dotset_string(json_object(file), std::string(root + "name").c_str(), std::string(name).c_str());
 
 
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.position.x").c_str(), (double)transform->translationLocal.translation().x);
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.position.y").c_str(), (double)transform->translationLocal.translation().y);
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.position.z").c_str(), (double)transform->translationLocal.translation().z);
+	
 
-	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.x", (double).x);
-	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.y", (double)X.y);
-	//json_object_dotset_number(json_object(file), "modules.Camera.Direction.X.z", (double)X.z);
+	json_object_dotset_number(json_object(file), std::string(root + "components.count").c_str(), components.size());
 
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.rotationRad.x").c_str(), (double)transform->rotationEulerLocal.x);
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.rotationRad.y").c_str(), (double)transform->rotationEulerLocal.y);
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.rotationRad.z").c_str(), (double)transform->rotationEulerLocal.z);
+	int a = 0;
+	for (GameObjectComponent* comp : components)
+	{
+		std::string r = root + "components.[Element_" + std::to_string(a) + "].";
+		GOC_Type goc_type = comp->GetGOC_Type();
+		json_object_dotset_number(json_object(file), std::string(r + "type").c_str(), (int)goc_type);
+
+		switch (goc_type)
+		{
+		case GOC_Type::GOC_NULL:
+		{
+			
+		}
+			break;
+		case GOC_Type::GOC_TRANSFORM:
+		{
+			GOC_Transform* c = (GOC_Transform*)comp;
+			c->SaveState(file, r);
+		}
+			break;
+		case GOC_Type::GOC_MESH_RENDERER:
+		{
+			GOC_MeshRenderer* c = (GOC_MeshRenderer*)comp;
+			c->SaveState(file, r);
+		}
+			break;
+		case GOC_Type::GOC_TEXTURE:
+		{
+			GOC_Texture* c = (GOC_Texture*)comp;
+			c->SaveState(file, r);
+		}
+			break;
+		case GOC_Type::GOC_CAMERA:
+		{
+			GOC_Camera* c = (GOC_Camera*)comp;
+			c->SaveState(file, r);
+		}
+			break;
+		default:
+			break;
+		}
 
 
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.scale.x").c_str(), (double)transform->scalingLocal.scaling().x);
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.scale.y").c_str(), (double)transform->scalingLocal.scaling().y);
-	json_object_dotset_number(json_object(file), std::string(root + name + " info.transform.scale.z").c_str(), (double)transform->scalingLocal.scaling().z);
+		a++;
+	}
 
-	json_serialize_to_file(file, "Config.json");
 
+	json_object_dotset_number(json_object(file), std::string(root + "children.count").c_str(), children.size());
+
+	
+
+	int i = 0;
 	for (GameObject* go : children)
 	{
-		go->SaveState(file);
+		go->SaveState(file, std::string(root + "children.[Element_" + std::to_string(i) + "]."));
+		i++;
 	}
+
+	json_serialize_to_file(file, "Config.json");
 	return true;
 }
 

@@ -91,6 +91,8 @@ public:
 		return(INTERSECT);
 	}
 
+	bool LoadState(JSON_Value* file, std::string root = "") override;
+	bool SaveState(JSON_Value* file, std::string root = "") const override;
 
 	bool isCurrentCamera = false;
 	bool useCameraWhileInPlay = false;

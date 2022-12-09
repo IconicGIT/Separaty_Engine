@@ -22,3 +22,12 @@ void GOC_Texture::UpdateMeshRendererTexture(bool updateInGameObjectChildren)
 	}
 }
 
+bool GOC_Texture::LoadState(JSON_Value* file, std::string root)
+{
+	return true;
+}
+
+bool GOC_Texture::SaveState(JSON_Value* file, std::string root) const
+{
+	return true;
+}

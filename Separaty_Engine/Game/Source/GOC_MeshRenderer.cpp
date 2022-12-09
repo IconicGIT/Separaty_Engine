@@ -195,3 +195,13 @@ Mesh GOC_MeshRenderer::GetMesh() const
 {
 	return  myMesh;
 }
+
+bool GOC_MeshRenderer::LoadState(JSON_Value* file, std::string root)
+{
+	return true;
+}
+
+bool GOC_MeshRenderer::SaveState(JSON_Value* file, std::string root) const
+{
+	return true;
+}

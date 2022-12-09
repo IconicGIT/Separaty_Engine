@@ -179,3 +179,14 @@ void GOC_Camera::DrawCube(static float3* corners, Color color)
 
 
 }
+
+
+bool GOC_Camera::LoadState(JSON_Value* file, std::string root)
+{
+	return true;
+}
+
+bool GOC_Camera::SaveState(JSON_Value* file, std::string root) const
+{
+	return true;
+}

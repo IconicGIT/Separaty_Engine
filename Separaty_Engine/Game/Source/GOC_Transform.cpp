@@ -68,3 +68,30 @@ void GOC_Transform::ApplyTransformationsWorld()
 	}
 
 }
+
+
+
+bool GOC_Transform::SaveState(JSON_Value* file, std::string root) const
+{
+	json_object_dotset_number(json_object(file), std::string(root + "transform.position.x").c_str(), (double)gameObject->transform->translationLocal.translation().x);
+	json_object_dotset_number(json_object(file), std::string(root + "transform.position.y").c_str(), (double)gameObject->transform->translationLocal.translation().y);
+	json_object_dotset_number(json_object(file), std::string(root + "transform.position.z").c_str(), (double)gameObject->transform->translationLocal.translation().z);
+
+	json_object_dotset_number(json_object(file), std::string(root + "transform.rotationRad.x").c_str(), (double)gameObject->transform->rotationEulerLocal.x);
+	json_object_dotset_number(json_object(file), std::string(root + "transform.rotationRad.y").c_str(), (double)gameObject->transform->rotationEulerLocal.y);
+	json_object_dotset_number(json_object(file), std::string(root + "transform.rotationRad.z").c_str(), (double)gameObject->transform->rotationEulerLocal.z);
+
+
+	json_object_dotset_number(json_object(file), std::string(root + "transform.scale.x").c_str(), (double)gameObject->transform->scalingLocal.scaling().x);
+	json_object_dotset_number(json_object(file), std::string(root + "transform.scale.y").c_str(), (double)gameObject->transform->scalingLocal.scaling().y);
+	json_object_dotset_number(json_object(file), std::string(root + "transform.scale.z").c_str(), (double)gameObject->transform->scalingLocal.scaling().z);
+	return true;
+}
+
+bool GOC_Transform::LoadState(JSON_Value* file, std::string root)
+{
+
+
+
+	return true;
+}

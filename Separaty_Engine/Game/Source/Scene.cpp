@@ -837,11 +837,13 @@ void Scene::EraseGameObjectFromList(GameObject* gameObject)
 
 bool Scene::SaveState(JSON_Value* file, std::string root) const
 {
+	int i = 0;
 	for (GameObject* go : gameObjects)
 	{
 		if (go->parent == nullptr)
 		{
-			go->SaveState(file, std::string("scene_" + name + ".gameObjects."));
+			go->SaveState(file, std::string("[" + name + "].[Element_" + std::to_string(i) + "]."));
+			i++;
 		}
 		
 	}
@@ -850,14 +852,16 @@ bool Scene::SaveState(JSON_Value* file, std::string root) const
 }
 bool Scene::LoadState(JSON_Value* file, std::string root)
 {
+	int i = 0;
 	for (GameObject* go : gameObjects)
 	{
 		if (go->parent == nullptr)
 		{
-			go->LoadState(file, std::string("scene_" + name + ".gameObjects."));
+			go->LoadState(file, std::string("[" + name + "].[Element_" + std::to_string(i) + "]."));
+			i++;
 		}
+		
 	}
-
 	return true;
 }
 

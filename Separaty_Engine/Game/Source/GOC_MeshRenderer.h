@@ -52,6 +52,9 @@ public:
 	GOC_Camera* goCamera;
 
 	bool canDraw = true;
+
+	bool LoadState(JSON_Value* file, std::string root = "") override;
+	bool SaveState(JSON_Value* file, std::string root = "") const override;
 private:
 
 	mat4x4 transform;

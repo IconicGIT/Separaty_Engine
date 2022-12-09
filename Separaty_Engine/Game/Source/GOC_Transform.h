@@ -125,7 +125,8 @@ public:
 	mat4x4 scalingLocal = IdentityMatrix;
 	mat4x4 transformLocal = IdentityMatrix;
 
-
+	bool LoadState(JSON_Value* file, std::string root = "") override;
+	bool SaveState(JSON_Value* file, std::string root = "") const override;
 
 private:
 
