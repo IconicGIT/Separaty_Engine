@@ -45,11 +45,17 @@ update_status Hierarchy::Update(float dt)
 				ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 
 
-			for (GameObject* go : currentScene->gameObjects)
+			for (size_t i = 0; i < currentScene->gameObjects.size(); i++)
+
 			{
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
-				if (go->parent == nullptr) DisplayTree(go, flags);
+				if (currentScene->gameObjects[i]->parent == nullptr)
+				{
+					
+					DisplayTree(currentScene->gameObjects[i], flags);
+				}
+					
 			}
 
 			if (alignLabelWithCurrentXPosition)
@@ -76,16 +82,26 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 	//	ImGui::SameLine();
 	//}
 
+	
+
 	std::string hierarchyName = go->name + "##" + std::to_string(go->id);
+	
 	if (ImGui::TreeNode(hierarchyName.c_str()))
 	{
 		//for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
 		//{
 		//	sceneGo->selected = false;
 		//}
+
+		if (ImGui::MenuItem("Delete"))
+		{
+			go->pendingToDelete = true;
+		}
+
 		for (int i = 0; i < go->GetChildren().size(); i++)
 		{
 			DisplayTree(go->GetChildren()[i], flags);
+			p = go;
 		}
 
 		if (!go->selected)
@@ -95,31 +111,19 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 			go->selected = true;
 		}
 
-
+		
 
 		ImGui::Dummy(ImVec2(8, 0));
 		ImGui::SameLine();
-		if (ImGui::MenuItem("Create Child", "", false, false))
+		if (ImGui::MenuItem("Create Child"))
 		{
-			//	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
-			//	{
-
-			//		if (go->GetID() == go->selected && go->GetID() != -1)
-			//		{
-			//			/*go->Delete();*/
-			//			go->selected = 0;
-
-			//		}
-
-			//	}
+			go->CreateChildren();
 		}
 
-		ImGui::Dummy(ImVec2(0, 0));
-		ImGui::SameLine();
-		if (ImGui::MenuItem("Delete", "", false, true))
-		{
-			go->Delete();
-		}
+
+
+
+		
 		ImGui::TreePop();
 
 	}

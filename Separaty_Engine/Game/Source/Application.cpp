@@ -87,6 +87,7 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	engineSystem->ExecutePendingToDelete();
 
 	if (loadGameRequested == true)
 	{
@@ -104,7 +105,6 @@ void Application::FinishUpdate()
 	{
 		SDL_Delay(fabs(floor((long)frameMaxSpeed - (float)ms_timer.Read())));
 	}
-
 
 
 	ms_timer.Start();

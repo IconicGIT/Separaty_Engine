@@ -81,6 +81,8 @@ public:
 	std::vector<GameObject*> children;
 	std::string name;
 
+	bool pendingToDelete = false;
+
 private:
 
 	EngineSystem* engineSystem;

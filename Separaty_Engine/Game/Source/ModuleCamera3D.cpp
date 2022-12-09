@@ -255,6 +255,26 @@ update_status ModuleCamera3D::Update(float dt)
 	//goCamera->Z = Z;
 
 	gameObject->Update(dt);
+
+	glBegin(GL_LINES);
+
+	glVertex3fv((GLfloat*)&pickStart);
+	glVertex3fv((GLfloat*)&pickDirection);
+
+	glEnd();
+
+	glBegin(GL_POINTS);
+
+	for (size_t i = 0; i < 8; i++)
+	{
+
+		glVertex3fv((GLfloat*)&bboxPoints[i]);
+	}
+
+	glEnd();
+
+
+
 	return UPDATE_CONTINUE;
 }
 //
@@ -292,15 +312,18 @@ void ModuleCamera3D::MousePick()
 	float tab_width = App->window->width;
 	float tab_height = App->window->height;
 
-	float2 screen_mouse_pos = float2(/*(float)App->window->width - */App->input->GetMouseX(), /*(float)App->window->height - */(float)App->input->GetMouseY());
+	float2 screen_mouse_pos = float2(App->input->GetMouseX(),(float)App->input->GetMouseY());
 	float2 norm_screen_pos = float2(screen_mouse_pos.x / tab_width, screen_mouse_pos.y / tab_height);
 	float2 world_mouse_pos = float2(norm_screen_pos.x * (float)App->window->width, norm_screen_pos.y * (float)App->window->height);
 
 	float normalized_x = (world_mouse_pos.x / App->window->width - 0.5f) * 2;
-	float normalized_y = (world_mouse_pos.y / App->window->height - 0.5f) * 2;
+	float normalized_y = -(world_mouse_pos.y / App->window->height - 0.5f) * 2;
 
 	LineSegment picking = goCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 
+	Line pickingLine = picking.ToLine();
+	pickStart		= pickingLine.GetPoint(0);
+	pickDirection	= pickingLine.GetPoint(100);
 
 	//Object part
 
@@ -309,10 +332,10 @@ void ModuleCamera3D::MousePick()
 	{
 		GOC_MeshRenderer* goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
-		if (picking.Intersects(goRenderer->GetMesh().bbox))
+		goRenderer->GetMesh().bboxTransformed.GetCornerPoints(bboxPoints);
+		if (picking.Intersects(goRenderer->GetMesh().bboxTransformed))
 		{
 			goTravessed.push_back(goRenderer->GetGameObject());
-			/*go->selected = !go->selected;*/
 		}
 	}
 	if (goTravessed.size() > 0)

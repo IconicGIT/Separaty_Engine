@@ -11,6 +11,8 @@
 #include "MathGeoLib/Geometry/AABB.h"
 #include "Color.h"
 
+class GOC_MeshRenderer;
+
 struct Vertex {
 
     Vertex(){}
@@ -33,7 +35,6 @@ struct Vertex {
 
     
 };
-
 
 
 class Mesh {
@@ -62,10 +63,14 @@ public:
     bool drawBbox = true;
 
     std::string name;
+
+    
+
     AABB bbox;
+    AABB bboxTransformed;
     vec bboxPoints[8];
     vec bboxOriginalPoints[8];
-    //GOC_MeshRenderer* renderer;
+    GOC_MeshRenderer* renderer;
 
 private:
     //  render data

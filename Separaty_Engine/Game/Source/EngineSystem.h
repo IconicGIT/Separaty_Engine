@@ -79,6 +79,9 @@ public:
 
 	Assimp::Importer importer;
 
+
+
+	void ExecutePendingToDelete();
 	void AddToGameObjectsSelected(GameObject* toAdd)
 	{
 		selectedGameObjects.push_back(toAdd);
@@ -116,6 +119,7 @@ private:
 	Scene* currentScene;
 
 	std::vector<GameObject*> selectedGameObjects;
+	uint gameObjectsLastID = 0;
 
 };
 

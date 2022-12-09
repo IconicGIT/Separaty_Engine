@@ -45,6 +45,11 @@ public:
 	vec3 prevX;
 	vec3 prevY;
 	vec3 prevZ;
+	
+	vec pickStart = vec(0,0,0);
+	vec pickDirection = vec(0,0,0);
+
+	vec bboxPoints[8];
 
 private:
 

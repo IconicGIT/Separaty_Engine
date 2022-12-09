@@ -26,6 +26,7 @@ void GOC_MeshRenderer::SetMesh(std::vector<Vertex> vertices, std::vector<unsigne
 {
 	myMesh.vertices = vertices;
 	myMesh.indices = indices;
+
 	//myMesh.renderer = this;
 
 }
@@ -33,6 +34,7 @@ void GOC_MeshRenderer::SetMesh(std::vector<Vertex> vertices, std::vector<unsigne
 void GOC_MeshRenderer::SetMesh(Mesh* mesh)
 {
 	myMesh = *mesh;
+
 	//myMesh.renderer = this;
 }
 
@@ -132,8 +134,12 @@ void GOC_MeshRenderer::Render()
 		myShader->SetMat4x4("model", gameObject->transform->Get4x4Matrix());
 
 		
-		if (canDraw)
+		if (canDraw) 
+		{
+			myMesh.renderer = this;
 			myMesh.Draw(*myShader, App->renderer3D->atributes.Wireframe);
+
+		}
 
 		myShader->Unuse();
 	}
@@ -183,4 +189,9 @@ bool GOC_MeshRenderer::Execute()
 	Render();
 
 	return true;
+}
+
+Mesh GOC_MeshRenderer::GetMesh() const
+{
+	return  myMesh;
 }

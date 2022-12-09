@@ -23,7 +23,7 @@ public:
 
 	GameObject* selectedGameObject = nullptr;
 	GameObject* destinationGameObject = nullptr;
-
+	GameObject* p = nullptr;
 	UIFunctions* UImanager;
 private:
 	std::string name;

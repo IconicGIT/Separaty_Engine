@@ -494,7 +494,7 @@ update_status Inspector::Update(float dt)
 						
 					}
 
-					if (transformUpdated)
+					/*if (transformUpdated)
 					{
 
 
@@ -503,15 +503,19 @@ update_status Inspector::Update(float dt)
 							GOC_MeshRenderer* renderer = nullptr;
 							renderer = (GOC_MeshRenderer*)toDraw->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
-							bool test = camera->frustum.Contains(renderer->GetMesh().bbox);
 
-							/*if (test)
+							bool test = true;
+							AABB meshBBox = renderer->GetMesh().bboxTransformed;
+
+							test = camera->frustum.Contains(meshBBox);
+
+							if (test)
 								renderer->canDraw = true;
 							else
-								renderer->canDraw = false;*/
+								renderer->canDraw = false;
 
 						}
-					}
+					}*/
 				}
 
 				break;

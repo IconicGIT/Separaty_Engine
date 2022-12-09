@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "GOC_MeshRenderer.h"
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
 {
@@ -65,7 +66,8 @@ void Mesh::SetupMesh()
     
 
     bbox.Enclose(bboxVertices, vertices.size());
-    bbox.GetCornerPoints(bboxOriginalPoints);
+    
+    //bbox.GetCornerPoints(bboxOriginalPoints);
     bbox.GetCornerPoints(bboxPoints);
 
 
@@ -77,6 +79,11 @@ void Mesh::Draw(Shader& shader, bool wireframeActive)
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
 
+    bboxTransformed = bbox;
+
+    vec3 translation = renderer->GetGameObject()->transform->translationWorld.translation();
+
+    bboxTransformed.Translate(vec(translation.x, translation.y, translation.z));
      
     if (!textures.empty())
     {

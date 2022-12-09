@@ -167,14 +167,16 @@ Scene* EngineSystem::GetCurrentScene() const
 
 GameObject* EngineSystem::CreateNewGameObject()
 {
-	std::string gameobject_name = "GameObject " + std::to_string(allGameObjects.size());
+	GameObject* go = new GameObject(gameObjectsLastID, this);
 
-	GameObject* go = new GameObject(allGameObjects.size(), this);
+	std::string gameobject_name = "GameObject " + std::to_string(gameObjectsLastID);
+
 	go->name = gameobject_name;
 	go->Init();
 	go->Start();
 	allGameObjects.push_back(go);
 
+	gameObjectsLastID++;
 	App->ui->AppendToOutput(DEBUG_LOG("Created GameObject, id: %i", go->GetID()));
 
 	return go;
@@ -265,6 +267,19 @@ void EngineSystem::RemoveFromGameObjectsSelected(GameObject* toRemove)
 		if (selectedGameObjects[i]->GetID() == toRemove->GetID())
 		{
 			selectedGameObjects.erase(selectedGameObjects.begin() + i);
+		}
+	}
+}
+
+void EngineSystem::ExecutePendingToDelete()
+{
+
+	for (size_t i = 0; i < allGameObjects.size(); i++)
+	{
+		if (allGameObjects[i]->pendingToDelete)
+		{
+			allGameObjects[i]->Delete();
+			i--;
 		}
 	}
 }

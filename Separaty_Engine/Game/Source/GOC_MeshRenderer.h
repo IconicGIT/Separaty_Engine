@@ -21,7 +21,7 @@
 
 class GameObjectComponent;
 class GameObject;
-class Mesh;
+class Vertex;
 class Model;
 class Shader;
 class Camera;
@@ -47,10 +47,7 @@ public:
 
 	void RenderAxis();
 
-	Mesh GetMesh() const
-	{
-		return  myMesh;
-	}
+	Mesh GetMesh() const;
 
 	GOC_Camera* goCamera;
 
@@ -80,5 +77,6 @@ private:
 	Shader* myShader;
 	Shader *selctedShader;
 	Mesh myMesh;
+
 };
 

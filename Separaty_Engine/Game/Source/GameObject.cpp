@@ -85,9 +85,20 @@ bool GameObject::CleanUp()
 void GameObject::Delete()
 {
 	//delete children
-	for (GameObject* child : children)
+	for (size_t i = 0; i < children.size(); i++)
 	{
-		child->Delete();
+		children[i]->Delete();
+		if (children.size() > 0)
+		{
+			children.erase(children.begin() + i);
+			i--;
+		}
+	}
+
+	//detach from parent
+	if (parent != nullptr)
+	{
+		parent->RemoveChild(this);
 	}
 
 	//delete components associated with gameobject
@@ -297,10 +308,12 @@ void GameObject::AttachChild(GameObject* child)
 
 void GameObject::RemoveChild(GameObject* child)
 {
-	auto it = std::find(children.begin(), children.end(), child);
-	if (it != children.end())
+	for (size_t i = 0; i < children.size(); i++)
 	{
-		children.erase(it);
+		if (children[i]->GetID() == child->GetID())
+		{
+			children.erase(children.begin() + i);
+		}
 	}
 }
 
