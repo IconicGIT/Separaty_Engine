@@ -331,7 +331,8 @@ void ModuleCamera3D::MousePick()
 	std::vector<GameObject*> goTravessed;
 	for (GameObject* go : App->engineSystem->GetCurrentScene()->gameObjects)
 	{
-		GOC_MeshRenderer* goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		GOC_MeshRenderer* goRenderer = nullptr;
+		goRenderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 
 		goRenderer->GetMesh().bboxTransformed.GetCornerPoints(bboxPoints);
 		if (picking.Intersects(goRenderer->GetMesh().bboxTransformed))
@@ -346,7 +347,10 @@ void ModuleCamera3D::MousePick()
 	}
 	
 	if (goTravessed.size() > 0)
+	{
 		goTravessed[0]->selected = true;
+		//App->ui->uiFunctions->selectedGameObjects.push_back(goTravessed[0]);
+	}
 }
 
 

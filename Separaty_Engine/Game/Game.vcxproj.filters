@@ -46,9 +46,6 @@
     <Filter Include="Source\Utils">
       <UniqueIdentifier>{3e33fa9d-f2df-44c8-94e4-acc7476a39dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\External\PhysFS">
-      <UniqueIdentifier>{040b1c18-150b-4aa2-8b14-cd71f5052a86}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -308,75 +305,6 @@
     </ClCompile>
     <ClCompile Include="Source\PlayStop.cpp">
       <Filter>Source\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_android.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_haiku.cpp">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_os2.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_posix.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_qnx.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_unix.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_windows.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_platform_winrt.cpp">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_unicode.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_7z.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_dir.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_grp.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_hog.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_iso9660.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_mvl.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_qpak.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_slb.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_unpacked.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_vdf.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_wad.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_archiver_zip.c">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\PhysFS_\physfs_byteorder.c">
-      <Filter>Source\External\PhysFS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -754,24 +682,6 @@
     </ClInclude>
     <ClInclude Include="Source\PlayStop.h">
       <Filter>Source\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PhysFS_\physfs_casefolding.h">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PhysFS_\physfs_internal.h">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PhysFS_\physfs_lzmasdk.h">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PhysFS_\physfs_miniz.h">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PhysFS_\physfs_platforms.h">
-      <Filter>Source\External\PhysFS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PhysFS_\physfs.h">
-      <Filter>Source\External\PhysFS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

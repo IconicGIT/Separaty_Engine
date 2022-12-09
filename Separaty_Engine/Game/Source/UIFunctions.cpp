@@ -64,6 +64,14 @@ bool UIFunctions::Start()
 
 update_status UIFunctions::Update(float dt)
 {
+
+	for (size_t i = 0; i < selectedGameObjects.size(); i++)
+	{
+		if (!selectedGameObjects[i]->selected)
+			selectedGameObjects.erase(selectedGameObjects.begin() + i);
+	}
+
+
 	//PROJECT PREFERENCES
 	showPreferences->Update(dt);
 	
@@ -87,48 +95,88 @@ update_status UIFunctions::Update(float dt)
 	if (App->ui->createEmptyObject)
 	{
 		App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createEmptyObject = false;
 	}
 	if (App->ui->createCube)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cube.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createCube = false;
 	}
 	if (App->ui->createSphere)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Sphere.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createSphere = false;
 	}
 	if (App->ui->createCapsule)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Capsule.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createCapsule = false;
 	}
 	if (App->ui->createCylinder)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cylinder.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createCylinder = false;
 	}
 	if (App->ui->createPyramid)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Pyramid.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createPyramid = false;
 	}
 	if (App->ui->createCone)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Cone.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createCone = false;
 	}
 	if (App->ui->createPlane)
 	{
 		App->engineSystem->LoadFromPath((char*)"Assets/Primitives/Plane.fbx");
+		GameObject* go = App->engineSystem->GetCurrentScene()->GetGameObjectList()[App->engineSystem->GetCurrentScene()->GetGameObjectList().size() - 1];
+		GOC_Texture* tex = nullptr;
+		tex = (GOC_Texture*)go->GetComponent(GOC_Type::GOC_TEXTURE);
+		tex->SetTexture(App->engineSystem->GetAllTextures()[0]);
+		tex->UpdateMeshRendererTexture();
 
 		App->ui->createPlane = false;
 	}

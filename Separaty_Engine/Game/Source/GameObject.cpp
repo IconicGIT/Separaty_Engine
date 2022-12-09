@@ -42,19 +42,7 @@ update_status GameObject::Update(float dt)
 		ret = item->Execute();
 		item_it++;
 	}
-	/*
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		App->ui->AppendToOutput(DEBUG_LOG("%s", name.c_str()));
-
-		for (GameObjectComponent* comp : components)
-		{
-			App->ui->AppendToOutput(DEBUG_LOG("    %i", comp->GetID()));
-
-		}
-
-		App->ui->AppendToOutput(DEBUG_LOG("Engine components: %i", App->engineSystem->GetAllGameObjectComponents().size()));
-	}*/
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -202,7 +190,8 @@ bool GameObject::LoadState(JSON_Value* file, std::string root)
 			goc_type != GOC_Type::GOC_TEXTURE)
 			AddComponent(goc_type);
 
-		GameObjectComponent* comp = GetComponent(goc_type);
+		GameObjectComponent* comp = nullptr;
+		comp = GetComponent(goc_type);
 
 		switch (goc_type)
 		{
@@ -213,25 +202,29 @@ bool GameObject::LoadState(JSON_Value* file, std::string root)
 		break;
 		case GOC_Type::GOC_TRANSFORM:
 		{
-			GOC_Transform* c = (GOC_Transform*)comp;
+			GOC_Transform* c = nullptr;
+			c = (GOC_Transform*)comp;
 			c->LoadState(file, r);
 		}
 		break;
 		case GOC_Type::GOC_MESH_RENDERER:
 		{
-			GOC_MeshRenderer* c = (GOC_MeshRenderer*)comp;
+			GOC_MeshRenderer* c = nullptr;
+			c = (GOC_MeshRenderer*)comp;
 			c->LoadState(file, r);
 		}
 		break;
 		case GOC_Type::GOC_TEXTURE:
 		{
-			GOC_Texture* c = (GOC_Texture*)comp;
+			GOC_Texture* c = nullptr;
+			c = (GOC_Texture*)comp;
 			c->LoadState(file, r);
 		}
 		break;
 		case GOC_Type::GOC_CAMERA:
 		{
-			GOC_Camera* c = (GOC_Camera*)comp;
+			GOC_Camera* c = nullptr;
+			c = (GOC_Camera*)comp;
 			c->LoadState(file, r);
 		}
 		break;

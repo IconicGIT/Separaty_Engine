@@ -235,7 +235,7 @@ update_status ModuleUI::Update(float dt)
 				createEmptyObject = true;
 			}
 			ImGui::Separator();
-			if (ImGui::TreeNode("Create 3D Object"))
+			if (ImGui::TreeNode("Create Primitives"))
 			{
 				if (ImGui::MenuItem("Cube"))
 				{
@@ -341,9 +341,11 @@ update_status ModuleUI::Update(float dt)
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Camera", "", false, false))
+			if (ImGui::MenuItem("Camera"))
 			{
-
+				GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+				camera->AddComponent(GOC_Type::GOC_CAMERA);
+				camera->name = "Camera";
 			}
 			ImGui::EndMenu();
 		}

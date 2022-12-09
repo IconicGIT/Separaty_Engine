@@ -36,6 +36,7 @@ update_status Hierarchy::Update(float dt)
 
 		Scene* currentScene = App->engineSystem->GetCurrentScene();
 
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (!currentScene->gameObjects.empty())
 		{
 
@@ -48,11 +49,19 @@ update_status Hierarchy::Update(float dt)
 			for (size_t i = 0; i < currentScene->gameObjects.size(); i++)
 
 			{
-				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+				
+
+				if (currentScene->gameObjects[i]->selected)
+				{
+					//flags |= ImGuiTreeNodeFlags_DefaultOpen;
+
+				}
 
 				if (currentScene->gameObjects[i]->parent == nullptr)
 				{
 					
+					
+
 					DisplayTree(currentScene->gameObjects[i], flags);
 				}
 					
@@ -65,27 +74,34 @@ update_status Hierarchy::Update(float dt)
 		ImGui::End();
 	}
 
+	
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+
+		App->ui->AppendToOutput(DEBUG_LOG("selected: %i", UImanager->selectedGameObjects.size()));
+	}
+
 	return UPDATE_CONTINUE;
 }
 
 void Hierarchy::DisplayTree(GameObject* go, int flags)
 {
-	flags |= ImGuiTreeNodeFlags_Leaf;
+	//flags |= ImGuiTreeNodeFlags_Leaf;
 
 	/*DragAndDrop(go);*/
 
 	Scene* currentScene = App->engineSystem->GetCurrentScene();
 
-	//if (go->parent != nullptr)
-	//{
-	//	ImGui::Dummy(ImVec2(5, 0));
-	//	ImGui::SameLine();
-	//}
-
-	
 
 	std::string hierarchyName = go->name + "##" + std::to_string(go->id);
 	
+		if (go->selected)
+		{
+			//flags |= ImGuiTreeNodeFlags_Leaf;
+		}
+	
+
+
 	if (ImGui::TreeNode(hierarchyName.c_str()))
 	{
 		//for (GameObject* sceneGo : App->engineSystem->GetCurrentScene()->gameObjects)
@@ -100,8 +116,11 @@ void Hierarchy::DisplayTree(GameObject* go, int flags)
 
 		for (int i = 0; i < go->GetChildren().size(); i++)
 		{
+			if (go->GetChildren()[i]->selected)
+			{
+				//flags |= ImGuiTreeNodeFlags_DefaultOpen;
+			}
 			DisplayTree(go->GetChildren()[i], flags);
-			p = go;
 		}
 
 		if (!go->selected)

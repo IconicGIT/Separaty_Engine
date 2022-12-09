@@ -107,6 +107,7 @@ public:
 
 	void EraseGameObjectFromScenes(GameObject* gameObject);
 	void EraseGameObjectFromEngine(GameObject* gameObject);
+	uint gameObjectsLastID = 0;
 
 private:
 	
@@ -128,7 +129,6 @@ private:
 	Scene* currentScene;
 
 	std::vector<GameObject*> selectedGameObjects;
-	uint gameObjectsLastID = 0;
 
 };
 
