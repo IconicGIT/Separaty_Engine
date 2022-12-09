@@ -288,7 +288,9 @@ We are also in the process of implementing an option to do Drag and Drop the nam
 
 - **Custom file format**
 
-Still in progress.
+The engine can create its own .rqm and rsm files, which are its own custom file format. These files are both, the meshes and the textures. These are saved in the library folder once they are imported. It is also important to note that these cannot be duplicated.
+
+On the other hand the files cannot be loaded, they are saved, but at this moment they are not loaded in the scene.
 
 - **Game viewport & editor viewport**
 
