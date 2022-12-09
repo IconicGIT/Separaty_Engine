@@ -269,17 +269,17 @@ void EngineSystem::RemoveFromGameObjectsSelected(GameObject* toRemove)
 			selectedGameObjects.erase(selectedGameObjects.begin() + i);
 		}
 	}
+
+	App->ui->uiFunctions->EraseFromSelectedGoList(toRemove);
 }
 
 void EngineSystem::ExecutePendingToDelete()
 {
-	
-
-
 	for (size_t i = 0; i < allGameObjects.size(); i++)
 	{
 		if (allGameObjects[i]->pendingToDelete)
 		{
+			App->ui->uiFunctions->EraseFromSelectedGoList(allGameObjects[i]);
 			allGameObjects[i]->Delete();
 			i--;			
 		}

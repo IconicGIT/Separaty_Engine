@@ -39,6 +39,7 @@ public:
 
 	std::vector<GameObject*> selectedGameObjects;
 
+	void EraseFromSelectedGoList(GameObject* toErase);
 
 private:
 

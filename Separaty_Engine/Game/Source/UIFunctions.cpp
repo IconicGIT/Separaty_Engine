@@ -83,12 +83,6 @@ update_status UIFunctions::Update(float dt)
 
 	outputWindow->Update(dt);
 
-	
-
-
-	//NO SE QUE QUERRAS HACER CON LAS PRIMITIVES, DE MOMENTO LAS DEJO AQUI, PORQUE AUN SE TIENEN QUE MDOIFICAR Y DEMAS.
-	//YA MIRAREMOS DESPUES DE METERLAS EN OTRO LADO
-
 	//PRIMITIVES
 	if (App->ui->createEmptyObject)
 	{
@@ -139,17 +133,28 @@ update_status UIFunctions::Update(float dt)
 		App->ui->createPlane = false;
 	}
 
-	if (App->ui->cleanPrimitives)
-	{
-		App->ui->createCube = false;
-		App->ui->createSphere = false;
-		App->ui->createCapsule = false;
-		App->ui->createCylinder = false;
-		App->ui->createPlane = false;
+	//if (App->ui->cleanPrimitives)
+	//{
+	//	App->ui->createCube = false;
+	//	App->ui->createSphere = false;
+	//	App->ui->createCapsule = false;
+	//	App->ui->createCylinder = false;
+	//	App->ui->createPlane = false;
 
-		App->ui->cleanPrimitives = false;
-	}
+	//	App->ui->cleanPrimitives = false;
+	//}
 
 	//App->ui->AppendToOutput(DEBUG_LOG("selected size: %i", selectedGameObjects.size()));
 	return UPDATE_CONTINUE;
+}
+
+void UIFunctions::EraseFromSelectedGoList(GameObject* toErase)
+{
+	for (size_t i = 0; i < selectedGameObjects.size(); i++)
+	{
+		if (selectedGameObjects[i]->GetID() == toErase->GetID())
+		{
+			selectedGameObjects.erase(selectedGameObjects.begin() + i);
+		}
+	}
 }
