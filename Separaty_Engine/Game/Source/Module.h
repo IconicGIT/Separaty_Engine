@@ -60,6 +60,6 @@ public:
 		return true;
 	}
 
-	bool enabled;
+	bool enabled = true;
 	//TODO 7: Create virtual method "On Collision", that recieves the two colliding PhysBodies
 };

@@ -6,6 +6,8 @@
 #include "UIFunctions.h"
 #include "PlayStop.h"
 
+#include <ctime>
+
 
 //PLAY & STOP WINDOW
 
@@ -30,8 +32,23 @@ update_status PlayStop::Update(float dt)
 	{
 		ImGui::Begin("PlayStop", &App->ui->playStop, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
+
 		if (play)
 		{
+			/*(seconds += dt) * 1000.0f;*/								
+
+			//if (seconds >= 60.0f)
+			//{
+			//	++minutes;
+			//	seconds = 0.0f;
+			//}
+
+			//if (minutes >= 60)
+			//{
+			//	++hours;
+			//	minutes = 0;
+			//}
+
 			windowSize = ImVec2(410, 41.5);
 			ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) / 2, 24));
 			ImGui::SetWindowSize(windowSize);
@@ -46,7 +63,7 @@ update_status PlayStop::Update(float dt)
 
 			if (ImGui::Button("Pause", { 50,25 }))
 			{
-
+				pause != pause;
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -54,7 +71,7 @@ update_status PlayStop::Update(float dt)
 
 			if (ImGui::Button("Tick", { 50,25 }))
 			{
-
+				/*dt++;*/
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -65,12 +82,13 @@ update_status PlayStop::Update(float dt)
 			ImGui::SetCursorPos({ ImGui::GetCursorPosX(), 10 });
 			if (ImGui::SliderFloat("Game Time: ", &timeSpeed, 0.0f, 2.0f, "%0.2f"))
 			{
-				//App->time->SetScaleGame(timeSpeed);
+				//App->time->SetScaleGame(timeSpeed); 
 			}
 			ImGui::SameLine();
 
 			std::string gameCount = std::to_string(gameTime /*&App->time->GetGameTimer()*/);
-			ImGui::Text(gameCount.data());
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", gameCount.data());
+
 		}
 		else
 		{
@@ -98,6 +116,8 @@ update_status PlayStop::Update(float dt)
 			{
 				
 			}
+
+			gameTime = 0.0f;
 		}		
 
 		ImGui::End();
@@ -105,3 +125,10 @@ update_status PlayStop::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
+//std::string PlayStop::GetTimeAsString()
+//{
+//	std::string time_string = std::to_string(hours) + "h " + std::to_string(minutes) + "m " + std::to_string(seconds) + "s";
+//
+//	return time_string;
+//}

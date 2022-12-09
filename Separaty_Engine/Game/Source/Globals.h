@@ -30,6 +30,7 @@
 #define HAVE_M_PI
 
 typedef unsigned int uint;
+typedef unsigned char uchar;
 
 enum update_status
 {

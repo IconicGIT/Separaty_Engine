@@ -56,14 +56,19 @@ update_status Inspector::Update(float dt)
 
 			if (ImGui::CollapsingHeader("Information"))
 			{
-
 				ImGui::Text("Name:");
 				ImGui::SameLine();
 
 				char n[50];
 				sprintf_s(n, 50, editorObject->name.c_str());
 				ImGui::InputText("##Name", n, 50);
-				ImGui::Checkbox("Active", &editorObject->enabled);
+
+				std::vector<GameObject*> b = App->engineSystem->GetCurrentScene()->gameObjects;
+
+				if (ImGui::Checkbox("Active", &editorObject->enabled))
+				{
+					int a = 0;
+				}
 			
 			}
 			// Current game object (the one we have selected at the moment)
