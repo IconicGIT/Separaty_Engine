@@ -44,6 +44,12 @@ update_status Assets::Update(float dt)
 		}
 
 		ImGui::End();
+
+		ImGui::Begin("Folder Explorer", &App->ui->assets);
+
+		
+
+		ImGui::End();
 	}
 
 	return UPDATE_CONTINUE;
