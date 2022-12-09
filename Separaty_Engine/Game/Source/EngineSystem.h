@@ -55,11 +55,11 @@ public:
 	GameObject* CreateNewGameObject();
 	GameObjectComponent* CreateNewGOC(GameObject* goAttached, GOC_Type type);
 
-	bool Save_Mesh(Mesh* mesh, char** pointer);
+	bool Save_Mesh(Mesh* mesh); 
 
 	bool Load_Mesh(Mesh* mesh, char* pointer);
 
-	bool Save_Texture(Texture* texture, char** pointer);
+	bool Save_Texture(Texture* texture);
 
 	bool Load_Texture(Texture* texture, char** pointer, uint size);
 

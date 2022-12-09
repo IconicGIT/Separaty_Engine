@@ -186,7 +186,17 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 
-	
+
+	glViewport(0, 0, App->window->width, App->window->height);
+
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	ProjectionMatrix = perspective(fov, (float)App->window->width / (float)App->window->height, 0.125f, 512.0f);
+	glLoadMatrixf(&ProjectionMatrix);
+
+	glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
 
 	return UPDATE_CONTINUE;
 }

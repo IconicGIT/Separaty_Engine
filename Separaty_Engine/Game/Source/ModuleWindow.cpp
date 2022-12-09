@@ -126,7 +126,8 @@ update_status ModuleWindow::PostUpdate(float dt)
 	width_check = width;
 	height_check = height;
 
-	
+	SDL_GetWindowSize(App->window->window, &App->window->width, &App->window->height);
+
 
 	if (brightness_check != brightness)
 	{

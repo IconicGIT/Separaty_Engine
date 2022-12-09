@@ -29,6 +29,10 @@
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
 
+
+#define MESH_FILE_EXTENSION ".rmq"
+#define TEXTURE_FILE_EXTENSION ".rsm"
+
 typedef unsigned int uint;
 typedef unsigned char uchar;
 

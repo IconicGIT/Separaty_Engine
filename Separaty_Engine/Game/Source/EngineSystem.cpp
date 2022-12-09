@@ -368,6 +368,7 @@ bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameob
 					renderer->SetMesh(&mesh);
 					renderer->SetTextures(mesh.textures);
 				}
+				Save_Mesh(&mesh);
 				allMeshes.push_back(mesh);
 
 			}
@@ -490,6 +491,7 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir, bool createGameobject)
 
 				tex.name = name;
 
+				Save_Texture(&tex);
 				allTextures.push_back(tex);
 
 				ret = true;
@@ -513,7 +515,7 @@ bool EngineSystem::LoadFromPath(char* draggedFileDir, bool createGameobject)
 	return ret;
 }
 
-bool EngineSystem::Save_Mesh(Mesh* mesh, char** pointer)
+bool EngineSystem::Save_Mesh(Mesh* mesh)
 {
 	float* meshVertices = new float[sizeof(float*) * mesh->vertices.size() * 3];
 
@@ -545,42 +547,28 @@ bool EngineSystem::Save_Mesh(Mesh* mesh, char** pointer)
 	memcpy(cursor, meshIndices, bytes);
 	cursor += bytes;
 
-	/*std::string filePath;
-	if (mesh->objMain_->name_ == "child")
+
+	std::string filePath;
+
+	if (mesh->renderer != nullptr)
 	{
-		filePath = std::string("Library/Meshes/") + mesh->objMain_->name_.c_str() + std::to_string(childPostfix) + std::string(MESH_FILE_EXTENSION);
-		childPostfix++;
+		filePath = std::string("Library/Meshes/") + mesh->name.c_str() + "_" + std::to_string(mesh->renderer->modelOrder) + std::string(MESH_FILE_EXTENSION);
 	}
 	else
 	{
-		filePath = std::string("Library/Meshes/") + mesh->objMain_->name_.c_str() + std::string(MESH_FILE_EXTENSION);
+		filePath = std::string("Library/Meshes/") + mesh->name.c_str() + std::string(MESH_FILE_EXTENSION);
+
 	}
 
-	PHYSFS_file* fs_file;
+	FILE* file;
+	
+	fopen_s(&file, filePath.c_str(), "w");
+	
+	fwrite(fileBuffer, sizeof(fileBuffer), 1, file);
 
-	fs_file = PHYSFS_openWrite(filePath.c_str());
-
-	if (fs_file != nullptr)
-	{
-		uint written = (uint)PHYSFS_write(fs_file, fileBuffer, 1, size);
-		if (written != size)
-		{
-			LOG("PhysFS error while writing to file %s: %s", filePath, PHYSFS_getLastError());
-		}
-
-		bool closesCorrectly = PHYSFS_close(fs_file);
-		if (closesCorrectly == false)
-		{
-			LOG("PhysFS error while closing file %s: %s", filePath, PHYSFS_getLastError());
-		}
-	}
-	else
-	{
-		LOG("PhysFS error while opening file %s: %s", filePath, PHYSFS_getLastError());
-	}
+	fclose(file);
 
 	filePath.clear();
-	Load_Mesh(mesh, cursor);*/
 
 
 	return true;
@@ -635,8 +623,39 @@ bool EngineSystem::Load_Mesh(Mesh* mesh, char* pointer)
 	return true;
 }
 
-bool EngineSystem::Save_Texture(Texture* texture, char** pointer)
+bool EngineSystem::Save_Texture(Texture* texture)
 {
+
+
+	std::string filePath;
+	
+	filePath = std::string("Library/Textures/") + texture->name.c_str() + std::string(TEXTURE_FILE_EXTENSION);
+
+	FILE* file;
+
+	uint* meshIndices = new uint[sizeof(uint*) * texture->name.size()];
+
+	uint range = { texture->name.size()};
+	uint size = sizeof(range) + sizeof(uint) * texture->name.size();
+	char* fileBuffer = new char[size]; // Allocate
+	char* cursor = fileBuffer;
+	uint bytes = sizeof(range); // First store ranges
+	memcpy(cursor, &range, bytes);
+	cursor += bytes;
+	// Store indices
+	bytes = sizeof(uint) * texture->name.size();
+	memcpy(cursor, meshIndices, bytes);
+	cursor += bytes;
+
+	fopen_s(&file, filePath.c_str(), "w");
+
+	fwrite(fileBuffer, sizeof(fileBuffer), 1, file);
+
+	fclose(file);
+
+	filePath.clear();
+
+
 	//ilEnable(IL_FILE_OVERWRITE);
 	//ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
 

@@ -66,7 +66,7 @@ update_status Preferences::Update(float dt)
 				ImGui::SliderInt("Width", &App->window->width, 720, 1920);	 
 				ImGui::SliderInt("Height", &App->window->height, 480, 1080); 
 
-				SDL_GetWindowSize(App->window->window, &App->window->width, &App->window->height);
+				//SDL_GetWindowSize(App->window->window, &App->window->width, &App->window->height);
 
 				ImGui::TreePop();
 			}

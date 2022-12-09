@@ -319,6 +319,7 @@ void ModuleCamera3D::MousePick()
 	float normalized_x = (world_mouse_pos.x / App->window->width - 0.5f) * 2;
 	float normalized_y = -(world_mouse_pos.y / App->window->height - 0.5f) * 2;
 
+	//gets affected by the renderer fov
 	LineSegment picking = goCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 
 	Line pickingLine = picking.ToLine();
@@ -338,8 +339,14 @@ void ModuleCamera3D::MousePick()
 			goTravessed.push_back(goRenderer->GetGameObject());
 		}
 	}
+
+	for (GameObject* go : App->engineSystem->GetAllGameObjects())
+	{
+		go->selected = false;
+	}
+	
 	if (goTravessed.size() > 0)
-		int a = 0;
+		goTravessed[0]->selected = true;
 }
 
 
