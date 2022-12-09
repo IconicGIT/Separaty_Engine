@@ -300,27 +300,26 @@ Despite this, we are still implementing a method to be able to visualize the 2 c
 
 At this point, it seems that everything works find when we save the scene into a JSON file. Since it can load the children of the objects, the transform, the meshes, the textures and even the FOVs of the cameras.
 
-In this way you can save the scene, close the program, and reopen it without problems once you hit File->Load or its short cut
-
-
+In this way you can save the scene, close the program, and reopen it without problems once you press File->Load or do you use his short cut
 
 - **Play / Stop**
 
 We have implemented the change of camera at the time of pressing play/stop for seeing the scene through the game camera.
 
-In addition to having left the timer and the velocity of it ready, for when we have to use it to see changes in real time at game mode.
+In addition to having left the timer and the change of his velocity ready for when we have to use it to see changes in real time at game mode.
 
 - **Camera (10% each): component, mouse pick, frustum culling**
 
-The camera component has been well implemented and perfectly follows all its required functionalities. The transformation, the changes in the FOV and Near/Far planes and the camera change are working correctly.
+The camera component has been well implemented and perfectly follows all its required functionalities. The transformation, the changes in the FOV and Near/Far planes and the camera switch are working correctly.
 
 On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected.
 
-The frustum culling is partially implemented, with the implementation of the detection of the points of the objects in process.
+The frustum culling is partially implemented, with the implementation of the object detection points in process.
 
 - **Resource Management (includes inspector editing of component mesh & material)**
 
 There is an “Assets” window that shows all user assets by a simple tree viewer, however we have left it commented waiting to resolve a doubt in the following class.
 
-In addition, the screen where the imported assets are loaded can be found in the inspector. In each component we can found the appropriate asset loaded properly once imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
+In addition, the screen where the imported assets are loaded can be found in the inspector. There is a list that shows in each component the appropriate asset loaded
+once it has been imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
 
