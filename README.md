@@ -282,7 +282,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 We have implemented the transforms and the game object hierarchy as requested in this Assignment, always trying to respect the parents and the childs since we believe that it is an important part to take into account when we talk about the transform of a game objects.
 
-We are also in the process of implementing an option to do Drag and Drop the names of the game objects the hierarchy itself, in order to be able to place objects as parents/children of other objects directly from there.
+In addition to perfectly implementing the function of creating children and deleting objects.
+
+We are also in the process of implementing an option to do Drag and Drop the names of the game objects in the hierarchy itself, in order to be able to place objects as parents/children of other objects directly from there.
 
 - **Custom file format**
 
@@ -290,15 +292,17 @@ Still in progress.
 
 - **Game viewport & editor viewport**
 
-We have implemented a camera switch between the engine editor camera and the camera known as the game camera.
+We have implemented a camera switch between the engine editor camera and the camera known as the game camera. Aditionally, we have also implemented a functionality to be able to have multiple cameras in the scene and decide for yourself which point of view you want to have.
 
 Despite this, we are still implementing a method to be able to visualize the 2 cameras at the same time.
 
 - **Scene serialization**
 
-At this point, both the camera and the scene are perfectly saved in the json file. 
+At this point, it seems that everything works find when we save the scene into a JSON file. Since it can load the children of the objects, the transform, the meshes, the textures and even the FOVs of the cameras.
 
-The only problem that we have found has been at the moment of loading back the information from the json file. As the saved json position is not implemented in the object transform matrix. The same goes for scale and rotation.
+In this way you can save the scene, close the program, and reopen it without problems once you hit File->Load or its short cut
+
+
 
 - **Play / Stop**
 
