@@ -209,14 +209,14 @@ bool  ModuleWindow::SaveState(JSON_Value* file, std::string root) const
 
 	
 	json_object_dotset_string(json_object(file), "modules.Window.name", buf);
-	json_serialize_to_file(file, "Config.json");
+	json_serialize_to_file(file, "project1.json");
 
 
 	json_object_dotset_number(json_object(file), "modules.Window.width", (double)width);
 	json_object_dotset_number(json_object(file), "modules.Window.height", (double)height);
 
 
-	json_serialize_to_file(file, "Config.json");
+	json_serialize_to_file(file, "project1.json");
 
 
 	App->ui->AppendToOutput(DEBUG_LOG("Saved Window module."));

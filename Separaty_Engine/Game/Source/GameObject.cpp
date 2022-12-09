@@ -120,10 +120,6 @@ bool GameObject::SaveState(JSON_Value* file, std::string root) const
 	const char* buf = name.c_str();
 
 	json_object_dotset_string(json_object(file), std::string(root + "name").c_str(), std::string(name).c_str());
-
-
-	
-
 	json_object_dotset_number(json_object(file), std::string(root + "components.count").c_str(), components.size());
 
 	int a = 0;
@@ -167,15 +163,10 @@ bool GameObject::SaveState(JSON_Value* file, std::string root) const
 		default:
 			break;
 		}
-
-
 		a++;
 	}
 
-
 	json_object_dotset_number(json_object(file), std::string(root + "children.count").c_str(), children.size());
-
-	
 
 	int i = 0;
 	for (GameObject* go : children)
@@ -184,7 +175,7 @@ bool GameObject::SaveState(JSON_Value* file, std::string root) const
 		i++;
 	}
 
-	json_serialize_to_file(file, "Config.json");
+	json_serialize_to_file(file, "project1.json");
 	return true;
 }
 
@@ -192,94 +183,70 @@ bool GameObject::LoadState(JSON_Value* file, std::string root)
 {
 
 
-	/*const char* n = json_object_dotget_string(json_object(file), "gameObjects");*/
-
-	std::string name = this->name;
-	const char* buf = name.c_str();
-
-	name = json_object_dotget_string(json_object(file), std::string(root + name + " info.name").c_str());
-
-	//load position
-	mat4x4 translation = IdentityMatrix;
-
-	vec3 newPos = vec3(
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.position.x").c_str()),
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.position.y").c_str()),
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.position.z").c_str())
-		);
-
-
-	translation.translate(newPos.x, newPos.y, newPos.z);
-
-	transform->translationLocal = translation;
-
-	//Load rotation
-
-	vec3 rotRad = vec3(
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.rotationRad.x").c_str()),
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.rotationRad.y").c_str()),
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.rotationRad.z").c_str())
-	);
 	
-	Quat rotatorQuat = Quat::FromEulerXYZ(rotRad.x, rotRad.y, rotRad.z);
-	aiQuaternion rotationQuat(rotatorQuat.w, rotatorQuat.x, rotatorQuat.y, rotatorQuat.z);
+
+	std::string name = json_object_dotget_string(json_object(file), std::string(root + "name").c_str());
+	int count = (int)json_object_dotget_number(json_object(file), std::string(root + "components.count").c_str());
+
+	this->name = name;
+	
 
 
-	aiMatrix3x3* tempMat3 = new aiMatrix3x3;
-
-	aiQuaternion* tempRotationQuat = new aiQuaternion(rotationQuat);
-
-	//aiMatrix4FromScalingQuaternionPosition(tempMat, tempScale, tempRotationQuat, tempPosition);
-	aiMatrix3FromQuaternion(tempMat3, tempRotationQuat);
-
-	mat4x4 resMat = IdentityMatrix;
-
-	resMat[0] = (float)tempMat3->a1;
-	resMat[1] = (float)tempMat3->a2;
-	resMat[2] = (float)tempMat3->a3;
-	resMat[3] = 0;
-
-	resMat[4] = (float)tempMat3->b1;
-	resMat[5] = (float)tempMat3->b2;
-	resMat[6] = (float)tempMat3->b3;
-	resMat[7] = 0;
-
-	resMat[8] = (float)tempMat3->c1;
-	resMat[9] = (float)tempMat3->c2;
-	resMat[10] = (float)tempMat3->c3;
-	resMat[11] = 0;
-
-	resMat[12] = 0;
-	resMat[13] = 0;
-	resMat[14] = 0;
-	resMat[15] = 1;
-
-	resMat.transpose();
-
-	transform->rotationLocal = resMat;
-	transform->rotationEulerLocal = float3(rotRad.x, rotRad.y, rotRad.z);
-
-
-	//load scaling
-	mat4x4 scaling = IdentityMatrix;
-
-	vec3 newScale = vec3(
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.scale.x").c_str()),
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.scale.y").c_str()),
-		json_object_dotget_number(json_object(file), std::string(root + name + " info.transform.scale.z").c_str())
-	);
-
-	scaling.scale(newScale.x, newScale.y, newScale.z);
-
-	transform->scalingLocal = scaling;
-
-
-
-	transform->ApplyTransformations();
-
-	for (GameObject* go : children)
+	for (size_t i = 0; i < count; i++)
 	{
-		go->LoadState(file);
+		std::string r = root + "components.[Element_" + std::to_string(i) + "].";
+		GOC_Type goc_type = (GOC_Type)json_object_dotget_number(json_object(file), std::string(r + "type").c_str());
+
+		if (goc_type != GOC_Type::GOC_TRANSFORM &&
+			goc_type != GOC_Type::GOC_MESH_RENDERER &&
+			goc_type != GOC_Type::GOC_TEXTURE)
+			AddComponent(goc_type);
+
+		GameObjectComponent* comp = GetComponent(goc_type);
+
+		switch (goc_type)
+		{
+		case GOC_Type::GOC_NULL:
+		{
+
+		}
+		break;
+		case GOC_Type::GOC_TRANSFORM:
+		{
+			GOC_Transform* c = (GOC_Transform*)comp;
+			c->LoadState(file, r);
+		}
+		break;
+		case GOC_Type::GOC_MESH_RENDERER:
+		{
+			GOC_MeshRenderer* c = (GOC_MeshRenderer*)comp;
+			c->LoadState(file, r);
+		}
+		break;
+		case GOC_Type::GOC_TEXTURE:
+		{
+			GOC_Texture* c = (GOC_Texture*)comp;
+			c->LoadState(file, r);
+		}
+		break;
+		case GOC_Type::GOC_CAMERA:
+		{
+			GOC_Camera* c = (GOC_Camera*)comp;
+			c->LoadState(file, r);
+		}
+		break;
+		default:
+			break;
+		}
+	}
+
+	int childrenCount = json_object_dotget_number(json_object(file), std::string(root + "children.count").c_str());
+
+
+	for (size_t i = 0; i < childrenCount; i++)
+	{
+		GameObject* go = CreateChildren();
+		go->LoadState(file, std::string(root + "children.[Element_" + std::to_string(i) + "]."));
 	}
 	return true;
 }

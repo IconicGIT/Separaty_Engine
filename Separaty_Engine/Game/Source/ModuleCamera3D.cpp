@@ -415,7 +415,7 @@ bool  ModuleCamera3D::SaveState(JSON_Value* file, std::string root) const
 	const char* buf = name.c_str();
 
 	json_object_dotset_string(json_object(file), "modules.Camera.name", buf);
-	json_serialize_to_file(file, "Config.json");
+	json_serialize_to_file(file, "project1.json");
 
 
 	json_object_dotset_number(json_object(file), "modules.Camera.Position.x", (double)Position.x);
@@ -442,7 +442,7 @@ bool  ModuleCamera3D::SaveState(JSON_Value* file, std::string root) const
 	//call recalculateMatrix when after loading X Y Z
 
 
-	json_serialize_to_file(file, "Config.json");
+	json_serialize_to_file(file, "project1.json");
 
 	App->ui->AppendToOutput(DEBUG_LOG("Saved Camera module."));
 

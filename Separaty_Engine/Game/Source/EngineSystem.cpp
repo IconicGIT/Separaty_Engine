@@ -273,15 +273,18 @@ void EngineSystem::RemoveFromGameObjectsSelected(GameObject* toRemove)
 
 void EngineSystem::ExecutePendingToDelete()
 {
+	
+
 
 	for (size_t i = 0; i < allGameObjects.size(); i++)
 	{
 		if (allGameObjects[i]->pendingToDelete)
 		{
 			allGameObjects[i]->Delete();
-			i--;
+			i--;			
 		}
 	}
+
 }
 
 bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameobject)
@@ -304,7 +307,9 @@ bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameob
 	if (createGameobject)
 	{
 		go = App->engineSystem->currentScene->CreateNewGameObject();
-		
+		renderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
+		renderer->meshPathProcedence = path;
+		renderer->modelOrder = 0;
 	}
 
 	
@@ -322,7 +327,6 @@ bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameob
 			std::string tempName = name_;
 			tempName += std::to_string(meshNr);
 			mesh.name = tempName;
-
 			App->ui->AppendToOutput(DEBUG_LOG("Loaded Mesh %s", mesh.name.c_str()));
 
 			GameObject* meshGo = nullptr;
@@ -332,7 +336,8 @@ bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameob
 					meshGo = go->CreateChildren();
 					meshGo->name = meshGoName;
 					renderer = (GOC_MeshRenderer*)meshGo->GetComponent(GOC_Type::GOC_MESH_RENDERER);
-
+					renderer->meshPathProcedence = path;
+					renderer->modelOrder = meshNr + 1;
 				}
 
 			
@@ -395,6 +400,8 @@ bool EngineSystem::LoadModel(char* path,std::string extension, bool createGameob
 			renderer = (GOC_MeshRenderer*)go->GetComponent(GOC_Type::GOC_MESH_RENDERER);
 			renderer->SetMesh(&mesh);
 			renderer->SetTextures(mesh.textures);
+			renderer->meshPathProcedence = path;
+			renderer->modelOrder = -1;
 		}
 		
 		allMeshes.push_back(mesh);

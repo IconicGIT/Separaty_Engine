@@ -196,12 +196,52 @@ Mesh GOC_MeshRenderer::GetMesh() const
 	return  myMesh;
 }
 
-bool GOC_MeshRenderer::LoadState(JSON_Value* file, std::string root)
+bool GOC_MeshRenderer::SaveState(JSON_Value* file, std::string root) const
 {
+	json_object_dotset_string(json_object(file), std::string(root + "original_model_path").c_str(), meshPathProcedence.c_str());
+	json_object_dotset_string(json_object(file), std::string(root + "mesh_name").c_str(), myMesh.name.c_str());
+	json_object_dotset_number(json_object(file), std::string(root + "model_order").c_str(), (int)modelOrder);
+
 	return true;
 }
 
-bool GOC_MeshRenderer::SaveState(JSON_Value* file, std::string root) const
+bool GOC_MeshRenderer::LoadState(JSON_Value* file, std::string root)
 {
+	myMesh.name = json_object_dotget_string(json_object(file), std::string(root + "mesh_name").c_str());
+	meshPathProcedence = json_object_dotget_string(json_object(file), std::string(root + "original_model_path").c_str());
+	modelOrder = (int)json_object_dotget_number(json_object(file), std::string(root + "model_order").c_str());
+
+	if (myMesh.name != std::string(""))
+	{
+		bool success = false;
+		for (Mesh m : App->engineSystem->GetAllMeshes())
+		{
+			if (m.name == myMesh.name)
+			{
+				SetMesh(&m);
+				success = true;
+			}
+		}
+
+		if (!success)
+		{
+			App->engineSystem->LoadFromPath((char*)meshPathProcedence.c_str(), false);
+			for (Mesh m : App->engineSystem->GetAllMeshes())
+			{
+				if (m.name == myMesh.name)
+				{
+					SetMesh(&m);
+					success = true;
+				}
+			}
+		}
+
+		if (!success)
+			App->ui->AppendToOutput(DEBUG_LOG("Failed loading [%s]. Path[%s]", myMesh.name.c_str(), meshPathProcedence.c_str()));
+	}
+
+	
+
 	return true;
 }
+

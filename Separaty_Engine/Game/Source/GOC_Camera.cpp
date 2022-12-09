@@ -12,8 +12,7 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached, int id)
 	GOC_type = GOC_Type::GOC_CAMERA;
 	gameObject = gameObjectAttached;
 
-	frustum.type = PerspectiveFrustum;
-	frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumLeftHanded);
+	
 
 	if (gameObject != nullptr && gameObject->transform != nullptr)
 	{
@@ -44,6 +43,8 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached, int id)
 	frustum.front = float3(Z.x, Z.y, Z.z);
 	frustum.up = float3(Y.x, Y.y, Y.z);
 
+	frustum.type = PerspectiveFrustum;
+	frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumLeftHanded);
 	frustum.nearPlaneDistance = 1.0f;
 	frustum.farPlaneDistance = 100;
 	frustum.verticalFov = 60.0f * DEGTORAD;
@@ -181,12 +182,58 @@ void GOC_Camera::DrawCube(static float3* corners, Color color)
 }
 
 
-bool GOC_Camera::LoadState(JSON_Value* file, std::string root)
+bool GOC_Camera::SaveState(JSON_Value* file, std::string root) const
 {
+	/*
+	
+	frustum.type = PerspectiveFrustum;
+	frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumLeftHanded);
+	frustum.nearPlaneDistance = 1.0f;
+	frustum.farPlaneDistance = 100;
+	frustum.verticalFov = 60.0f * DEGTORAD;
+	frustum.horizontalFov = 2.f * atan(tan(frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
+	
+	*/
+
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.type").c_str(), (int)frustum.type);
+	json_object_dotset_boolean(json_object(file), std::string(root + "frustum.draw").c_str(), drawFrustum);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.frustumProjectiveSpace").c_str(), (int)frustum.ProjectiveSpace());
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.handedness").c_str(), (int)frustum.Handedness());
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.nearPlaneDistance").c_str(), (float)frustum.nearPlaneDistance);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.farPlaneDistance").c_str(), (float)frustum.farPlaneDistance);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.verticalFov").c_str(), (float)frustum.verticalFov);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.horizontalFov").c_str(), (float)frustum.horizontalFov);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.color.r").c_str(), (float)frustumColor.r);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.color.g").c_str(), (float)frustumColor.g);
+	json_object_dotset_number(json_object(file), std::string(root + "frustum.color.b").c_str(), (float)frustumColor.b);
+
+	json_object_dotset_boolean(json_object(file), std::string(root + "current").c_str(), (float)isCurrentCamera);
+	json_object_dotset_boolean(json_object(file), std::string(root + "use").c_str(), (float)useCameraWhileInPlay);
+
+
 	return true;
 }
 
-bool GOC_Camera::SaveState(JSON_Value* file, std::string root) const
+bool GOC_Camera::LoadState(JSON_Value* file, std::string root)
 {
+
+	frustum.type = (FrustumType)json_object_dotget_number(json_object(file), std::string(root + "frustum.type").c_str());
+	drawFrustum = (FrustumType)json_object_dotget_boolean(json_object(file), std::string(root + "frustum.draw").c_str());
+	frustum.projectiveSpace = (FrustumProjectiveSpace)json_object_dotget_number(json_object(file), std::string(root + "frustum.frustumProjectiveSpace").c_str());
+	frustum.handedness = (FrustumHandedness)json_object_dotget_number(json_object(file), std::string(root + "frustum.handedness").c_str());
+	frustum.nearPlaneDistance = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.nearPlaneDistance").c_str());
+	frustum.farPlaneDistance = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.farPlaneDistance").c_str());
+	frustum.verticalFov = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.verticalFov").c_str());
+	frustum.horizontalFov = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.horizontalFov").c_str());
+	frustumColor.r = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.color.r").c_str());
+	frustumColor.g = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.color.g").c_str());
+	frustumColor.b = (float)json_object_dotget_number(json_object(file), std::string(root + "frustum.color.b").c_str());
+
+	isCurrentCamera = json_object_dotget_boolean(json_object(file), std::string(root + "current").c_str());
+	useCameraWhileInPlay = json_object_dotget_boolean(json_object(file), std::string(root + "use").c_str());
+
+
+
 	return true;
 }
+

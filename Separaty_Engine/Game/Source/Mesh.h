@@ -71,7 +71,7 @@ public:
     vec bboxPoints[8];
     vec bboxOriginalPoints[8];
     GOC_MeshRenderer* renderer;
-
+    
 private:
     //  render data
     unsigned int VAO, VBO, EBO;

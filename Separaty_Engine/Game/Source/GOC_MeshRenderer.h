@@ -27,6 +27,7 @@ class Shader;
 class Camera;
 
 
+
 class GOC_MeshRenderer : public GameObjectComponent
 {
 public:
@@ -55,6 +56,17 @@ public:
 
 	bool LoadState(JSON_Value* file, std::string root = "") override;
 	bool SaveState(JSON_Value* file, std::string root = "") const override;
+
+	std::string meshPathProcedence = "";
+
+	/// <summary>
+	/// The order in the original model mesh list.
+	/// If the value is -1, the renderer has no mesh asociated
+	/// If the value is -1, the mesh is single and this renderer uses it.
+	/// If the value is 0, the renderer gameObject is parent of the model's meshes.
+	/// If the value is >0,the renderer corresponds to a child mesh of the original model.
+	/// </summary>
+	int modelOrder = -4;
 private:
 
 	mat4x4 transform;

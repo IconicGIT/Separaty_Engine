@@ -837,31 +837,45 @@ void Scene::EraseGameObjectFromList(GameObject* gameObject)
 
 bool Scene::SaveState(JSON_Value* file, std::string root) const
 {
+	std::string r = "[" + name + "].";
+
 	int i = 0;
 	for (GameObject* go : gameObjects)
 	{
 		if (go->parent == nullptr)
 		{
-			go->SaveState(file, std::string("[" + name + "].[Element_" + std::to_string(i) + "]."));
+			go->SaveState(file, std::string(r + "[Element_" + std::to_string(i) + "]."));
 			i++;
 		}
 		
 	}
+	json_object_dotset_number(json_object(file), std::string(r + "count").c_str(), (int)i);
 
 	return true;
 }
 bool Scene::LoadState(JSON_Value* file, std::string root)
 {
-	int i = 0;
-	for (GameObject* go : gameObjects)
+	std::string r = "[" + name + "].";
+
+	int totalGos = json_object_dotget_number(json_object(file), std::string(r + "count").c_str());
+
+
+	for (size_t i = 0; i < totalGos; i++)
 	{
-		if (go->parent == nullptr)
-		{
-			go->LoadState(file, std::string("[" + name + "].[Element_" + std::to_string(i) + "]."));
-			i++;
-		}
-		
+		GameObject* go = CreateNewGameObject();
+		go->LoadState(file, std::string(r + "[Element_" + std::to_string(i) + "]."));
 	}
+
+	//int i = 0;
+	//for (GameObject* go : gameObjects)
+	//{
+	//	if (go->parent == nullptr)
+	//	{
+	//		go->LoadState(file, std::string(r + "[Element_" + std::to_string(i) + "]."));
+	//		i++;
+	//	}
+	//	
+	//}
 	return true;
 }
 

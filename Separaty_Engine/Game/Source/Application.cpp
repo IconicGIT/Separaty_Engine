@@ -95,6 +95,14 @@ void Application::FinishUpdate()
 	}
 	if (saveGameRequested == true)
 	{
+		remove("project1.json");
+
+		std::ofstream outfile("project1.json");
+
+		outfile << "{}" << std::endl;
+
+		outfile.close();
+
 		SaveGame();
 	}
 
@@ -188,6 +196,11 @@ void Application::LoadGameRequest()
 
 	App->ui->AppendToOutput(DEBUG_LOG("Load Requesting..."));
 
+	for (GameObject* go : engineSystem->GetCurrentScene()->gameObjects)
+	{
+		go->pendingToDelete = true;
+	}
+
 	loadGameRequested = ret;
 }
 
@@ -207,7 +220,7 @@ bool Application::LoadGame()
 {
 	bool ret = true;
 
-	JSON_Value* config_file = json_parse_file("Config.json");
+	JSON_Value* config_file = json_parse_file("project1.json");
 
 	// Call Init() in all modules
 	Module* item = list_modules.front();
@@ -241,7 +254,7 @@ bool Application::SaveGame() const
 
 
 	/*JSON_Value* schema = json_parse_string("{\"Separaty_Engine_Config\":\"\"}");
-	JSON_Value* user_data = json_parse_file("Config.json");
+	JSON_Value* user_data = json_parse_file("project1.json");
 
 	std::string a = "alberto";
 	const char* buf = a.c_str();
@@ -257,7 +270,7 @@ bool Application::SaveGame() const
 	json_value_free(user_data);*/
 
 
-	JSON_Value* config_file = json_parse_file("Config.json");
+	JSON_Value* config_file = json_parse_file("project1.json");
 
 	// Call Init() in all modules
 	Module* item = list_modules.front();
@@ -275,7 +288,7 @@ bool Application::SaveGame() const
 
 	}
 
-	json_serialize_to_file(config_file, "Config.json");
+	json_serialize_to_file(config_file, "project1.json");
 
 
 	json_value_free(config_file);
