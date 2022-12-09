@@ -282,7 +282,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 We have implemented the transforms and the game object hierarchy as requested in this Assignment, always trying to respect the parents and the childs since we believe that it is an important part to take into account when we talk about the transform of a game objects.
 
-We are also in the process of implementing an option to do Drag and Drop the names of the game objects the hierarchy itself, in order to be able to place objects as parents/children of other objects directly from there.
+In addition to perfectly implementing the function of creating children and deleting objects.
+
+We are also in the process of implementing an option to do Drag and Drop the names of the game objects in the hierarchy itself, in order to be able to place objects as parents/children of other objects directly from there.
 
 - **Custom file format**
 
@@ -290,33 +292,36 @@ Still in progress.
 
 - **Game viewport & editor viewport**
 
-We have implemented a camera switch between the engine editor camera and the camera known as the game camera.
+We have implemented a camera switch between the engine editor camera and the camera known as the game camera. Aditionally, we have also implemented a functionality to be able to have multiple cameras in the scene and decide for yourself which point of view you want to have.
 
 Despite this, we are still implementing a method to be able to visualize the 2 cameras at the same time.
 
 - **Scene serialization**
 
-At this point, both the camera and the scene are perfectly saved in the json file. 
+At this point, it seems that everything works find when we save the scene into a JSON file. Since it can load the children of the objects, the transform, the meshes, the textures and even the FOVs of the cameras.
 
-The only problem that we have found has been at the moment of loading back the information from the json file. As the saved json position is not implemented in the object transform matrix. The same goes for scale and rotation.
+In this way you can save the scene, close the program, and reopen it without problems once you press File->Load or do you use his short cut
 
 - **Play / Stop**
 
 We have implemented the change of camera at the time of pressing play/stop for seeing the scene through the game camera.
 
-In addition to having left the timer and the velocity of it ready, for when we have to use it to see changes in real time at game mode.
+In addition to having left the timer and the change of his velocity ready for when we have to use it to see changes in real time at game mode.
 
 - **Camera (10% each): component, mouse pick, frustum culling**
 
-The camera component has been well implemented and perfectly follows all its required functionalities. The transformation, the changes in the FOV and Near/Far planes and the camera change are working correctly.
+The camera component has been well implemented and perfectly follows all its required functionalities. The transformation, the changes in the FOV and Near/Far planes and the camera switch are working correctly.
 
-On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected.
+On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected. It is able to select objects without any problem, we have also put the line that the mouse draws every time you click to debug. The problem is that once the object is selected we have not yet implemented that it opens the hierarchy and the inspector.
 
-The frustum culling is partially implemented, with the implementation of the detection of the points of the objects in process.
+The frustum culling is partially implemented, with the implementation of the object detection points in process. Pending to solve doubts in class.
 
 - **Resource Management (includes inspector editing of component mesh & material)**
 
 There is an “Assets” window that shows all user assets by a simple tree viewer, however we have left it commented waiting to resolve a doubt in the following class.
 
-In addition, the screen where the imported assets are loaded can be found in the inspector. In each component we can found the appropriate asset loaded properly once imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
+In addition, the screen where the imported assets are loaded can be found in the inspector. There is a list that shows in each component the appropriate asset loaded
+once it has been imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
+
+We have also implemented a currently non-functional folder explorer that is commented out in the code. Simply due to problems of not detecting the fileSystem.h
 
