@@ -155,15 +155,27 @@ In addition to the functionalities of adding childs and removing objects.
 
 - **Inspector**: Opens the Inspector Window
 
-![Captura](https://user-images.githubusercontent.com/73245381/206710532-a9ac584a-b310-4139-b95b-7f05bef5682d.PNG)
+![InspectorClosed](https://user-images.githubusercontent.com/73245381/206710532-a9ac584a-b310-4139-b95b-7f05bef5682d.PNG)
 ![Inspector](https://user-images.githubusercontent.com/73245381/206708610-f76c54e6-d6f2-4d61-ba7a-084ded31a094.png)
 
+In the inspector window you can find all the components that each object in the scene has. As it can be seen in the images, each object has an information window about it, a transform window to move the object around the scene, a mesh window to change his mesh and a texture window to texturize it.
 
 - **Assets**: Opens the Assets Window
 
+![Assets](https://user-images.githubusercontent.com/73245381/206724166-57afa46c-74de-4604-8d5e-53fc9ddc7186.png)
+
+It contains a list with all the folders and assets saved in the project.
 - **Show Output**: Opens the Debug Console
 
+![Output](https://user-images.githubusercontent.com/73245381/206725415-fc71d4b5-df1b-4a93-a750-9553e055c1bc.png)
+
 - **Play & Stop**: Opens the Play & Stop Window
+
+![Stop](https://user-images.githubusercontent.com/73245381/206726305-4b1fa812-da63-4987-91ab-0b807a037c47.png)
+
+![Play](https://user-images.githubusercontent.com/73245381/206726503-91c8fad2-0d3e-4c23-b682-4fb7abd4ddc5.png)
+
+This window allows you to iterate through the game state and the editor state, to be able to see what the game scene would look like in real time.
 
 ### Help
 
