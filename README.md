@@ -147,7 +147,17 @@ In the windows section you can find all the Editor Windows that can be used to w
 
 - **Hierarchy**: Opens the Hierarchy Window
 
+![Hierarchy](https://user-images.githubusercontent.com/73245381/206707461-f45ffbbf-bb4b-4fba-b9b3-222445c5277a.png)
+
+In this window we can find all the Game Objects created in the scene. So we can see how many objects we have and their hierarchy.
+
+In addition to the functionalities of adding childs and removing objects.
+
 - **Inspector**: Opens the Inspector Window
+
+![Captura](https://user-images.githubusercontent.com/73245381/206710532-a9ac584a-b310-4139-b95b-7f05bef5682d.PNG)
+![Inspector](https://user-images.githubusercontent.com/73245381/206708610-f76c54e6-d6f2-4d61-ba7a-084ded31a094.png)
+
 
 - **Assets**: Opens the Assets Window
 
