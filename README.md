@@ -312,9 +312,9 @@ In addition to having left the timer and the change of his velocity ready for wh
 
 The camera component has been well implemented and perfectly follows all its required functionalities. The transformation, the changes in the FOV and Near/Far planes and the camera switch are working correctly.
 
-On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected.
+On the other hand, we have implemented the mouse picking, but it should be noted that some things still need to be perfected. It is able to select objects without any problem, we have also put the line that the mouse draws every time you click to debug. The problem is that once the object is selected we have not yet implemented that it opens the hierarchy and the inspector.
 
-The frustum culling is partially implemented, with the implementation of the object detection points in process.
+The frustum culling is partially implemented, with the implementation of the object detection points in process. Pending to solve doubts in class.
 
 - **Resource Management (includes inspector editing of component mesh & material)**
 
@@ -322,4 +322,6 @@ There is an “Assets” window that shows all user assets by a simple tree view
 
 In addition, the screen where the imported assets are loaded can be found in the inspector. There is a list that shows in each component the appropriate asset loaded
 once it has been imported. Also, taking into account the duplication of the imported models, since it does not allow it. 
+
+We have also implemented a currently non-functional folder explorer that is commented out in the code. Simply due to problems of not detecting the fileSystem.h
 
