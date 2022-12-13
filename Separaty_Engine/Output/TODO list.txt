@@ -1,0 +1,3 @@
+fix mouse pick (update scaling, rotation [recalculate better than retransform] and fov multiplicator)
+camera manager (iterate over that list than for all gameobjects)
+gameobject list referencer (to know in the lists where the go exists for easier elimination)
