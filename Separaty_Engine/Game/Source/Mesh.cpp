@@ -59,8 +59,6 @@ void Mesh::SetupMesh()
 
 
         bboxVertices[i] = vec;
-
-        float3 v = float3(bboxVertices[i]);
     }
 
     
@@ -76,15 +74,37 @@ void Mesh::SetupMesh()
 
 void Mesh::Draw(Shader& shader, bool wireframeActive)
 {
-    unsigned int diffuseNr = 1;
-    unsigned int specularNr = 1;
+    
 
     bboxTransformed = bbox;
 
     vec3 translation = renderer->GetGameObject()->transform->translationWorld.translation();
+    //vec3 scaling = renderer->GetGameObject()->transform->scalingWorld.scaling();
 
+    //translate bbox points
     bboxTransformed.Translate(vec(translation.x, translation.y, translation.z));
-     
+
+
+    //vec bboxTransformedPoints[8];
+    //bboxTransformed.GetCornerPoints(bboxTransformedPoints);
+
+    ////scale box points
+    //for (size_t i = 0; i < 8; i++)
+    //{
+    //    bboxTransformedPoints[i].x *= scaling.x;
+    //    bboxTransformedPoints[i].y *= scaling.y;
+    //    bboxTransformedPoints[i].z *= scaling.z;
+    //
+    //    bboxTransformed.Enclose(bboxTransformedPoints, 8);
+    //    //bboxPoints[i] = bboxTransformedPoints[i];
+    //}
+
+
+
+
+
+    unsigned int diffuseNr = 1;
+    unsigned int specularNr = 1;
     if (!textures.empty())
     {
         for (unsigned int i = 0; i < textures.size(); i++)

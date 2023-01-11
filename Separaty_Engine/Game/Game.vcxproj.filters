@@ -46,6 +46,9 @@
     <Filter Include="Source\Utils">
       <UniqueIdentifier>{3e33fa9d-f2df-44c8-94e4-acc7476a39dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Modules\ModuleParticles">
+      <UniqueIdentifier>{3beea181-6c57-45b5-a228-0d56d285252b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -305,6 +308,9 @@
     </ClCompile>
     <ClCompile Include="Source\PlayStop.cpp">
       <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GOC_ParticleEmitter.cpp">
+      <Filter>Source\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -682,6 +688,9 @@
     </ClInclude>
     <ClInclude Include="Source\PlayStop.h">
       <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GOC_ParticleEmitter.h">
+      <Filter>Source\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

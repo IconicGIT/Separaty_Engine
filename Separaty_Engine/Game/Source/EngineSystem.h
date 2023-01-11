@@ -14,12 +14,14 @@
 #include <Assimp/include/Importer.hpp>
 #include <Assimp/include/scene.h>
 
+//#include "External/CookieDevsParticles/ParticleSystem.h"
 
 class Scene;
 class Mesh;
 class Model;
 class Shader;
 
+//class ParticleSystem;
 
 class EngineSystem : public Module
 {
@@ -108,6 +110,10 @@ public:
 	void EraseGameObjectFromScenes(GameObject* gameObject);
 	void EraseGameObjectFromEngine(GameObject* gameObject);
 	uint gameObjectsLastID = 0;
+
+
+	//std::unique_ptr<ParticleSystem> particleSystem = std::make_unique<ParticleSystem>();
+
 
 private:
 	

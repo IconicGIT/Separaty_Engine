@@ -221,6 +221,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\GOC_MeshRenderer.cpp" />
+    <ClCompile Include="Source\GOC_ParticleEmitter.cpp" />
     <ClCompile Include="Source\GOC_Texture.cpp" />
     <ClCompile Include="Source\GOC_Transform.cpp" />
     <ClCompile Include="Source\Hierarchy.cpp" />
@@ -347,6 +348,7 @@
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\GOC_MeshRenderer.h" />
+    <ClInclude Include="Source\GOC_ParticleEmitter.h" />
     <ClInclude Include="Source\GOC_Texture.h" />
     <ClInclude Include="Source\GOC_Transform.h" />
     <ClInclude Include="Source\Hierarchy.h" />

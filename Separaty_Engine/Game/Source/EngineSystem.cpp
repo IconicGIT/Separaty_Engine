@@ -4,6 +4,7 @@
 EngineSystem::EngineSystem()
 {
 	name = "EngineSystem";
+	//particleSystem = std::make_unique<ParticleSystem>();
 }
 
 EngineSystem::~EngineSystem()
