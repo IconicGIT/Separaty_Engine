@@ -36,6 +36,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
     - Github account: [GerardMartinez02](https://github.com/GerardMartinez02)
 ## Main core sub-system
 ```markdown
+
 -
 
 -
