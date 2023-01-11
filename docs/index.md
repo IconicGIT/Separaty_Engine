@@ -19,21 +19,20 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 
 ## Developers
 
+![Developers](https://user-images.githubusercontent.com/73245381/211890076-90d159a0-6f1d-4ae7-9c49-06c86e508146.jpg)
+
 **Brandon Arandia**
 
   * *Programmer*
 
-  * *Designer*
-  
     - Github account: [IconicGIT](https://github.com/IconicGIT)
     
 **Gerard Martinez**
 
   * *Programmer*
   
-  * *QA* 
-  
     - Github account: [GerardMartinez02](https://github.com/GerardMartinez02)
+    
 ## Main core sub-system
 
 ```markdown
