@@ -37,7 +37,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 ## Main core sub-system
 ```markdown
 
--
+·
 
 -
 
@@ -48,6 +48,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 -
 
 ```
+
 ## Assignment 3 sub-system
 
 ## Video
