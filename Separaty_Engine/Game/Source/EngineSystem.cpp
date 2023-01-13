@@ -4,6 +4,7 @@
 EngineSystem::EngineSystem()
 {
 	name = "EngineSystem";
+	particleSystem = new ParticleSystem();
 	//particleSystem = std::make_unique<ParticleSystem>();
 }
 
@@ -31,6 +32,7 @@ bool EngineSystem::Start()
 
 	currentScene = CreateNewScene();
 	currentScene->Start();
+	particleSystem->Start();
 
 	return true;
 }
@@ -52,6 +54,8 @@ bool EngineSystem::Init()
 			item_it++;
 		}
 	}
+	particleSystem->Init();
+
 
 	modelExtensionsAccepted.push_back("FBX");
 	modelExtensionsAccepted.push_back("fbx");
@@ -84,6 +88,7 @@ update_status EngineSystem::PreUpdate(float dt)
 			item_it++;
 		}
 	}
+	particleSystem->PreUpdate(dt);
 
 	return UPDATE_CONTINUE;
 }
@@ -105,6 +110,8 @@ update_status EngineSystem::Update(float dt)
 		}
 
 	}
+
+	particleSystem->Update(dt);
 
 	if (App->input->FileJustDropped())
 	{
@@ -132,6 +139,7 @@ update_status EngineSystem::PostUpdate(float dt)
 		}
 
 	}
+	particleSystem->PostUpdate(dt);
 
 	return UPDATE_CONTINUE;
 
@@ -139,6 +147,10 @@ update_status EngineSystem::PostUpdate(float dt)
 
 bool EngineSystem::CleanUp()
 {
+	particleSystem->CleanUp();
+
+	delete particleSystem;
+	particleSystem = nullptr;
 	return true;
 
 }
@@ -215,6 +227,13 @@ GameObjectComponent* EngineSystem::CreateNewGOC(GameObject* goAttached, GOC_Type
 		allGameObjectComponents.push_back((GOC_Camera*)comp);
 		return (GOC_Camera*)comp;
 		
+	}
+	break;
+	case GOC_Type::GOC_PARTICLE_EMITTER:
+	{
+		GOC_ParticleEmitter* comp = new GOC_ParticleEmitter(goAttached, allGameObjectComponents.size());
+		allGameObjectComponents.push_back((GOC_ParticleEmitter*)comp);
+		return (GOC_ParticleEmitter*)comp;
 	}
 	break;
 	default:
@@ -774,6 +793,7 @@ bool EngineSystem::SaveState(JSON_Value* file, std::string root) const
 	{
 		var->SaveState(file);
 	}
+	particleSystem->SaveState(file);
 	return true;
 }
 
@@ -783,6 +803,8 @@ bool EngineSystem::LoadState(JSON_Value* file, std::string root)
 	{
 		var->LoadState(file);
 	}
+	particleSystem->LoadState(file);
+
 	return true;
 }
 

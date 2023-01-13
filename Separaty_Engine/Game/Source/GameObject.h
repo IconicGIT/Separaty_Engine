@@ -8,6 +8,8 @@
 #include "GOC_MeshRenderer.h"
 #include "GOC_Transform.h"
 #include "GOC_Texture.h"
+#include "GOC_ParticleEmitter.h"
+
 
 class EngineSystem;
 enum class GOC_Type;

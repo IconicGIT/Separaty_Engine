@@ -67,6 +67,8 @@ bool Application::Init()
 	item = list_modules.front();
 	item_it = 0;
 
+	
+
 	while (item_it < list_modules.size() && ret == true)
 	{
 		item = list_modules[item_it];
@@ -74,14 +76,15 @@ bool Application::Init()
 		item_it++;
 	}
 	
-	ms_timer.Start();
+
 	return ret;
 }
 
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	
+	ms_timer.Start();
+
 }
 
 // ---------------------------------------------
@@ -106,17 +109,31 @@ void Application::FinishUpdate()
 		SaveGame();
 	}
 
-	dt = (double)ms_timer.Read() / 1000.0f + 0.001;
+	ms_timer.Stop();
 
-	float frameMaxSpeed = 1000.0f / window->maxFPS;
-	if ((frameMaxSpeed - dt * 1000.f) > 0.0f)
+
+	double elapsedTime = (double)ms_timer.Read();
+
+	double perfectFrameTime = 1000.f / window->maxFPS;
+
+	double timeRelation = 1 / (elapsedTime / perfectFrameTime);
+
+	double currentFps = window->maxFPS * timeRelation;
+
+
+	dt = 1.f / (float)currentFps;
+
+
+	if ((perfectFrameTime - elapsedTime) > 0.0f)
 	{
-		SDL_Delay(fabs(floor((long)frameMaxSpeed - (float)ms_timer.Read())));
+		dt = perfectFrameTime / 1000.f;
+		double timeToWait = (double)perfectFrameTime - (double)elapsedTime;
+		SDL_Delay(fabs(floor(timeToWait)));
 	}
 
 
-	ms_timer.Start();
-
+	timer += dt;
+	//DEBUG_LOG("dt: %f", timer);
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

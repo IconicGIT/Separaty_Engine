@@ -80,8 +80,8 @@ update_status Preferences::Update(float dt)
 				{
 					App->window->SetVsync(App->window->vsync);
 				}
-				App->window->FPSGraph(dt, 60);
-				App->window->MSGraph(dt, 60);
+				App->window->FPSGraph(dt, 60, 200);
+				App->window->MSGraph(dt, 60, 200);
 
 				ImGui::TreePop();
 			}

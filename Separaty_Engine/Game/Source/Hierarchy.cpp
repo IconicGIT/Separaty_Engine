@@ -75,11 +75,11 @@ update_status Hierarchy::Update(float dt)
 	}
 
 	
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 
 		App->ui->AppendToOutput(DEBUG_LOG("selected: %i", UImanager->selectedGameObjects.size()));
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }

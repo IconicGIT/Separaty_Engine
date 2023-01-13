@@ -38,7 +38,7 @@ private:
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
-
+	float timer = 0;
 public:
 
 	Application();

@@ -312,6 +312,9 @@
     <ClCompile Include="Source\GOC_ParticleEmitter.cpp">
       <Filter>Source\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\External\CookieDevsParticles\ParticleSystem.cpp">
+      <Filter>Source\Modules\ModuleParticles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -691,6 +694,9 @@
     </ClInclude>
     <ClInclude Include="Source\GOC_ParticleEmitter.h">
       <Filter>Source\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\CookieDevsParticles\ParticleSystem.h">
+      <Filter>Source\Modules\ModuleParticles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

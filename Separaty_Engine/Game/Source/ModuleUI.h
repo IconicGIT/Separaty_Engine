@@ -72,6 +72,10 @@ public:
 
 	void PrintOutputList()
 	{
+		int size = outputList.size();
+
+		if (size > 100) size = 100;
+
 		for (size_t i = 0; i < outputList.size(); i++)
 		{
 			ImGui::Text(outputList[i]);

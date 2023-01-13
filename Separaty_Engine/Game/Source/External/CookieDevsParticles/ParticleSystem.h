@@ -16,9 +16,11 @@ class Emitter;
 class Submodule;
 class Particle;
 
-struct CDeVertex {
+class CDeVertex {
 
+public:
 	CDeVertex() {}
+	~CDeVertex(){}
 
 	vec3 Position;
 	vec3 Normal;
@@ -43,6 +45,15 @@ struct CDeVertex {
 		Position.z = z;
 	}
 
+	CDeVertex operator + (const float3&v)
+	{
+		CDeVertex ret;
+		ret.Position.x += v.x;
+		ret.Position.y += v.y;
+		ret.Position.z += v.z;
+
+		return ret;
+	}
 
 };
 
@@ -63,7 +74,7 @@ public:
 
 	std::vector<std::shared_ptr<Emitter>> allEmitters;
 
-	void CreateEmitter();
+	std::shared_ptr<Emitter> CreateEmitter();
 	
 private:
 
@@ -91,12 +102,12 @@ public:
 
 	void AppendToDelete();
 	void Delete();
-	void CreateEmitter();
+	void CreateSubmodule();
 
 	//update order: UpdateSubmodules() in preUpdate -> Update() self and spawns if necessary -> DrawParticles() on postUpdate
 
 	std::vector<std::shared_ptr<Submodule>> submodules;
-	std::vector<std::unique_ptr<Particle>> particles;
+	std::vector<std::shared_ptr<Particle>> particles;
 	bool pendingToDelete = false;
 
 private:
@@ -110,7 +121,8 @@ private:
 class Submodule
 {
 public:
-	Submodule(std::shared_ptr<Emitter> emitter);
+	Submodule() {}
+	Submodule(Emitter* emitter);
 	~Submodule();
 
 	void Update(float dt);
@@ -123,18 +135,19 @@ public:
 
 	
 	//Submodule parameters
-	float timer_reference = 90;
+	float timer_reference;
 	float timer;
 	bool repeat = true;
 
 
 	//particle parameters
 	int particle_amount = 1;
-	int particle_lifetime = 60;
+	int particle_lifetime;
+	int test;
 
 	
 private:
-	std::shared_ptr<Emitter> emitter;
+	Emitter* emitter;
 };
 
 
@@ -150,26 +163,26 @@ public:
 	~Particle();
 
 	void Update(float dt);
+	void SetParticleMesh();
+	void UpdateParticleMesh();
+	
+	void OnDeath();
+
+	CDeVertex vertices[4];
+
+	int indices[6];
+
+	float lifetime = 0;
+	std::vector<std::shared_ptr<Submodule>> submodules;
 
 	//customizable parameters;
 
 	float4 color;
-	void OnDeath();
+	float3 position;
+	float velocity;
+	float acceleration;
+	float3 direction;
 
-	CDeVertex vertices[4] = {
-		CDeVertex(-1,1,0),
-		CDeVertex(-1,-1,0),
-		CDeVertex(1,1,0),
-		CDeVertex(1,-1,0)
-	};
-
-	int indices[6] = {
-		1,2,3,
-		1,3,4
-	};
-
-	float lifetime = 0;
-	std::vector<std::shared_ptr<Submodule>> submodules;
 
 private:
 

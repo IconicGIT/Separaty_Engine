@@ -35,16 +35,20 @@ update_status AppData::Update(float dt)
 			//OrganizationNameDisplay (Citm)
 			sprintf_s(App->ui->inputs, 20, ORGANITZATION);
 			ImGui::InputText("Organization", App->ui->inputs, 20);
+
+			float maxFpsAvaiable = 1000;
 			//MaxFPSSlider
-			ImGui::SliderInt("Max FPS", &App->window->maxFPS, 1, 60);
+			ImGui::SliderInt("Max FPS", &App->window->maxFPS, 6, maxFpsAvaiable);
 			//LimitFramerateText Limit Framereate: %d
 			ImGui::Text("Limit Framerate: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", App->window->maxFPS);
 			//FPSGraph
-			App->window->FPSGraph(dt, 100);
-			//MillisecondsGraph
-			App->window->MSGraph(dt, 100);
+			App->window->FPSGraph(dt, 100, maxFpsAvaiable + 50);
+
+			//MillisecondsGraph - delta time Graph
+			App->window->MSGraph(dt, 0.1f, maxFpsAvaiable + 50);
+
 		}
 
 

@@ -299,9 +299,11 @@ update_status ModuleUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::TreeNode("Effects"))
 			{
-				if (ImGui::MenuItem("Particles", "", false, false))
+				if (ImGui::MenuItem("Particle Emitter", "", false, true))
 				{
-
+					GameObject* camera = App->engineSystem->GetCurrentScene()->CreateNewGameObject();
+					camera->AddComponent(GOC_Type::GOC_PARTICLE_EMITTER);
+					camera->name = "Particle Emitter";
 				}
 
 				ImGui::TreePop();

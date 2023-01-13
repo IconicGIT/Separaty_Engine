@@ -65,12 +65,13 @@ bool ModuleCamera3D::CleanUp()
 update_status ModuleCamera3D::Update(float dt)
 {
 
+
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	vec3 newPos(0,0,0);
-	float speed = 50.0f * dt;
+	float speed = 20.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 100.0f * dt;
+		speed = 50.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 	if(App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos.y -= speed;

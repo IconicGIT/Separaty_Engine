@@ -180,23 +180,23 @@ void ModuleWindow::UpdateWindowSize()
 
 ////////
 
-void ModuleWindow::FPSGraph(float dt, int size)
+void ModuleWindow::FPSGraph(float dt, int dataHeight, int verticalScope)
 {
 	fpsLog.push_back(1 / dt);
-	sprintf_s(title, 20, "Framerate %.1f", fpsLog[fpsLog.size() - 1]);
-	ImGui::PlotHistogram("##framerate", &fpsLog[0], fpsLog.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-	if (fpsLog.size() > size)
+	sprintf_s(title, 100, "Framerate (Fps): %.1f", fpsLog[fpsLog.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &fpsLog[0], fpsLog.size(), 0, title, 0.0f, dataHeight / verticalScope * 100, ImVec2(310, 100));
+	if (fpsLog.size() > 50)
 	{
 		fpsLog.erase(fpsLog.begin());
 	}
 }
 
-void ModuleWindow::MSGraph(float dt, int size)
+void ModuleWindow::MSGraph(float dt, float dataHeight, int verticalScope)
 {
-	msLog.push_back(dt * 1000);
-	sprintf_s(title, 20, "Milliseconds %0.1f", msLog[msLog.size() - 1]);
-	ImGui::PlotHistogram("##milliseconds", &msLog[0], msLog.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
-	if (msLog.size() > size)
+	msLog.push_back(dt);
+	sprintf_s(title, 100, "Delta Time (Ms): %0.6f", msLog[msLog.size() - 1]);
+	ImGui::PlotHistogram("##milliseconds", &msLog[0], msLog.size(), 0, title, 0.0f, dataHeight / verticalScope * 100, ImVec2(310, 100));
+	if (msLog.size() > 50)
 	{
 		msLog.erase(msLog.begin());
 	}

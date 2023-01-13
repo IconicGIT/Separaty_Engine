@@ -14,11 +14,12 @@ ParticleSystem::~ParticleSystem()
 
 bool ParticleSystem::Init()
 {
-
+	return true;
 }
 
 bool ParticleSystem::Start()
 {
+	return true;
 
 }
 
@@ -26,12 +27,14 @@ update_status ParticleSystem::PreUpdate(float dt)
 {
 	for (size_t i = 0; i < allEmitters.size(); i++)
 	{
-		allEmitters[i]->Update(dt);
+		allEmitters[i]->PreUpdate(dt);
 	}
+	return UPDATE_CONTINUE;
 }
 
 update_status ParticleSystem::Update(float dt)
 {
+	//App->ui->AppendToOutput(DEBUG_LOG("particle engine"));
 	for (size_t i = 0; i < allEmitters.size(); i++)
 	{
 		if (allEmitters[i]->pendingToDelete)
@@ -42,14 +45,16 @@ update_status ParticleSystem::Update(float dt)
 
 		allEmitters[i]->Update(dt);
 	}
+	return UPDATE_CONTINUE;
 }
 
 update_status ParticleSystem::PostUpdate(float dt)
 {
 	for (size_t i = 0; i < allEmitters.size(); i++)
 	{
-		allEmitters[i]->Update(dt);
+		allEmitters[i]->PostUpdate(dt);
 	}
+	return UPDATE_CONTINUE;
 }
 
 bool ParticleSystem::CleanUp()
@@ -60,27 +65,32 @@ bool ParticleSystem::CleanUp()
 		allEmitters.erase(allEmitters.begin() + i);
 	}
 	allEmitters.clear();
+	return true;
+
+;
 }
 
 
-void ParticleSystem::CreateEmitter()
+std::shared_ptr<Emitter> ParticleSystem::CreateEmitter()
 {
 	std::shared_ptr<Emitter> newEmitter = std::make_shared<Emitter>();
 
 	allEmitters.push_back(newEmitter);
 
-	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>();
 
-	newEmitter->submodules.push_back(newSubmodule);
+
+	return newEmitter;
 }
 
 bool ParticleSystem::LoadState(JSON_Value* file, std::string root)
 {
+	return true;
 
 }
 
 bool ParticleSystem::SaveState(JSON_Value* file, std::string root) const
 {
+	return true;
 
 }
 
@@ -90,6 +100,9 @@ bool ParticleSystem::SaveState(JSON_Value* file, std::string root) const
 
 Emitter::Emitter()
 {
+	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this);
+
+	submodules.push_back(newSubmodule);
 }
 
 Emitter::~Emitter()
@@ -98,21 +111,19 @@ Emitter::~Emitter()
 
 void Emitter::PreUpdate(float dt)
 {
-	for (size_t i = 0; i < submodules.size(); i++)
-	{
-		submodules[i]->Update(dt);
-	}
+	UpdateSubmodules(dt); 
 }
 
 void Emitter::Update(float dt)
 {
-
+	//App->ui->AppendToOutput(DEBUG_LOG("emitter"));
 	for (size_t i = 0; i < particles.size(); i++)
 	{
 		if (particles[i]->lifetime < 0)
 		{
 			particles[i]->OnDeath();
 			particles.erase(particles.begin() + i);
+			continue;
 		}
 
 		particles[i]->Update(dt);
@@ -121,7 +132,10 @@ void Emitter::Update(float dt)
 
 void Emitter::PostUpdate(float dt)
 {
-	DrawParticles();
+	if (!particles.empty())
+	{
+		DrawParticles();
+	}
 }
 
 void Emitter::UpdateSubmodules(float dt)
@@ -188,6 +202,10 @@ void Emitter::DrawParticles()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
 
 	glBindVertexArray(0);
+
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 
 /// <summary>
@@ -211,20 +229,26 @@ void Emitter::Delete()
 	particles.clear();
 }
 
-void Emitter::CreateEmitter()
+void Emitter::CreateSubmodule()
 {
-	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>();
-
+	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this);
 	submodules.push_back(newSubmodule);
 }
 
 		//Submodule
 ///////////////////////////////////////////
 
-Submodule::Submodule(std::shared_ptr<Emitter> emitter)
+Submodule::Submodule(Emitter* emitter)
 {
 	this->emitter = emitter;
+
+	//Submodule settings
+	timer_reference = 2;
 	timer = timer_reference;
+	test = 0;
+
+	//initialize particle settings
+	particle_lifetime = 1;
 }
 
 Submodule::~Submodule()
@@ -233,15 +257,18 @@ Submodule::~Submodule()
 
 void Submodule::Update(float dt)
 {
-	if (timer > 0)
+	//App->ui->AppendToOutput(DEBUG_LOG("timer %f", timer));
+	timer -= dt;
+	test++;
+
+	if (timer <= 0)
 	{
-		timer -= dt;
-	}
-	else
-	{
+		//DEBUG_LOG("Time!");
+		test = 0;
 		Execute();
 		if (repeat) timer = timer_reference;
 	}
+
 }
 
 void Submodule::Execute()
@@ -253,8 +280,13 @@ void Submodule::AddParticles()
 {
 	for (size_t i = 0; i < particle_amount; i++)
 	{
-		std::unique_ptr<Particle> p = std::make_unique<Particle>();
-		emitter->particles.push_back(p);
+		Particle* p = new Particle();
+
+
+		//here all perticle properties will be set
+		p->lifetime = particle_lifetime;
+
+		emitter->particles.emplace_back(p);
 	}
 }
 
@@ -264,10 +296,13 @@ void Submodule::AddParticles()
 
 Particle::Particle()
 {
+	SetParticleMesh();
 }
 
 Particle::Particle(float lifetime)
 {
+	SetParticleMesh();
+
 	this->lifetime = lifetime;
 }
 
@@ -285,5 +320,44 @@ void Particle::Update(float dt)
 
 void Particle::OnDeath()
 {
-	App->ui->AppendToOutput(DEBUG_LOG("particle deleted"));
+	//App->ui->AppendToOutput(DEBUG_LOG("particle deleted"));
+}
+
+void Particle::SetParticleMesh()
+{
+
+	//quad
+	vertices[0] = CDeVertex(-1, 1, 0);		vertices[3] = CDeVertex(1, 1, 0);
+
+
+	vertices[1] = CDeVertex(-1, -1, 0);		vertices[2] = CDeVertex(1, -1, 0);
+	
+
+	//1st triangle
+	indices[0] = 0;		
+	
+
+	indices[1] = 1;		indices[2] = 2;
+
+
+
+	//2nd triangle
+	indices[3] = 0;		indices[5] = 3;
+
+
+						indices[4] = 2;
+	
+
+}
+
+void Particle::UpdateParticleMesh()
+{
+
+	//quad
+	vertices[0] = CDeVertex(-1, 1, 0);		vertices[3] = CDeVertex(1, 1, 0);
+
+
+	vertices[1] = CDeVertex(-1, -1, 0);		vertices[2] = CDeVertex(1, -1, 0);
+
+
 }

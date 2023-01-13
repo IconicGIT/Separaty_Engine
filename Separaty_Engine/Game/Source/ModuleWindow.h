@@ -55,11 +55,11 @@ public:
 	std::vector<float> fpsLog;
 	std::vector<float> msLog;
 
-	void FPSGraph(float dt, int size);
-	void MSGraph(float dt, int size);
+	void FPSGraph(float dt, int dataHeight, int verticalScope);
+	void MSGraph(float dt, float dataheight, int verticalScope);
 
 	int maxFPS = 60;
-	char title[20];
+	char title[100];
 
 public:
 	//The window we'll be rendering to
