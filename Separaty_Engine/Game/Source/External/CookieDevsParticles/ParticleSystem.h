@@ -10,7 +10,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "../glmath.h"
-
+#include <time.h>
 
 class Emitter;
 class Submodule;
@@ -38,6 +38,13 @@ public:
 		Position.z = v.z;
 	}
 
+	CDeVertex(float3 &v)
+	{
+		Position.x = v.x;
+		Position.y = v.y;
+		Position.z = v.z;
+	}
+
 	CDeVertex(int x, int y, int z)
 	{
 		Position.x = x;
@@ -53,6 +60,16 @@ public:
 		ret.Position.z += v.z;
 
 		return ret;
+	}
+
+	CDeVertex operator += (const float3& v)
+	{
+		
+		this->Position.x += v.x;
+		this->Position.y += v.y;
+		this->Position.z += v.z;
+
+		return *this;
 	}
 
 };
@@ -78,7 +95,9 @@ public:
 	
 private:
 
+	
 };
+
 
 
 /// <summary>
@@ -98,7 +117,7 @@ public:
 	void PostUpdate(float dt);
 
 	void UpdateSubmodules(float dt);
-	void DrawParticles();
+	void DrawParticle(int index);
 
 	void AppendToDelete();
 	void Delete();
@@ -110,6 +129,7 @@ public:
 	std::vector<std::shared_ptr<Particle>> particles;
 	bool pendingToDelete = false;
 
+	float3 position;
 private:
 	unsigned int VAO, VBO, EBO;
 };
@@ -135,15 +155,44 @@ public:
 
 	
 	//Submodule parameters
-	float timer_reference;
+	float particle_rate;
+	bool  particle_rate_isRanged;
+	float particle_rate_range[2];
+
+
 	float timer;
 	bool repeat = true;
 
 
 	//particle parameters
-	int particle_amount = 1;
-	int particle_lifetime;
-	int test;
+	int   particle_amount;
+	bool  particle_amount_isRanged;
+	int particle_amount_range[2];
+
+	float particle_lifetime;
+	bool  particle_lifetime_isRanged;
+	float particle_lifetime_range[2];
+
+	float4 particle_color;
+
+	float3 particle_originPosition;
+	bool   particle_originPosition_isRanged;
+	float3 particle_originPosition_range[2];
+
+	float  particle_velocity;
+	bool   particle_velocity_isRanged;
+	float  particle_velocity_range[2];
+
+	float  particle_acceleration;
+	bool   particle_acceleration_isRanged;
+	float  particle_acceleration_range[2];
+
+	float3 particle_direction;
+	bool   particle_direction_isRanged;
+	float3 particle_direction_range[2];
+
+
+	bool particle_followOrigin;
 
 	
 private:
@@ -159,29 +208,34 @@ class Particle
 {
 public:
 	Particle();
-	Particle(float lifetime);
+	Particle(Emitter* emitter, float lifetime);
 	~Particle();
 
 	void Update(float dt);
 	void SetParticleMesh();
-	void UpdateParticleMesh();
+	void UpdateParticleMesh(float dt);
 	
 	void OnDeath();
 
 	CDeVertex vertices[4];
+	float3 quad_vertices[4];
 
 	int indices[6];
 
-	float lifetime = 0;
+	
+	Emitter* emitter;
 	std::vector<std::shared_ptr<Submodule>> submodules;
 
 	//customizable parameters;
 
+	float  lifetime = 0;
 	float4 color;
-	float3 position;
-	float velocity;
-	float acceleration;
+	float3 originPosition;
+	float3 localPosition;
+	float  velocity;
+	float  acceleration;
 	float3 direction;
+	bool   followOrigin;
 
 
 private:

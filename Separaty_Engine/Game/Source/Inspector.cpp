@@ -733,6 +733,135 @@ update_status Inspector::Update(float dt)
 
 					}
 					break;
+					case GOC_Type::GOC_PARTICLE_EMITTER:
+					{
+						GOC_ParticleEmitter* comp = (GOC_ParticleEmitter*)component;
+						
+						if (ImGui::CollapsingHeader("Particle Emitter"))
+						{
+							for (std::shared_ptr<Submodule> submod : comp->emitter->submodules)
+							{
+								std::string submodName = "Submodule";
+								if (ImGui::CollapsingHeader(submodName.c_str()))
+								{
+									//std::string nParticles = "n. Active Particles: " + comp->emitter->particles.size();
+									ImGui::Text("n. Active Particles: %i", comp->emitter->particles.size());
+
+
+									ImGui::Text("Module attributes");
+
+
+									ImGui::Text("Spawn Rate");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##1", &submod->particle_rate_isRanged);
+									if (submod->particle_rate_isRanged)
+									{
+										ImGui::DragFloat("##11", &submod->particle_rate_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat("##12", &submod->particle_rate_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+
+									}
+									else
+									{
+										ImGui::DragFloat("##10", &submod->particle_rate, 0.05f, 0.0f, 0.0f, "%.2f");
+
+									}
+
+
+									ImGui::Text("Spawn Amount");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##2", &submod->particle_amount_isRanged);
+									if (submod->particle_amount_isRanged)
+									{
+										ImGui::DragInt("##21", &submod->particle_amount_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragInt("##22", &submod->particle_amount_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+
+
+									}
+									else
+									{
+										ImGui::DragInt("##20", &submod->particle_amount, 0.05f, 0.0f, 0.0f, "%.2f");
+									}
+
+
+									ImGui::Text("Particle attributes");
+
+
+									ImGui::Text("Particle life time");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##3", &submod->particle_lifetime_isRanged);
+									if (submod->particle_lifetime_isRanged)
+									{
+										ImGui::DragFloat("##31", &submod->particle_lifetime_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat("##32", &submod->particle_lifetime_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+
+
+									}
+									else
+									{
+										ImGui::DragFloat("##3", &submod->particle_lifetime, 0.05f, 0.0f, 0.0f, "%.2f");
+									}
+									
+
+									ImGui::Text("Particle Velocity");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##4", &submod->particle_velocity_isRanged);
+									if (submod->particle_velocity_isRanged)
+									{
+										ImGui::DragFloat("##41", &submod->particle_velocity_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat("##42", &submod->particle_velocity_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+
+
+									}
+									else
+									{
+										ImGui::DragFloat("##4", &submod->particle_velocity, 0.05f, 0.0f, 0.0f, "%.2f");
+									}
+									
+
+									ImGui::Text("Particle Acceleration");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##5", &submod->particle_acceleration_isRanged);
+									if (submod->particle_acceleration_isRanged)
+									{
+										ImGui::DragFloat("##51", &submod->particle_acceleration_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat("##52", &submod->particle_acceleration_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+
+
+									}
+									else
+									{
+										ImGui::DragFloat("##5", &submod->particle_acceleration, 0.01f, 0.0f, 0.0f, "%.2f");
+									}
+									
+
+									ImGui::Text("Particle Direction");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##6", &submod->particle_direction_isRanged);
+									if (submod->particle_direction_isRanged)
+									{
+										ImGui::DragFloat3("##61", &(submod->particle_direction_range[0])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##62", &(submod->particle_direction_range[1])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+
+
+									}
+									else
+									{
+										ImGui::DragFloat3("##6", &submod->particle_direction[0], 0.05f, 0.0f, 0.0f, "%.2f");
+									}
+									
+
+
+									//fixers
+
+									if (submod->particle_rate < 0) submod->particle_rate = 0.01f;
+									if (submod->particle_rate < 0) submod->particle_amount = 0;
+									if (submod->particle_lifetime < 0) submod->particle_lifetime = 0;
+								}
+							}
+						}
+						
+					}
+					break;
 					}
 
 				}

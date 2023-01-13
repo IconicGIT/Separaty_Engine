@@ -18,5 +18,7 @@ GOC_ParticleEmitter::~GOC_ParticleEmitter()
 
 bool GOC_ParticleEmitter::Execute()
 {
+	vec3 emitterPos = gameObject->transform->GetPosition();
+	emitter->position = float3(emitterPos.x, emitterPos.y, emitterPos.z);
 	return true;
 }

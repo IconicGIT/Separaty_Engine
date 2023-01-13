@@ -1,6 +1,26 @@
 #include "ParticleSystem.h"
 #include "..\Log.h"
 
+
+
+
+float RandomRange(float value01, float value02) {
+
+	if (value01 > value02) {
+
+		float i = value01;
+		value01 = value02;
+		value02 = i;
+
+	}
+
+	float ret = value01 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (value02 - value01)));
+
+	return ret;
+
+}
+
+
 		//Particle System
 ///////////////////////////////////////////
 
@@ -14,6 +34,7 @@ ParticleSystem::~ParticleSystem()
 
 bool ParticleSystem::Init()
 {
+	srand(time(0));
 	return true;
 }
 
@@ -45,6 +66,12 @@ update_status ParticleSystem::Update(float dt)
 
 		allEmitters[i]->Update(dt);
 	}
+
+	//if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	//{
+	//	DEBUG_LOG("rnd: %f", RandomRange(45.2f, 45.2f));
+	//}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -103,6 +130,7 @@ Emitter::Emitter()
 	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this);
 
 	submodules.push_back(newSubmodule);
+	position = float3(0, 0, 0);
 }
 
 Emitter::~Emitter()
@@ -134,7 +162,10 @@ void Emitter::PostUpdate(float dt)
 {
 	if (!particles.empty())
 	{
-		DrawParticles();
+		for (size_t i = 0; i < particles.size(); i++)
+		{
+			DrawParticle(i);
+		}
 	}
 }
 
@@ -153,28 +184,82 @@ void Emitter::UpdateSubmodules(float dt)
 	}
 }
 
-void Emitter::DrawParticles()
+void Emitter::DrawParticle(int index)
 {
-	std::vector<CDeVertex> vertices;
-	for (size_t i = 0; i < particles.size(); i++)
+	/*
 	{
-		
-		vertices.push_back(particles[i]->vertices[0]);
-		vertices.push_back(particles[i]->vertices[1]);
-		vertices.push_back(particles[i]->vertices[2]);
-		vertices.push_back(particles[i]->vertices[3]);
+	
+		std::vector<CDeVertex> vertices;
+		for (size_t i = 0; i < particles.size(); i++)
+		{
+
+			vertices.push_back(particles[i]->vertices[0]);
+			vertices.push_back(particles[i]->vertices[1]);
+			vertices.push_back(particles[i]->vertices[2]);
+			vertices.push_back(particles[i]->vertices[3]);
+		}
+
+		std::vector<int> indices;
+		for (size_t i = 0; i < particles.size(); i++)
+		{
+			indices.push_back(particles[i]->indices[0]);
+			indices.push_back(particles[i]->indices[1]);
+			indices.push_back(particles[i]->indices[2]);
+			indices.push_back(particles[i]->indices[3]);
+			indices.push_back(particles[i]->indices[4]);
+			indices.push_back(particles[i]->indices[5]);
+		}
+
+
+		//set mesh
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		glGenBuffers(1, &EBO);
+
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(CDeVertex), &vertices[0], GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
+			&indices[0], GL_STATIC_DRAW);
+
+		// vertex positions
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)0);
+		// vertex normals
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Normal));
+		// vertex texture coords
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
 	}
 
+	*/
+
+	std::vector<CDeVertex> vertices;
+
+		vertices.push_back(particles[index]->vertices[0]);
+		vertices.push_back(particles[index]->vertices[1]);
+		vertices.push_back(particles[index]->vertices[2]);
+		vertices.push_back(particles[index]->vertices[3]);
+	
+
 	std::vector<int> indices;
-	for (size_t i = 0; i < particles.size(); i++)
-	{
-		indices.push_back(particles[i]->indices[0]);
-		indices.push_back(particles[i]->indices[1]);
-		indices.push_back(particles[i]->indices[2]);
-		indices.push_back(particles[i]->indices[3]);
-		indices.push_back(particles[i]->indices[4]);
-		indices.push_back(particles[i]->indices[5]);
-	}
+
+		indices.push_back(particles[index]->indices[0]);
+		indices.push_back(particles[index]->indices[1]);
+		indices.push_back(particles[index]->indices[2]);
+		indices.push_back(particles[index]->indices[3]);
+		indices.push_back(particles[index]->indices[4]);
+		indices.push_back(particles[index]->indices[5]);
+	
 
 
 	//set mesh
@@ -200,8 +285,6 @@ void Emitter::DrawParticles()
 	// vertex texture coords
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
-
-	glBindVertexArray(0);
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -243,12 +326,51 @@ Submodule::Submodule(Emitter* emitter)
 	this->emitter = emitter;
 
 	//Submodule settings
-	timer_reference = 2;
-	timer = timer_reference;
-	test = 0;
+	particle_rate = 2;
+	particle_rate_isRanged = false;
+	particle_rate_range[0] = particle_rate;
+	particle_rate_range[1] = particle_rate;
+
+	timer = particle_rate;
+	
 
 	//initialize particle settings
+
+	particle_amount = 1;
+	particle_amount_isRanged = false;
+	particle_amount_range[0] = particle_amount;
+	particle_amount_range[1] = particle_amount;
+
 	particle_lifetime = 1;
+	particle_lifetime_isRanged = false;
+	particle_lifetime_range[0] = particle_lifetime;
+	particle_lifetime_range[1] = particle_lifetime;
+
+	particle_color = float4(1,1,1,1);
+
+	particle_originPosition = float3(emitter->position.x, emitter->position.y, emitter->position.z);
+	particle_originPosition_isRanged = false;
+	particle_originPosition_range[0] = particle_originPosition;
+	particle_originPosition_range[1] = particle_originPosition;
+
+	particle_velocity = 1;
+	particle_acceleration_isRanged = false;
+	particle_velocity_range[0] = particle_velocity;
+	particle_velocity_range[1] = particle_velocity;
+
+	particle_acceleration = 0;
+	particle_acceleration_isRanged = false;
+	particle_acceleration_range[0] = particle_acceleration;
+	particle_acceleration_range[1] = particle_acceleration;
+
+	particle_direction = float3(0, 1, 0);
+	particle_direction_isRanged = false;
+	particle_direction_range[0] = particle_direction;
+	particle_direction_range[1] = particle_direction;
+
+	particle_followOrigin = false;
+
+
 }
 
 Submodule::~Submodule()
@@ -259,14 +381,22 @@ void Submodule::Update(float dt)
 {
 	//App->ui->AppendToOutput(DEBUG_LOG("timer %f", timer));
 	timer -= dt;
-	test++;
 
 	if (timer <= 0)
 	{
 		//DEBUG_LOG("Time!");
-		test = 0;
 		Execute();
-		if (repeat) timer = timer_reference;
+		if (repeat)
+		{
+			if (particle_rate_isRanged)
+			{
+				timer = RandomRange(particle_rate_range[0], particle_rate_range[1]);
+			}
+			else
+			{
+				timer = particle_rate;
+			}
+		}
 	}
 
 }
@@ -280,11 +410,61 @@ void Submodule::AddParticles()
 {
 	for (size_t i = 0; i < particle_amount; i++)
 	{
-		Particle* p = new Particle();
+		Particle* p = new Particle(emitter, particle_lifetime);
 
 
 		//here all perticle properties will be set
-		p->lifetime = particle_lifetime;
+		
+		p->color = particle_color;
+
+		if (particle_originPosition_isRanged)
+		{
+			float x = RandomRange(particle_originPosition_range[0].x, particle_originPosition_range[1].x);
+			float y = RandomRange(particle_originPosition_range[0].y, particle_originPosition_range[1].y);
+			float z = RandomRange(particle_originPosition_range[0].z, particle_originPosition_range[1].z);
+
+			p->originPosition = float3(x, y, z);
+		}
+		else
+		{
+			p->originPosition = float3(emitter->position.x, emitter->position.y, emitter->position.z);
+
+		}
+
+		if (particle_velocity_isRanged)
+		{
+			
+			p->velocity = RandomRange(particle_velocity_range[0], particle_velocity_range[1]);
+		}
+		else
+		{
+			p->velocity = particle_velocity;
+		}
+		
+		if (particle_acceleration_isRanged)
+		{
+
+			p->acceleration = RandomRange(particle_acceleration_range[0], particle_acceleration_range[1]);
+		}
+		else
+		{
+			p->acceleration = particle_acceleration;
+		}
+
+		if (particle_direction_isRanged)
+		{
+			float x = RandomRange(particle_direction_range[0].x, particle_direction_range[1].x);
+			float y = RandomRange(particle_direction_range[0].y, particle_direction_range[1].y);
+			float z = RandomRange(particle_direction_range[0].z, particle_direction_range[1].z);
+
+			p->direction = float3(x, y, z);
+		}
+		else
+		{
+			p->direction = particle_direction;
+		}
+		
+		p->followOrigin = particle_followOrigin;
 
 		emitter->particles.emplace_back(p);
 	}
@@ -299,11 +479,26 @@ Particle::Particle()
 	SetParticleMesh();
 }
 
-Particle::Particle(float lifetime)
+Particle::Particle(Emitter* emitter, float lifetime)
 {
-	SetParticleMesh();
 
 	this->lifetime = lifetime;
+	this->emitter = emitter;
+
+	
+	//default settings upon creation. Deleted upon set by a Submodule
+	lifetime = 1;
+	color = float4(1, 1, 1, 1);
+	originPosition = float3(emitter->position.x, emitter->position.y, emitter->position.z);
+	localPosition = float3(0, 0, 0);
+	velocity = 0;
+	acceleration = 0;
+	direction = float3(0, 0, 0);
+	followOrigin = false;
+
+
+
+	SetParticleMesh();
 }
 
 Particle::~Particle()
@@ -312,6 +507,8 @@ Particle::~Particle()
 
 void Particle::Update(float dt)
 {
+	originPosition = emitter->position;
+	UpdateParticleMesh(dt);
 	if (lifetime > 0)
 	{
 		lifetime -= dt;
@@ -327,37 +524,63 @@ void Particle::SetParticleMesh()
 {
 
 	//quad
-	vertices[0] = CDeVertex(-1, 1, 0);		vertices[3] = CDeVertex(1, 1, 0);
+	quad_vertices[0] = float3(-1, 1, 0);			quad_vertices[3] = float3(1, 1, 0);
 
 
-	vertices[1] = CDeVertex(-1, -1, 0);		vertices[2] = CDeVertex(1, -1, 0);
+	quad_vertices[1] = float3(-1, -1, 0);		quad_vertices[2] = float3(1, -1, 0);
 	
+	for (size_t i = 0; i < 4; i++)
+	{
+		vertices[i] = CDeVertex(float3(quad_vertices[i]));
+	}
 
-	//1st triangle
-	indices[0] = 0;		
+	{
+		//1st triangle
+		indices[0] = 0;
+
+
+		indices[1] = 1;		indices[2] = 2;
+
+
+
+		//2nd triangle
+		indices[3] = 0;		indices[5] = 3;
+
+
+		indices[4] = 2;
+	}
 	
-
-	indices[1] = 1;		indices[2] = 2;
-
-
-
-	//2nd triangle
-	indices[3] = 0;		indices[5] = 3;
-
-
-						indices[4] = 2;
 	
+	for (size_t i = 0; i < 4; i++)
+	{
+		
+		vertices[i] += originPosition;
+		
+	}
 
 }
 
-void Particle::UpdateParticleMesh()
+void Particle::UpdateParticleMesh(float dt)
 {
+	velocity += acceleration;
 
-	//quad
-	vertices[0] = CDeVertex(-1, 1, 0);		vertices[3] = CDeVertex(1, 1, 0);
+	float resultantPosition = velocity * dt;
+
+	float3 resultantVector = vec(direction).Normalized() * resultantPosition;
+
+	localPosition += resultantVector;
 
 
-	vertices[1] = CDeVertex(-1, -1, 0);		vertices[2] = CDeVertex(1, -1, 0);
+	for (size_t i = 0; i < 4; i++)
+	{
+		vertices[i] = quad_vertices[i] + localPosition;
 
+		if (followOrigin)
+		{
+			vertices[i] = quad_vertices[i] + originPosition;
+		}
+	}
+	
+	
 
 }
