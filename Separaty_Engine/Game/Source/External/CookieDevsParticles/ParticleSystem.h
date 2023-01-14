@@ -126,7 +126,7 @@ public:
 	//update order: UpdateSubmodules() in preUpdate -> Update() self and spawns if necessary -> DrawParticles() on postUpdate
 
 	std::vector<std::shared_ptr<Submodule>> submodules;
-	std::vector<std::shared_ptr<Particle>> particles;
+	std::vector< std::shared_ptr<Particle>> particles;
 	bool pendingToDelete = false;
 
 	float3 position;
@@ -179,13 +179,13 @@ public:
 	bool   particle_originPosition_isRanged;
 	float3 particle_originPosition_range[2];
 
-	float  particle_velocity;
+	float3  particle_velocity;
 	bool   particle_velocity_isRanged;
-	float  particle_velocity_range[2];
+	float3  particle_velocity_range[2];
 
-	float  particle_acceleration;
+	float3  particle_acceleration;
 	bool   particle_acceleration_isRanged;
-	float  particle_acceleration_range[2];
+	float3  particle_acceleration_range[2];
 
 	float3 particle_direction;
 	bool   particle_direction_isRanged;
@@ -208,7 +208,7 @@ class Particle
 {
 public:
 	Particle();
-	Particle(Emitter* emitter, float lifetime);
+	Particle(Emitter* emitter);
 	~Particle();
 
 	void Update(float dt);
@@ -232,8 +232,8 @@ public:
 	float4 color;
 	float3 originPosition;
 	float3 localPosition;
-	float  velocity;
-	float  acceleration;
+	float3  velocity;
+	float3  acceleration;
 	float3 direction;
 	bool   followOrigin;
 

@@ -151,22 +151,26 @@ void Emitter::Update(float dt)
 		{
 			particles[i]->OnDeath();
 			particles.erase(particles.begin() + i);
+
 			continue;
 		}
 
 		particles[i]->Update(dt);
 	}
-}
 
-void Emitter::PostUpdate(float dt)
-{
 	if (!particles.empty())
 	{
 		for (size_t i = 0; i < particles.size(); i++)
 		{
 			DrawParticle(i);
+
 		}
 	}
+}
+
+void Emitter::PostUpdate(float dt)
+{
+	
 }
 
 void Emitter::UpdateSubmodules(float dt)
@@ -243,24 +247,23 @@ void Emitter::DrawParticle(int index)
 
 	*/
 
-	std::vector<CDeVertex> vertices;
-
-		vertices.push_back(particles[index]->vertices[0]);
-		vertices.push_back(particles[index]->vertices[1]);
-		vertices.push_back(particles[index]->vertices[2]);
-		vertices.push_back(particles[index]->vertices[3]);
 	
+	CDeVertex vertices[4] = {
+		particles[index]->vertices[0],
+		particles[index]->vertices[1],
+		particles[index]->vertices[2],
+		particles[index]->vertices[3]
+	};
 
-	std::vector<int> indices;
-
-		indices.push_back(particles[index]->indices[0]);
-		indices.push_back(particles[index]->indices[1]);
-		indices.push_back(particles[index]->indices[2]);
-		indices.push_back(particles[index]->indices[3]);
-		indices.push_back(particles[index]->indices[4]);
-		indices.push_back(particles[index]->indices[5]);
-	
-
+	int indices[6] =
+	{
+		particles[index]->indices[0],
+		particles[index]->indices[1],
+		particles[index]->indices[2],
+		particles[index]->indices[3],
+		particles[index]->indices[4],
+		particles[index]->indices[5]
+	};
 
 	//set mesh
 	glGenVertexArrays(1, &VAO);
@@ -270,10 +273,10 @@ void Emitter::DrawParticle(int index)
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(CDeVertex), &vertices[0], GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(CDeVertex), &vertices[0], GL_DYNAMIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int),
 		&indices[0], GL_STATIC_DRAW);
 
 	// vertex positions
@@ -286,9 +289,16 @@ void Emitter::DrawParticle(int index)
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
 
+
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDeleteVertexArrays(4, &VAO);
+	glDeleteBuffers(sizeof(VBO), &VBO);
+	glDeleteBuffers(sizeof(EBO), &EBO);
+
 }
 
 /// <summary>
@@ -353,12 +363,12 @@ Submodule::Submodule(Emitter* emitter)
 	particle_originPosition_range[0] = particle_originPosition;
 	particle_originPosition_range[1] = particle_originPosition;
 
-	particle_velocity = 1;
+	particle_velocity = float3(0, 1, 0);
 	particle_acceleration_isRanged = false;
 	particle_velocity_range[0] = particle_velocity;
 	particle_velocity_range[1] = particle_velocity;
 
-	particle_acceleration = 0;
+	particle_acceleration = float3(0, 0, 0);
 	particle_acceleration_isRanged = false;
 	particle_acceleration_range[0] = particle_acceleration;
 	particle_acceleration_range[1] = particle_acceleration;
@@ -408,13 +418,31 @@ void Submodule::Execute()
 
 void Submodule::AddParticles()
 {
-	for (size_t i = 0; i < particle_amount; i++)
+
+	int amountToAdd = particle_amount;
+
+	if (particle_amount_isRanged)
 	{
-		Particle* p = new Particle(emitter, particle_lifetime);
+		amountToAdd = (int)RandomRange(particle_amount_range[0], particle_amount_range[1]);
+	}
+
+
+	for (size_t i = 0; i < amountToAdd; i++)
+	{
+		std::shared_ptr <Particle> p = std::make_shared<Particle>(emitter);
 
 
 		//here all perticle properties will be set
 		
+		if (particle_lifetime_isRanged)
+		{
+			p->lifetime = RandomRange(particle_lifetime_range[0], particle_lifetime_range[1]);
+		}
+		else
+		{
+			p->lifetime = particle_lifetime;
+		}
+
 		p->color = particle_color;
 
 		if (particle_originPosition_isRanged)
@@ -434,7 +462,11 @@ void Submodule::AddParticles()
 		if (particle_velocity_isRanged)
 		{
 			
-			p->velocity = RandomRange(particle_velocity_range[0], particle_velocity_range[1]);
+			float x = RandomRange(particle_velocity_range[0].x,particle_velocity_range[1].x);
+			float y = RandomRange(particle_velocity_range[0].y,particle_velocity_range[1].y);
+			float z = RandomRange(particle_velocity_range[0].z,particle_velocity_range[1].z);
+
+			p->velocity = float3(x, y, z);
 		}
 		else
 		{
@@ -444,7 +476,11 @@ void Submodule::AddParticles()
 		if (particle_acceleration_isRanged)
 		{
 
-			p->acceleration = RandomRange(particle_acceleration_range[0], particle_acceleration_range[1]);
+			float x = RandomRange(particle_acceleration_range[0].x, particle_acceleration_range[1].x);
+			float y = RandomRange(particle_acceleration_range[0].y, particle_acceleration_range[1].y);
+			float z = RandomRange(particle_acceleration_range[0].z, particle_acceleration_range[1].z);
+
+			p->acceleration = float3(x, y, z);
 		}
 		else
 		{
@@ -466,7 +502,7 @@ void Submodule::AddParticles()
 		
 		p->followOrigin = particle_followOrigin;
 
-		emitter->particles.emplace_back(p);
+		emitter->particles.push_back(p);
 	}
 }
 
@@ -479,10 +515,8 @@ Particle::Particle()
 	SetParticleMesh();
 }
 
-Particle::Particle(Emitter* emitter, float lifetime)
+Particle::Particle(Emitter* emitter)
 {
-
-	this->lifetime = lifetime;
 	this->emitter = emitter;
 
 	
@@ -491,8 +525,8 @@ Particle::Particle(Emitter* emitter, float lifetime)
 	color = float4(1, 1, 1, 1);
 	originPosition = float3(emitter->position.x, emitter->position.y, emitter->position.z);
 	localPosition = float3(0, 0, 0);
-	velocity = 0;
-	acceleration = 0;
+	velocity = float3(0, 0, 0);
+	acceleration = float3(0, 0, 0);
 	direction = float3(0, 0, 0);
 	followOrigin = false;
 
@@ -562,13 +596,13 @@ void Particle::SetParticleMesh()
 
 void Particle::UpdateParticleMesh(float dt)
 {
-	velocity += acceleration;
+	velocity += acceleration * dt;
 
-	float resultantPosition = velocity * dt;
+	float3 resultantPosition = velocity * dt;
 
-	float3 resultantVector = vec(direction).Normalized() * resultantPosition;
+	/*float3 resultantVector = vec(direction).Normalized() * resultantPosition;*/
 
-	localPosition += resultantVector;
+	localPosition += resultantPosition;
 
 
 	for (size_t i = 0; i < 4; i++)

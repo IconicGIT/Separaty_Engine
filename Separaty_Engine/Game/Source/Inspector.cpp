@@ -754,8 +754,8 @@ update_status Inspector::Update(float dt)
 									ImGui::Checkbox("Range##1", &submod->particle_rate_isRanged);
 									if (submod->particle_rate_isRanged)
 									{
-										ImGui::DragFloat("##11", &submod->particle_rate_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
-										ImGui::DragFloat("##12", &submod->particle_rate_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat("##11", &submod->particle_rate_range[0], 0.01f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat("##12", &submod->particle_rate_range[1], 0.01f, 0.0f, 0.0f, "%.2f");
 
 									}
 									else
@@ -805,14 +805,14 @@ update_status Inspector::Update(float dt)
 									ImGui::Checkbox("Range##4", &submod->particle_velocity_isRanged);
 									if (submod->particle_velocity_isRanged)
 									{
-										ImGui::DragFloat("##41", &submod->particle_velocity_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
-										ImGui::DragFloat("##42", &submod->particle_velocity_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##41", &(submod->particle_velocity_range[0])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##42", &(submod->particle_velocity_range[1])[0], 0.05f, 0.0f, 0.0f, "%.2f");
 
 
 									}
 									else
 									{
-										ImGui::DragFloat("##4", &submod->particle_velocity, 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##4", &(submod->particle_velocity)[0], 0.05f, 0.0f, 0.0f, "%.2f");
 									}
 									
 
@@ -821,14 +821,14 @@ update_status Inspector::Update(float dt)
 									ImGui::Checkbox("Range##5", &submod->particle_acceleration_isRanged);
 									if (submod->particle_acceleration_isRanged)
 									{
-										ImGui::DragFloat("##51", &submod->particle_acceleration_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
-										ImGui::DragFloat("##52", &submod->particle_acceleration_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##51", &(submod->particle_acceleration_range[0])[0], 0.01f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##52", &(submod->particle_acceleration_range[1])[0], 0.01f, 0.0f, 0.0f, "%.2f");
 
 
 									}
 									else
 									{
-										ImGui::DragFloat("##5", &submod->particle_acceleration, 0.01f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##5", &(submod->particle_acceleration)[0], 0.01f, 0.0f, 0.0f, "%.2f");
 									}
 									
 
