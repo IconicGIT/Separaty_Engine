@@ -23,6 +23,9 @@ public:
 	float4x4 transformMatrixLocal;
 
 	UIFunctions* UImanager;
+
+	bool useCamInPlay;
+
 private:
 	std::string name;
 

@@ -434,7 +434,7 @@ update_status Inspector::Update(float dt)
 							}
 
 
-							bool useCamInPlay = camera->useCameraWhileInPlay;
+							useCamInPlay = camera->useCameraWhileInPlay;
 							if (App->ui->uiFunctions->playStopWindow->play)
 							{
 								if (ImGui::Checkbox("Use Camera", &useCamInPlay))
@@ -747,9 +747,7 @@ update_status Inspector::Update(float dt)
 									//std::string nParticles = "n. Active Particles: " + comp->emitter->particles.size();
 									ImGui::Text("n. Active Particles: %i", comp->emitter->particles.size());
 
-
 									ImGui::Text("Module attributes");
-
 
 									ImGui::Text("Spawn Rate");
 									ImGui::SameLine();
@@ -857,6 +855,51 @@ update_status Inspector::Update(float dt)
 									if (submod->particle_rate < 0) submod->particle_amount = 0;
 									if (submod->particle_lifetime < 0) submod->particle_lifetime = 0;
 								}
+								//if (ImGui::CollapsingHeader("Particle Color"))
+								//{
+								//	ImGui::Text("Particle Color");
+								//	ImGui::SameLine();
+								//	
+								//	std::vector<ColorTime> deleteColor;
+								//	std::list<ColorTime>::iterator iter = startValues.color.begin();
+								//	uint posList = 0u;
+								//	while (iter != startValues.color.end())
+								//	{
+								//		//TODO: they must be able to change position
+								//		if ((iter) == startValues.color.begin())
+								//		{//Cant delete 1st color
+
+								//			if (!EditColor(*iter))
+								//				break;
+								//			iter++;
+								//		}
+								//		else
+								//		{
+								//			if (!EditColor(*iter, posList))
+								//				startValues.color.erase(iter++);
+								//			else
+								//				iter++;
+								//		}
+								//		++posList;
+								//	}
+								//	ImGui::Separator();
+								//	ImGui::Checkbox("Color time", &startValues.timeColor);
+								//	if (startValues.timeColor)
+								//	{
+
+								//		ImGui::DragInt("Position", &nextPos, 1.0f, 1, 100);
+								//		ImGui::ColorPicker4("", &nextColor.x, ImGuiColorEditFlags_AlphaBar);
+								//		if (ImGui::Button("Add Color", ImVec2(125, 25)))
+								//		{
+								//			ColorTime colorTime;
+								//			colorTime.color = nextColor;
+								//			colorTime.position = (float)nextPos / 100;
+								//			colorTime.name = std::to_string((int)nextPos) + "%";
+								//			startValues.color.push_back(colorTime);
+								//			startValues.color.sort();
+								//		}
+								//	}
+								//}
 							}
 						}
 						
