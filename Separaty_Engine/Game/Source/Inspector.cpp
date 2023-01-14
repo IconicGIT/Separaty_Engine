@@ -9,6 +9,12 @@
 #include "GOC_Camera.h"
 #include "ModuleCamera3D.h"
 
+#include <vector>
+
+#include <list>
+
+#include "imgui.h"
+
 #include "imgui_stdlib.h"
 
 //INSPECTOR WINDOW
@@ -741,9 +747,10 @@ update_status Inspector::Update(float dt)
 						{
 							for (std::shared_ptr<Submodule> submod : comp->emitter->submodules)
 							{
-								std::string submodName = "Submodule";
-								if (ImGui::CollapsingHeader(submodName.c_str()))
+								std::string submodName = "Particle Set Data";
+								if (ImGui::TreeNode(submodName.c_str()))
 								{
+									ImGui::Separator();
 									//std::string nParticles = "n. Active Particles: " + comp->emitter->particles.size();
 									ImGui::Text("n. Active Particles: %i", comp->emitter->particles.size());
 
@@ -854,59 +861,80 @@ update_status Inspector::Update(float dt)
 									if (submod->particle_rate < 0) submod->particle_rate = 0.01f;
 									if (submod->particle_rate < 0) submod->particle_amount = 0;
 									if (submod->particle_lifetime < 0) submod->particle_lifetime = 0;
+
+									ImGui::TreePop();
 								}
-								//if (ImGui::CollapsingHeader("Particle Color"))
-								//{
-								//	ImGui::Text("Particle Color");
-								//	ImGui::SameLine();
-								//	
-								//	std::vector<ColorTime> deleteColor;
-								//	std::list<ColorTime>::iterator iter = startValues.color.begin();
-								//	uint posList = 0u;
-								//	while (iter != startValues.color.end())
-								//	{
-								//		//TODO: they must be able to change position
-								//		if ((iter) == startValues.color.begin())
-								//		{//Cant delete 1st color
+								ImGui::Separator();
+								if (ImGui::TreeNode("Particle Color"))
+								{
+									if (noColors)
+									{
+										ColorTime colorTime;
+										colorTime.position = (float)submod->nextPos / 100;
+										colorTime.name = std::to_string((int)submod->nextPos) + "%";
+										submod->particle_color.push_back(colorTime);
+										submod->particle_color.sort();
 
-								//			if (!EditColor(*iter))
-								//				break;
-								//			iter++;
-								//		}
-								//		else
-								//		{
-								//			if (!EditColor(*iter, posList))
-								//				startValues.color.erase(iter++);
-								//			else
-								//				iter++;
-								//		}
-								//		++posList;
-								//	}
-								//	ImGui::Separator();
-								//	ImGui::Checkbox("Color time", &startValues.timeColor);
-								//	if (startValues.timeColor)
-								//	{
+										noColors = false;
+									}
+									ImGui::Text("Start Color");
+									ImGui::SameLine();
+									std::vector<ColorTime> deleteColor;
+									std::list<ColorTime>::iterator iter = submod->particle_color.begin();
+									uint posList = 0u;
+									while (iter != submod->particle_color.end())
+									{
+										if ((iter) == submod->particle_color.begin())
+										{//Cant delete 1st color
 
-								//		ImGui::DragInt("Position", &nextPos, 1.0f, 1, 100);
-								//		ImGui::ColorPicker4("", &nextColor.x, ImGuiColorEditFlags_AlphaBar);
-								//		if (ImGui::Button("Add Color", ImVec2(125, 25)))
-								//		{
-								//			ColorTime colorTime;
-								//			colorTime.color = nextColor;
-								//			colorTime.position = (float)nextPos / 100;
-								//			colorTime.name = std::to_string((int)nextPos) + "%";
-								//			startValues.color.push_back(colorTime);
-								//			startValues.color.sort();
-								//		}
-								//	}
-								//}
+											if (!submod->emitter->EditColor(*iter))
+												break;
+											iter++;
+										}
+										else
+										{
+											if (!submod->emitter->EditColor(*iter, posList))
+												submod->particle_color.erase(iter++);
+											else
+												iter++;
+										}
+										++posList;
+									}
+									ImGui::Separator();
+									if (ImGui::TreeNode("Add Color "))
+									{
+										submod->emitter->timeColor = true;
+
+										if (submod->emitter->timeColor)
+										{
+											std::string colorPercentage = "Color At: " + std::to_string(submod->nextPos);
+											ImGui::Text(colorPercentage.c_str());
+											ImGui::SameLine();
+											ImGui::Text("%");
+											ImGui::DragInt(" ", &submod->nextPos, 1.0f, 1, 100);
+											ImGui::ColorPicker4("", &submod->nextColor.x, ImGuiColorEditFlags_AlphaBar);
+											if (ImGui::Button("Add Color", ImVec2(125, 25)))
+											{
+												ColorTime colorTime;
+												colorTime.color = submod->nextColor;
+												colorTime.position = (float)submod->nextPos / 100;
+												colorTime.name = std::to_string((int)submod->nextPos) + "%";
+												submod->particle_color.push_back(colorTime);
+												submod->particle_color.sort();
+											}											
+										}
+										ImGui::TreePop();
+									}
+									ImGui::TreePop();
+								}
+								ImGui::Separator();
 							}
 						}
 						
 					}
 					break;
 					}
-
+					
 				}
 			}
 			/*for (GameObject* go : UImanager->selectedGameObjects)

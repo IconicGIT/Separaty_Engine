@@ -8,6 +8,8 @@ class Editor;
 class UIFunctions;
 struct EngineConfig;
 
+
+
 class Inspector : public Module
 {
 public:
@@ -24,7 +26,10 @@ public:
 
 	UIFunctions* UImanager;
 
+
 	bool useCamInPlay;
+
+	bool noColors = true;
 
 private:
 	std::string name;

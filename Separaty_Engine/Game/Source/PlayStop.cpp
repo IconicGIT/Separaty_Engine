@@ -89,12 +89,12 @@ update_status PlayStop::Update(float dt)
 			std::string gameCount = std::to_string(gameTime /*&App->time->GetGameTimer()*/);
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", gameCount.data());
 
-			if (ImGui::Checkbox("Use Camera", &App->ui->uiFunctions->inspectorWindow->useCamInPlay))
+			if (ImGui::Checkbox("Use Camera  ", &App->ui->uiFunctions->inspectorWindow->useCamInPlay))
 			{
 				int a = 0;
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Use Camera", { 200, 25 }))
+			if (ImGui::Button("Use Camera ", { 200, 25 }))
 			{
 				App->ui->uiFunctions->inspectorWindow->useCamInPlay != App->ui->uiFunctions->inspectorWindow->useCamInPlay;
 			}

@@ -1,9 +1,6 @@
 #include "ParticleSystem.h"
 #include "..\Log.h"
 
-
-
-
 float RandomRange(float value01, float value02) {
 
 	if (value01 > value02) {
@@ -356,7 +353,7 @@ Submodule::Submodule(Emitter* emitter)
 	particle_lifetime_range[0] = particle_lifetime;
 	particle_lifetime_range[1] = particle_lifetime;
 
-	particle_color = float4(1,1,1,1);
+	/*particle_color = float4(1,1,1,1)*/;
 
 	particle_originPosition = float3(emitter->position.x, emitter->position.y, emitter->position.z);
 	particle_originPosition_isRanged = false;
@@ -434,16 +431,7 @@ void Submodule::AddParticles()
 
 		//here all perticle properties will be set
 		
-		if (particle_lifetime_isRanged)
-		{
-			p->lifetime = RandomRange(particle_lifetime_range[0], particle_lifetime_range[1]);
-		}
-		else
-		{
-			p->lifetime = particle_lifetime;
-		}
-
-		p->color = particle_color;
+		/*p->color = particle_color;*/
 
 		if (particle_originPosition_isRanged)
 		{
@@ -617,4 +605,41 @@ void Particle::UpdateParticleMesh(float dt)
 	
 	
 
+}
+
+bool Emitter::EditColor(ColorTime& colorTime, uint pos)
+{
+	bool ret = true;
+	ImVec4 color = EqualsFloat4(colorTime.color);
+	if (ImGui::ColorButton(colorTime.name.data(), color, ImGuiColorEditFlags_None, ImVec2(100, 20)))
+		colorTime.changingColor = !colorTime.changingColor;
+
+	if (!colorTime.changingColor)
+	{
+		ImGui::SameLine();
+		ImGui::TextUnformatted(colorTime.name.data());
+		if (pos > 0)
+		{
+			std::string colorStr = "Remove Color ";
+			colorStr.append(std::to_string(pos));
+			ImGui::SameLine();
+			if (ImGui::Button(colorStr.data(), ImVec2(125, 25)))
+				ret = false;
+		}
+		else if (!timeColor)
+			ret = false;
+	}
+	else
+		ImGui::ColorEdit4(colorTime.name.data(), &colorTime.color.x, ImGuiColorEditFlags_AlphaBar);
+	return ret;
+}
+
+ImVec4 Emitter::EqualsFloat4(const float4 float4D)
+{
+	ImVec4 vec;
+	vec.x = float4D.x;
+	vec.y = float4D.y;
+	vec.z = float4D.z;
+	vec.w = float4D.w;
+	return vec;
 }

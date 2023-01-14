@@ -11,6 +11,7 @@
 #include <gl/GLU.h>
 #include "../glmath.h"
 #include <time.h>
+#include <list>
 
 class Emitter;
 class Submodule;
@@ -74,6 +75,20 @@ public:
 
 };
 
+struct ColorTime
+{
+	float4 color = float4::one;
+	float position = 0.0f;
+	std::string name = " ";
+	//open window for change particle color
+	bool changingColor = false;
+
+	bool operator<(const ColorTime& color) const
+	{
+		return position < color.position;
+	}
+};
+
 class ParticleSystem : public Module
 {
 public:
@@ -93,6 +108,8 @@ public:
 
 	std::shared_ptr<Emitter> CreateEmitter();
 	
+	
+
 private:
 
 	
@@ -123,6 +140,10 @@ public:
 	void Delete();
 	void CreateSubmodule();
 
+	bool EditColor(ColorTime& colorTime, uint pos = 0u);
+
+	ImVec4 EqualsFloat4(const float4 float4D);
+
 	//update order: UpdateSubmodules() in preUpdate -> Update() self and spawns if necessary -> DrawParticles() on postUpdate
 
 	std::vector<std::shared_ptr<Submodule>> submodules;
@@ -130,6 +151,8 @@ public:
 	bool pendingToDelete = false;
 
 	float3 position;
+
+	bool timeColor = false;
 private:
 	unsigned int VAO, VBO, EBO;
 };
@@ -173,7 +196,10 @@ public:
 	bool  particle_lifetime_isRanged;
 	float particle_lifetime_range[2];
 
-	float4 particle_color;
+	std::list<ColorTime> particle_color;
+	
+	int nextPos = 100;
+	float4 nextColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	float3 particle_originPosition;
 	bool   particle_originPosition_isRanged;
@@ -191,13 +217,13 @@ public:
 	bool   particle_direction_isRanged;
 	float3 particle_direction_range[2];
 
-
 	bool particle_followOrigin;
 
-	
-private:
 	Emitter* emitter;
+private:
+	
 };
+
 
 
 /// <summary>
