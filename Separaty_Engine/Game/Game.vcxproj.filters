@@ -315,6 +315,9 @@
     <ClCompile Include="Source\External\CookieDevsParticles\ParticleSystem.cpp">
       <Filter>Source\Modules\ModuleParticles</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayStopIndividual.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -697,6 +700,9 @@
     </ClInclude>
     <ClInclude Include="Source\External\CookieDevsParticles\ParticleSystem.h">
       <Filter>Source\Modules\ModuleParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayStopIndividual.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

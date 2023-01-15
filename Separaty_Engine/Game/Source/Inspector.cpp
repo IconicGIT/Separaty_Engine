@@ -747,115 +747,167 @@ update_status Inspector::Update(float dt)
 						{
 							for (std::shared_ptr<Submodule> submod : comp->emitter->submodules)
 							{
+								//std::string nParticles = "n. Active Particles: " + comp->emitter->particles.size();
+								ImGui::TextColored(ImVec4(1, 1, 0, 1), "N. Active Particles: %i", comp->emitter->particles.size());
 								std::string submodName = "Particle Set Data";
+								ImGui::Separator();
+
 								if (ImGui::TreeNode(submodName.c_str()))
 								{
 									ImGui::Separator();
-									//std::string nParticles = "n. Active Particles: " + comp->emitter->particles.size();
-									ImGui::Text("n. Active Particles: %i", comp->emitter->particles.size());
 
 									ImGui::Text("Module attributes");
+									ImGui::Separator();
+									ImGui::Text("Range");
 
-									ImGui::Text("Spawn Rate");
+									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
-									ImGui::Checkbox("Range##1", &submod->particle_rate_isRanged);
+									ImGui::Checkbox(" ##1", &submod->particle_rate_isRanged);
+									ImGui::SameLine();
+									
 									if (submod->particle_rate_isRanged)
 									{
+										ImGui::PushItemWidth(46.0f);
 										ImGui::DragFloat("##11", &submod->particle_rate_range[0], 0.01f, 0.0f, 0.0f, "%.2f");
+										ImGui::SameLine();
 										ImGui::DragFloat("##12", &submod->particle_rate_range[1], 0.01f, 0.0f, 0.0f, "%.2f");
-
+										ImGui::SameLine();
 									}
 									else
 									{
+										ImGui::PushItemWidth(100.0f);
 										ImGui::DragFloat("##10", &submod->particle_rate, 0.05f, 0.0f, 0.0f, "%.2f");
-
+										ImGui::SameLine();
 									}
+									ImGui::PopItemWidth();
+									ImGui::Text("Spawn Rate");
+									
 
 
-									ImGui::Text("Spawn Amount");
+									
+									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
-									ImGui::Checkbox("Range##2", &submod->particle_amount_isRanged);
+									ImGui::Checkbox(" ##2", &submod->particle_amount_isRanged);
+									ImGui::SameLine();
 									if (submod->particle_amount_isRanged)
 									{
+										ImGui::PushItemWidth(46.0f);
 										ImGui::DragInt("##21", &submod->particle_amount_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::SameLine();
 										ImGui::DragInt("##22", &submod->particle_amount_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
-
-
+										ImGui::SameLine();
 									}
 									else
 									{
+										ImGui::PushItemWidth(100.0f);
 										ImGui::DragInt("##20", &submod->particle_amount, 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::SameLine();
 									}
+									ImGui::PopItemWidth();
+									ImGui::Text("Spawn Amount");
 
-
+									ImGui::Separator();
 									ImGui::Text("Particle attributes");
+									ImGui::Separator();
 
 
-									ImGui::Text("Particle life time");
+									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
-									ImGui::Checkbox("Range##3", &submod->particle_lifetime_isRanged);
+									ImGui::Checkbox(" ##3", &submod->particle_lifetime_isRanged);
+									ImGui::SameLine();
 									if (submod->particle_lifetime_isRanged)
 									{
+										ImGui::PushItemWidth(46.0f);
 										ImGui::DragFloat("##31", &submod->particle_lifetime_range[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::SameLine();
 										ImGui::DragFloat("##32", &submod->particle_lifetime_range[1], 0.05f, 0.0f, 0.0f, "%.2f");
-
-
+										ImGui::SameLine();
 									}
 									else
 									{
+										ImGui::PushItemWidth(100.0f);
 										ImGui::DragFloat("##3", &submod->particle_lifetime, 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::SameLine();
 									}
-									
+									ImGui::PopItemWidth();
+									ImGui::Text("Particle life time");
 
-									ImGui::Text("Particle Velocity");
+
+									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
-									ImGui::Checkbox("Range##4", &submod->particle_velocity_isRanged);
+									ImGui::Checkbox(" ##4", &submod->particle_velocity_isRanged);
+									ImGui::SameLine();
+									ImGui::Text("Particle Velocity");
 									if (submod->particle_velocity_isRanged)
 									{
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##41", &(submod->particle_velocity_range[0])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+									/*	ImGui::SameLine();
+										ImGui::Text("Particle Velocity");*/
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##42", &(submod->particle_velocity_range[1])[0], 0.05f, 0.0f, 0.0f, "%.2f");
-
-
 									}
 									else
 									{
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##4", &(submod->particle_velocity)[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										/*ImGui::SameLine();
+										ImGui::Text("Particle Velocity");*/
 									}
 									
-
-									ImGui::Text("Particle Acceleration");
+									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
-									ImGui::Checkbox("Range##5", &submod->particle_acceleration_isRanged);
+									ImGui::Checkbox(" ##5", &submod->particle_acceleration_isRanged);
+									ImGui::SameLine();
+									ImGui::Text("Particle Acceleration");
 									if (submod->particle_acceleration_isRanged)
 									{
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##51", &(submod->particle_acceleration_range[0])[0], 0.01f, 0.0f, 0.0f, "%.2f");
+										/*ImGui::SameLine();
+										ImGui::Text("Particle Acceleration");*/
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##52", &(submod->particle_acceleration_range[1])[0], 0.01f, 0.0f, 0.0f, "%.2f");
-
-
 									}
 									else
 									{
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##5", &(submod->particle_acceleration)[0], 0.01f, 0.0f, 0.0f, "%.2f");
+										/*ImGui::SameLine();
+										ImGui::Text("Particle Acceleration");*/
 									}
 									
-
-									ImGui::Text("Particle Direction");
+									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
-									ImGui::Checkbox("Range##6", &submod->particle_direction_isRanged);
+									ImGui::Checkbox(" ##6", &submod->particle_direction_isRanged);
+									ImGui::SameLine();
+									ImGui::Text("Particle Direction");
 									if (submod->particle_direction_isRanged)
 									{
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##61", &(submod->particle_direction_range[0])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										/*ImGui::SameLine();
+										ImGui::Text("Particle Direction");*/
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##62", &(submod->particle_direction_range[1])[0], 0.05f, 0.0f, 0.0f, "%.2f");
-
-
 									}
 									else
 									{
+										ImGui::Dummy(ImVec2(38, 0));
+										ImGui::SameLine();
 										ImGui::DragFloat3("##6", &submod->particle_direction[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										/*ImGui::SameLine();
+										ImGui::Text("Particle Direction");*/
 									}
 									
-
-
 									//fixers
 
 									if (submod->particle_rate < 0) submod->particle_rate = 0.01f;
@@ -865,8 +917,134 @@ update_status Inspector::Update(float dt)
 									ImGui::TreePop();
 								}
 								ImGui::Separator();
+								if (ImGui::TreeNode("Particle Shape"))
+								{
+									ImGui::Separator();
+									float3 pos;
+									if (boxShape)
+									{
+										ImGui::Text("Box");
+										ImGui::Separator();
+										ImGui::Text("Particle emision from:");
+
+										pos = boxCreation.Size();
+
+										if (ImGui::RadioButton("Random", randomBEmision))
+										{
+											randomBEmision = true;
+											CenterBEmision = false;
+											BorderBEmision = false;
+										}
+
+										if (ImGui::RadioButton("Center", CenterBEmision))
+										{
+											randomBEmision = false;
+											CenterBEmision = true;
+											BorderBEmision = false;
+										}		  
+												  
+										if (ImGui::RadioButton("Border", BorderBEmision))
+										{		  
+											randomBEmision = false;
+											CenterBEmision = false;
+											BorderBEmision = true;
+										}
+
+										ImGui::DragFloat3("Box Size", &pos.x, 0.1f, 0.1f, 20.0f, "%.2f");
+
+										boxCreation.SetFromCenterAndSize(boxCreation.CenterPoint(), pos);
+									}
+									else if (sphereShape)
+									{
+										ImGui::Text("Sphere");
+										ImGui::Separator();
+										ImGui::Text("Particle emision from:");
+
+										if (ImGui::RadioButton("Random", randomSEmision))
+										{
+											randomSEmision = true;
+											CenterSEmision = false;
+											BorderSEmision = false;
+										}
+											
+										if (ImGui::RadioButton("Center", CenterSEmision))
+										{
+											randomSEmision = false;
+											CenterSEmision = true;
+											BorderSEmision = false;
+										}
+											
+										if (ImGui::RadioButton("Border", BorderSEmision))
+										{
+											randomSEmision = false;
+											CenterSEmision = false;
+											BorderSEmision = true;
+										}
+											
+										ImGui::DragFloat("Sphere Size", &sphereCreation.r, 0.25f, 1.0f, 20.0f, "%.2f");
+									}
+									else if (coneShape)
+									{
+										ImGui::Text("Cone");
+										ImGui::Separator();
+										ImGui::Text("Particle emision from:");
+
+										if (ImGui::RadioButton("Random", randomCEmision))
+										{
+											randomCEmision = true;
+											CenterCEmision = false;
+											BorderCEmision = false;
+										}
+
+										if (ImGui::RadioButton("Center", CenterCEmision))
+										{
+											randomCEmision = false;
+											CenterCEmision = true;
+											BorderCEmision = false;
+										}
+
+										if (ImGui::RadioButton("Border", BorderCEmision))
+										{
+											randomCEmision = false;
+											CenterCEmision = false;
+											BorderCEmision = true;
+										}
+
+										ImGui::DragFloat("Sphere Size", &circleCreation.r, 0.25f, 0.25f, 20.0f, "%.2f");
+									}
+
+									ImGui::Separator();
+									if (ImGui::TreeNode("Change Shape"))
+									{
+										ImGui::Separator();
+										if (ImGui::MenuItem("Box"))
+										{
+											boxShape = true;
+											sphereShape = false;
+											coneShape = false;
+										}
+										else if (ImGui::MenuItem("Sphere"))
+										{
+											boxShape = false;
+											sphereShape = true;
+											coneShape = false;
+										}
+										else if (ImGui::MenuItem("Cone"))
+										{
+											boxShape = false;
+											sphereShape = false;
+											coneShape = true;
+										}
+										ImGui::TreePop();
+									}
+
+									ImGui::TreePop();
+								}						
+								ImGui::Separator();
+								
 								if (ImGui::TreeNode("Particle Color"))
 								{
+									ImGui::Separator();
 									if (noColors)
 									{
 										ColorTime colorTime;
@@ -903,6 +1081,7 @@ update_status Inspector::Update(float dt)
 									ImGui::Separator();
 									if (ImGui::TreeNode("Add Color "))
 									{
+										ImGui::Separator();
 										submod->emitter->timeColor = true;
 
 										if (submod->emitter->timeColor)
@@ -921,10 +1100,24 @@ update_status Inspector::Update(float dt)
 												colorTime.name = std::to_string((int)submod->nextPos) + "%";
 												submod->particle_color.push_back(colorTime);
 												submod->particle_color.sort();
-											}											
+											}
 										}
 										ImGui::TreePop();
 									}
+									ImGui::TreePop();
+								}
+								ImGui::Separator();
+								if (ImGui::TreeNode("Particle Bounding Box"))
+								{
+									ImGui::Separator();
+
+									ImGui::TreePop();
+								}
+								ImGui::Separator();
+								if (ImGui::TreeNode("Particle Texture"))
+								{
+									ImGui::Separator();
+
 									ImGui::TreePop();
 								}
 								ImGui::Separator();

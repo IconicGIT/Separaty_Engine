@@ -435,6 +435,12 @@ update_status ModuleUI::Update(float dt)
 				playStop = !playStop;
 			}
 
+			ImGui::Separator();
+			if (ImGui::MenuItem("Play & Stop Indiv."))
+			{
+				playStopIndividual = !playStopIndividual;
+			}
+
 			//if (showOutput)
 			//{
 			//	/*ImVec2 textSize = ImGui::CalcTextSize("Console");

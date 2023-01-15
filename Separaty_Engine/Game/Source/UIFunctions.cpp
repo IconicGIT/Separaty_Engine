@@ -51,6 +51,9 @@ bool UIFunctions::Start()
 	playStopWindow = new PlayStop();
 	playStopWindow->Start();
 
+	playStopIndividualWindow = new PlayStopIndividual();
+	playStopIndividualWindow->Start();
+
 	assetsWindow = new Assets();
 	assetsWindow->Start();
 
@@ -86,6 +89,8 @@ update_status UIFunctions::Update(float dt)
 	inspectorWindow->Update(dt);
 
 	playStopWindow->Update(dt);
+
+	playStopIndividualWindow->Update(dt);
 
 	assetsWindow->Update(dt);
 

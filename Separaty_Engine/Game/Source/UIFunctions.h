@@ -11,6 +11,7 @@
 #include "Assets.h"
 #include "Output.h"
 #include "PlayStop.h"
+#include "PlayStopIndividual.h"
 
 class EngineSystem;
 class GameObject;
@@ -36,6 +37,7 @@ public:
 	Assets* assetsWindow;
 	Output* outputWindow;
 	PlayStop* playStopWindow;
+	PlayStopIndividual* playStopIndividualWindow;
 
 	std::vector<GameObject*> selectedGameObjects;
 

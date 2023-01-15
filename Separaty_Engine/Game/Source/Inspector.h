@@ -29,7 +29,32 @@ public:
 
 	bool useCamInPlay;
 
+	//Colors
 	bool noColors = true;
+
+	//Shape
+	bool boxShape = true;
+	bool sphereShape;
+	bool coneShape;
+
+	//Box Emision
+	bool randomBEmision;
+	bool CenterBEmision;
+	bool BorderBEmision;
+
+	//Sphere Emision
+	bool randomSEmision;
+	bool CenterSEmision;
+	bool BorderSEmision;
+
+	//Cone Emision
+	bool randomCEmision;
+	bool CenterCEmision;
+	bool BorderCEmision;
+
+	AABB boxCreation = AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f));
+	Sphere sphereCreation = Sphere(float3::zero, 1.0f);
+	Circle circleCreation = Circle(float3::unitY, float3::unitY, 1.0f);
 
 private:
 	std::string name;

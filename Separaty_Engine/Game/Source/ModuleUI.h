@@ -36,6 +36,7 @@ public:
 	bool assets = true;
 	bool showOutput = true;
 	bool playStop = true;
+	bool playStopIndividual = true;
 
 	std::vector<char*> outputList;
 	float screenX;
