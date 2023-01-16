@@ -52,6 +52,8 @@ public:
 	bool CenterCEmision;
 	bool BorderCEmision;
 
+	bool activeBox = false;
+
 	AABB boxCreation = AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f));
 	Sphere sphereCreation = Sphere(float3::zero, 1.0f);
 	Circle circleCreation = Circle(float3::unitY, float3::unitY, 1.0f);

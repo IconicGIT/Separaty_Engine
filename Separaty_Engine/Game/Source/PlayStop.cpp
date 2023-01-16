@@ -48,6 +48,8 @@ update_status PlayStop::Update(float dt)
 			{
 				play = false;
 
+				timeSpeed = 1.0f;
+
 				time = 0;
 
 				App->ui->uiFunctions->playStopIndividualWindow->time = 0;

@@ -271,7 +271,11 @@ public:
 	mat4x4 rotationLocal;
 	mat4x4 rotationWorld;
 
+	
+
 	bool timeColor = false;
+
+	float emitterdt = 1.0f;
 private:
 	unsigned int VAO, VBO, EBO;
 };
@@ -359,7 +363,6 @@ public:
 
 	bool particle_followEmitter;
 
-
 	Emitter* emitter;
 private:
 	
@@ -418,6 +421,8 @@ public:
 	float3  acceleration;
 	float3 direction;
 	bool   followEmitter;
+
+	mat4x4 rotationMatrix = IdentityMatrix;
 
 
 private:

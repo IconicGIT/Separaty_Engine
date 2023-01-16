@@ -49,6 +49,8 @@ update_status PlayStopIndividual::Update(float dt)
 				{
 					play = false;
 
+					timeSpeed = 1.0f;
+
 					time = 0;
 				}
 				ImGui::SameLine();

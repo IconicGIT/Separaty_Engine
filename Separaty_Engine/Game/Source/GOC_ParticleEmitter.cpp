@@ -26,31 +26,47 @@ bool GOC_ParticleEmitter::Execute()
 	vec3 emitterPos = gameObject->transform->GetPosition();
 	emitter->position = float3(emitterPos.x, emitterPos.y, emitterPos.z);
 
-
 	for (std::shared_ptr<Submodule> submod : emitter->submodules)
+
+	emitter->emitterdt = App->ui->uiFunctions->playStopWindow->timeSpeed;
+
+	if (emitter->particles.size() > 0)
+
 	{
-		float3 arrayAABB[2] = { submod->particle_originPosition_range[0], submod->particle_originPosition_range[1] };
-
-		AABB box;
-
-		box.SetNegativeInfinity();
-
-		box.Enclose(arrayAABB, 2);
-
-		float3 arrayVec[8];
-
-		for (size_t i = 0; i < 2; i++)
+		for (std::shared_ptr<Particle> particle : emitter->particles)
 		{
-			if (submod->particle_followEmitter)
-			{
-				arrayAABB[0] += float3(emitterPos.x, emitterPos.y, emitterPos.z);
+			particle->rotationMatrix = App->camera->GetViewMatrix();
 
-				arrayAABB[1] += float3(emitterPos.x, emitterPos.y, emitterPos.z);
-			}
-			
+			gameObject->transform->Set4x4MatrixLocal(particle->rotationMatrix);
 		}
+	}
 
-		box.GetCornerPoints(arrayVec);
+	if (App->ui->uiFunctions->inspectorWindow->activeBox)
+	{
+		for (std::shared_ptr<Submodule> submod : emitter->submodules)
+		{
+			float3 arrayAABB[2] = { submod->particle_originPosition_range[0], submod->particle_originPosition_range[1] };
+
+			AABB box;
+
+			box.SetNegativeInfinity();
+
+			box.Enclose(arrayAABB, 2);
+
+			float3 arrayVec[8];
+
+			for (size_t i = 0; i < 2; i++)
+			{
+				if (submod->particle_followEmitter)
+				{
+					arrayAABB[0] =  float3(emitterPos.x, emitterPos.y, emitterPos.z);
+
+					arrayAABB[1] = float3(emitterPos.x, emitterPos.y, emitterPos.z);
+				}
+
+			}
+
+			box.GetCornerPoints(arrayVec);
 
 		//get polygon mode
 		GLint polygonMode[2];
@@ -65,7 +81,12 @@ bool GOC_ParticleEmitter::Execute()
 
 		//DEBUG_LOG("%i, %i", int(polygonMode[0]), int(polygonMode[1]));
 		
+
+			DrawCube(arrayVec, Color(1, 1, 1, 1));
+		}
+
 	}
+	
 
 	
 

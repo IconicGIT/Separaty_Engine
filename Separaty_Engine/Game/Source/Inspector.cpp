@@ -966,10 +966,12 @@ update_status Inspector::Update(float dt)
 									if (boxShape)
 									{
 										ImGui::Text("Box");
+										ImGui::SameLine();
+										ImGui::Checkbox("##500", &activeBox);
 										ImGui::Separator();
 										ImGui::Text("Particle emision from:");
 
-										pos = boxCreation.Size();
+										//pos = boxCreation.Size();
 
 										if (ImGui::RadioButton("Random", randomBEmision))
 										{

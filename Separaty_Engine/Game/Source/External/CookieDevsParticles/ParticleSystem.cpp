@@ -342,7 +342,7 @@ Emitter::~Emitter()
 
 void Emitter::PreUpdate(float dt)
 {
-	UpdateSubmodules(dt); 
+	UpdateSubmodules(dt * emitterdt);
 }
 
 void Emitter::Update(float dt)
@@ -358,7 +358,7 @@ void Emitter::Update(float dt)
 			continue;
 		}
 
-		particles[i]->Update(dt);
+		particles[i]->Update(dt * emitterdt);
 	}
 
 	if (!particles.empty())
@@ -918,13 +918,7 @@ void Particle::UpdateParticleMesh(float dt)
 	velocity += acceleration * dt;
 
 	float3 resultantPosition = velocity * dt;
-
-	/*float3 resultantVector = vec(direction).Normalized() * resultantPosition;*/
-
-	localPosition += resultantPosition;
-
 	translationLocal.translate(resultantPosition.x, resultantPosition.y, resultantPosition.z);
-
 
 	transformWorld = translationLocal * rotationLocal * scalingLocal;
 
@@ -945,6 +939,11 @@ void Particle::UpdateParticleMesh(float dt)
 
 	}
 	std::cout << std::endl;
+
+	/*float3 resultantVector = vec(direction).Normalized() * resultantPosition;*/
+
+	localPosition += resultantPosition;
+
 
 	for (size_t i = 0; i < 4; i++)
 	{
