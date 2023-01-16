@@ -45,7 +45,7 @@ update_status PlayStopIndividual::Update(float dt)
 				windowSize = ImVec2(198, 68.5);
 				ImGui::SetWindowSize(windowSize);
 
-				if (ImGui::Button("Stop ", { 50,25 }))
+				if (ImGui::Button(" Stop ", { 50,25 }))
 				{
 					play = false;
 
@@ -55,7 +55,7 @@ update_status PlayStopIndividual::Update(float dt)
 				ImGui::Dummy(ImVec2(0, 0));
 				ImGui::SameLine();
 
-				if (ImGui::Button("Pause ", { 50,25 }))
+				if (ImGui::Button(" Pause ", { 50,25 }))
 				{
 					pause = !pause;
 
@@ -64,7 +64,7 @@ update_status PlayStopIndividual::Update(float dt)
 				ImGui::Dummy(ImVec2(0, 0));
 				ImGui::SameLine();
 
-				if (ImGui::Button("Tick ", { 50,25 }))
+				if (ImGui::Button(" Tick ", { 50,25 }))
 				{
 					time += dt *timeSpeed;
 				}
@@ -88,7 +88,7 @@ update_status PlayStopIndividual::Update(float dt)
 				windowSize = ImVec2(198, 41.5);
 				ImGui::SetWindowSize(windowSize);
 
-				if (ImGui::Button("Play ", { 50,25 }))
+				if (ImGui::Button(" Play ", { 50,25 }))
 				{
 					play = true;
 					pause = false;
@@ -97,7 +97,7 @@ update_status PlayStopIndividual::Update(float dt)
 				ImGui::Dummy(ImVec2(0, 0));
 				ImGui::SameLine();
 
-				if (ImGui::Button("Pause ", { 50, 25 }))
+				if (ImGui::Button(" Pause ", { 50, 25 }))
 				{
 					pause = false;
 				}
@@ -105,7 +105,7 @@ update_status PlayStopIndividual::Update(float dt)
 				ImGui::Dummy(ImVec2(0, 0));
 				ImGui::SameLine();
 
-				if (ImGui::Button("Tick ", { 50,25 }))
+				if (ImGui::Button(" Tick ", { 50,25 }))
 				{
 					time += dt *timeSpeed;
 				}

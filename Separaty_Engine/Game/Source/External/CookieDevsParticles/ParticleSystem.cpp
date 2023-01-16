@@ -312,6 +312,13 @@ void Emitter::UpdateSubmodules(float dt)
 
 void Emitter::DrawParticle(int index)
 {
+	//unsigned int ID = glCreateProgram();
+	//glAttachShader(ID, vertices);
+	//glAttachShader(ID, fragmentShader);
+	//glLinkProgram(ID);
+
+	//glUseProgram(particles[index]->myShader->ID);
+
 
 	CDeVertex vertices[4] = {
 		particles[index]->vertices[0],
@@ -388,6 +395,10 @@ void Emitter::DrawParticle(int index)
 
 	// Unbind the vertex array after drawing
 	glBindVertexArray(0);
+
+	glDeleteVertexArrays(4, &VAO);
+	glDeleteBuffers(sizeof(VBO), &VBO);
+	glDeleteBuffers(sizeof(EBO), &EBO);
 }
 
 /// <summary>
