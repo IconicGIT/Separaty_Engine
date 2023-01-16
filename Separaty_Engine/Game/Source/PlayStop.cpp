@@ -35,19 +35,10 @@ update_status PlayStop::Update(float dt)
 
 		if (play)
 		{
-			/*(seconds += dt) * 1000.0f;*/								
-
-			//if (seconds >= 60.0f)
-			//{
-			//	++minutes;
-			//	seconds = 0.0f;
-			//}
-
-			//if (minutes >= 60)
-			//{
-			//	++hours;
-			//	minutes = 0;
-			//}
+			if (!pause)
+			{
+				time += dt *timeSpeed;
+			}
 
 			windowSize = ImVec2(410, 70.5);
 			ImGui::SetWindowPos(ImVec2((io.DisplaySize.x - windowSize.x) / 2, 24));
@@ -56,6 +47,10 @@ update_status PlayStop::Update(float dt)
 			if (ImGui::Button("Stop", { 50,25 }))
 			{
 				play = false;
+
+				time = 0;
+
+				App->ui->uiFunctions->playStopIndividualWindow->time = 0;
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -63,7 +58,7 @@ update_status PlayStop::Update(float dt)
 
 			if (ImGui::Button("Pause", { 50,25 }))
 			{
-				pause != pause;
+				pause = !pause;
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -71,7 +66,7 @@ update_status PlayStop::Update(float dt)
 
 			if (ImGui::Button("Tick", { 50,25 }))
 			{
-				/*dt++;*/
+				time += dt *timeSpeed;
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -86,7 +81,7 @@ update_status PlayStop::Update(float dt)
 			}
 			ImGui::SameLine();
 
-			std::string gameCount = std::to_string(gameTime /*&App->time->GetGameTimer()*/);
+			std::string gameCount = std::to_string(time /*&App->time->GetGameTimer()*/);
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", gameCount.data());
 
 			if (ImGui::Checkbox("Use Camera  ", &App->ui->uiFunctions->inspectorWindow->useCamInPlay))
@@ -110,6 +105,7 @@ update_status PlayStop::Update(float dt)
 			if (ImGui::Button("Play", { 50,25 }))
 			{
 				play = true;
+				pause = false;
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -117,7 +113,7 @@ update_status PlayStop::Update(float dt)
 
 			if (ImGui::Button("Pause", { 50, 25 }))
 			{
-				
+				pause = false;
 			}
 			ImGui::SameLine();
 			ImGui::Dummy(ImVec2(0, 0));
@@ -125,7 +121,7 @@ update_status PlayStop::Update(float dt)
 
 			if (ImGui::Button("Tick", { 50,25 }))
 			{
-				
+				time += dt *timeSpeed;
 			}
 
 			gameTime = 0.0f;

@@ -19,6 +19,8 @@ public:
 	bool play = false;
 	bool pause = false;
 
+	double time = 0;
+
 	float gameTime = 0.0f;
 	float timeSpeed = 1.0f;
 private:
