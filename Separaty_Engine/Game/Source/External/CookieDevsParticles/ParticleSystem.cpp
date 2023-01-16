@@ -17,6 +17,132 @@ float RandomRange(float value01, float value02) {
 
 }
 
+CDevShader::CDevShader(const char* vertexPath, const char* fragmentPath)
+{
+	Set(vertexPath, fragmentPath);
+}
+
+void CDevShader::Set(const char* vertexPath, const char* fragmentPath)
+
+{
+	// 1. retrieve the vertex/fragment source code from filePath
+	std::string vertexCode;
+	std::string fragmentCode;
+	std::ifstream vShaderFile;
+	std::ifstream fShaderFile;
+	// ensure ifstream objects can throw exceptions:
+	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	try
+	{
+		// open files
+		vShaderFile.open(vertexPath);
+		fShaderFile.open(fragmentPath);
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		//std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		App->ui->AppendToOutput(DEBUG_LOG("FILE_NOT_SUCCESFULLY_READ"));
+	}
+	const char* vShaderCode = vertexCode.c_str();
+	const char* fShaderCode = fragmentCode.c_str();
+
+	//2. compile shaders
+	unsigned int vertex, fragment;
+	int success;
+	char infoLog[512];
+
+	// vertex Shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+	// print compile errors if any
+	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+		//std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		App->ui->AppendToOutput(DEBUG_LOG("ERROR::SHADER::VERTEX::COMPILATION_FAILED"));
+		App->ui->AppendToOutput(DEBUG_LOG("%s", infoLog));
+	};
+
+	// similiar for Fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fShaderCode, NULL);
+	glCompileShader(fragment);
+	// print compile errors if any
+	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
+		App->ui->AppendToOutput(DEBUG_LOG("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED"));
+		App->ui->AppendToOutput(DEBUG_LOG("%s", infoLog));
+	}
+
+	// shader Program
+	ID = glCreateProgram();
+	glAttachShader(ID, vertex);
+	glAttachShader(ID, fragment);
+	glLinkProgram(ID);
+	// print linking errors if any
+	glGetProgramiv(ID, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(ID, 512, NULL, infoLog);
+		App->ui->AppendToOutput(DEBUG_LOG("ERROR::SHADER::PROGRAM::LINKING_FAILED"));
+		App->ui->AppendToOutput(DEBUG_LOG("%s", infoLog));
+	}
+
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+}
+
+void CDevShader::Use()
+{
+	glUseProgram(ID);
+}
+
+
+void CDevShader::Unuse()
+{
+	glUseProgram(0);
+}
+
+
+void CDevShader::SetBool(const std::string& name, bool value) const
+{
+	glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+}
+
+
+void CDevShader::SetInt(const std::string& name, int value) const
+{
+	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+
+void CDevShader::SetFloat(const std::string& name, float value) const
+{
+	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+
+void CDevShader::SetMat4x4(const std::string& name, mat4x4 value) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, false, &value);
+}
+
 
 		//Particle System
 ///////////////////////////////////////////
@@ -118,16 +244,15 @@ bool ParticleSystem::SaveState(JSON_Value* file, std::string root) const
 
 }
 
-
 		//Emitter
 ///////////////////////////////////////////
 
 Emitter::Emitter()
 {
-	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this);
-
-	submodules.push_back(newSubmodule);
 	position = float3(0, 0, 0);
+	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this, submoduleLastID);
+	submodules.push_back(newSubmodule);
+	submoduleLastID++;
 }
 
 Emitter::~Emitter()
@@ -187,64 +312,7 @@ void Emitter::UpdateSubmodules(float dt)
 
 void Emitter::DrawParticle(int index)
 {
-	/*
-	{
-	
-		std::vector<CDeVertex> vertices;
-		for (size_t i = 0; i < particles.size(); i++)
-		{
 
-			vertices.push_back(particles[i]->vertices[0]);
-			vertices.push_back(particles[i]->vertices[1]);
-			vertices.push_back(particles[i]->vertices[2]);
-			vertices.push_back(particles[i]->vertices[3]);
-		}
-
-		std::vector<int> indices;
-		for (size_t i = 0; i < particles.size(); i++)
-		{
-			indices.push_back(particles[i]->indices[0]);
-			indices.push_back(particles[i]->indices[1]);
-			indices.push_back(particles[i]->indices[2]);
-			indices.push_back(particles[i]->indices[3]);
-			indices.push_back(particles[i]->indices[4]);
-			indices.push_back(particles[i]->indices[5]);
-		}
-
-
-		//set mesh
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-		glGenBuffers(1, &EBO);
-
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(CDeVertex), &vertices[0], GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
-			&indices[0], GL_STATIC_DRAW);
-
-		// vertex positions
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)0);
-		// vertex normals
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Normal));
-		// vertex texture coords
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
-
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-
-	}
-
-	*/
-
-	
 	CDeVertex vertices[4] = {
 		particles[index]->vertices[0],
 		particles[index]->vertices[1],
@@ -269,33 +337,57 @@ void Emitter::DrawParticle(int index)
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(CDeVertex), &vertices[0], GL_DYNAMIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int),
-		&indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), &indices[0], GL_DYNAMIC_DRAW);
 
-	// vertex positions
+	// Specify position data
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Position));
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)0);
-	// vertex normals
-	glEnableVertexAttribArray(1);
+
+	// Specify normal data
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Normal));
-	// vertex texture coords
-	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(1);
+
+	// Specify texture coordinates data
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
+	glEnableVertexAttribArray(2);
 
+	// Use the Shader program
+	//particles[index]->myShader->Use();
 
+	unsigned int diffuseNr = 1;
+	unsigned int specularNr = 1;
+	if (!particles[index]->textures.empty())
+	{
+		for (unsigned int i = 0; i < particles[index]->textures.size(); i++)
+		{
+			// retrieve texture number (the N in diffuse_textureN)
+			std::string number;
+			std::string name = particles[index]->textures[i]->type;
+			if (name == "texture_diffuse")
+				number = std::to_string(diffuseNr++);
+			else if (name == "texture_specular")
+				number = std::to_string(specularNr++);
+
+				// Bind the texture to the corresponding texture unit
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, particles[index]->textures[i]->id);
+
+			// Set the uniform variable for the texture in the fragment shader
+			glUniform1i(glGetUniformLocation(particles[index]->myShader->ID, ("material." + name + number).c_str()), i);
+		}
+	}
+
+	// Draw the mesh using the indices
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	//particles[index]->myShader->Unuse();
+
+	// Unbind the vertex array after drawing
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glDeleteVertexArrays(4, &VAO);
-	glDeleteBuffers(sizeof(VBO), &VBO);
-	glDeleteBuffers(sizeof(EBO), &EBO);
-
 }
 
 /// <summary>
@@ -319,18 +411,33 @@ void Emitter::Delete()
 	particles.clear();
 }
 
-void Emitter::CreateSubmodule()
+std::shared_ptr<Submodule> Emitter::CreateSubmodule()
 {
-	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this);
+	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this, submoduleLastID);
 	submodules.push_back(newSubmodule);
+	submoduleLastID++;
+	return newSubmodule;
+}
+
+std::shared_ptr<Submodule> Emitter::GetSubmodule(uint id)
+{
+	for (size_t i = 0; i < submodules.size(); i++)
+	{
+		if (submodules[i]->id == id)
+		{
+			return submodules[i];
+		}
+	}
+	return nullptr;
 }
 
 		//Submodule
 ///////////////////////////////////////////
 
-Submodule::Submodule(Emitter* emitter)
+Submodule::Submodule(Emitter* emitter, uint id)
 {
 	this->emitter = emitter;
+	this->id = id; 
 
 	//Submodule settings
 	particle_rate = 2;
@@ -339,9 +446,20 @@ Submodule::Submodule(Emitter* emitter)
 	particle_rate_range[1] = particle_rate;
 
 	timer = particle_rate;
+
+	particle_texture_rowsColumnsToSet[0] = 1;
+	particle_texture_rowsColumnsToSet[1] = 1;
+	particle_texture_amountToSet = particle_texture_rowsColumnsToSet[0] * particle_texture_rowsColumnsToSet[1];
+
+	particle_texture_rowsColumnsUsing[0] = 1;
+	particle_texture_rowsColumnsUsing[1] = 1;
+	particle_texture_amountUsing = particle_texture_rowsColumnsUsing[0] * particle_texture_rowsColumnsUsing[1];
 	
 
 	//initialize particle settings
+	particle_mainShader = std::make_shared<CDevShader>("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
+	particle_selectedShader = std::make_shared<CDevShader>("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
+	particle_textureReference = std::make_shared<CDevTexture>();
 
 	particle_amount = 1;
 	particle_amount_isRanged = false;
@@ -375,7 +493,7 @@ Submodule::Submodule(Emitter* emitter)
 	particle_direction_range[0] = particle_direction;
 	particle_direction_range[1] = particle_direction;
 
-	particle_followOrigin = false;
+	particle_followEmitter = false;
 
 
 }
@@ -429,9 +547,22 @@ void Submodule::AddParticles()
 		std::shared_ptr <Particle> p = std::make_shared<Particle>(emitter);
 
 
-		//here all perticle properties will be set
+		//here all particle properties will be set
 		
 		/*p->color = particle_color;*/
+
+		p->myShader = particle_mainShader;
+		p->selectedShader = particle_selectedShader;
+
+		if (particle_lifetime_isRanged)
+		{
+			p->lifetime = RandomRange(particle_lifetime_range[0], particle_lifetime_range[1]);
+		}
+		else
+		{
+			p->lifetime = particle_lifetime;
+		}
+
 
 		if (particle_originPosition_isRanged)
 		{
@@ -443,7 +574,7 @@ void Submodule::AddParticles()
 		}
 		else
 		{
-			p->originPosition = float3(emitter->position.x, emitter->position.y, emitter->position.z);
+			p->originPosition = particle_originPosition;
 
 		}
 
@@ -488,13 +619,41 @@ void Submodule::AddParticles()
 			p->direction = particle_direction;
 		}
 		
-		p->followOrigin = particle_followOrigin;
+		p->followEmitter = particle_followEmitter;
+
+		p->textures = particle_textures;
 
 		emitter->particles.push_back(p);
 	}
 }
 
 
+void Submodule::SetTextureSliceData()
+{
+	particle_texture_rowsColumnsUsing[0] = particle_texture_rowsColumnsToSet[0];
+	particle_texture_rowsColumnsUsing[1] = particle_texture_rowsColumnsToSet[1];
+	particle_texture_amountUsing = particle_texture_amountToSet;
+}
+
+
+void Submodule::SetTexture(std::shared_ptr<CDevTexture> texture)
+{
+	this->particle_textureReference = texture;
+
+	particle_textures.clear();
+	particle_textures.push_back(particle_textureReference); 
+}
+
+void Submodule::SetTextures(std::vector<std::shared_ptr<CDevTexture>> textures)
+{
+	particle_textures.clear();
+	particle_textures = textures;
+}
+
+void Submodule::FuncionChorra(std::shared_ptr<CDevTexture> a)
+{
+	DEBUG_LOG("ª");
+}
 		//Particle
 ///////////////////////////////////////////
 
@@ -516,7 +675,7 @@ Particle::Particle(Emitter* emitter)
 	velocity = float3(0, 0, 0);
 	acceleration = float3(0, 0, 0);
 	direction = float3(0, 0, 0);
-	followOrigin = false;
+	followEmitter = false;
 
 
 
@@ -529,7 +688,6 @@ Particle::~Particle()
 
 void Particle::Update(float dt)
 {
-	originPosition = emitter->position;
 	UpdateParticleMesh(dt);
 	if (lifetime > 0)
 	{
@@ -545,7 +703,7 @@ void Particle::OnDeath()
 void Particle::SetParticleMesh()
 {
 
-	//quad
+	//vertex position
 	quad_vertices[0] = float3(-1, 1, 0);			quad_vertices[3] = float3(1, 1, 0);
 
 
@@ -555,6 +713,14 @@ void Particle::SetParticleMesh()
 	{
 		vertices[i] = CDeVertex(float3(quad_vertices[i]));
 	}
+
+	//vertex texture coordinates
+
+	vertices[0].TexCoords = vec2(0, 1);		vertices[3].TexCoords = vec2(1, 1);
+
+
+	vertices[1].TexCoords = vec2(0, 0);			vertices[2].TexCoords = vec2(1, 0);
+
 
 	{
 		//1st triangle
@@ -593,14 +759,18 @@ void Particle::UpdateParticleMesh(float dt)
 	localPosition += resultantPosition;
 
 
+
 	for (size_t i = 0; i < 4; i++)
 	{
-		vertices[i] = quad_vertices[i] + localPosition;
+		CDeVertex tmp = vertices[i];
+		vertices[i] = quad_vertices[i] + originPosition + localPosition;
 
-		if (followOrigin)
+		if (followEmitter)
 		{
-			vertices[i] = quad_vertices[i] + originPosition;
+			vertices[i] = quad_vertices[i] + emitter->position + originPosition + localPosition;
 		}
+
+		vertices[i].TexCoords = tmp.TexCoords;
 	}
 	
 	

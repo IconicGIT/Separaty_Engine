@@ -13,9 +13,48 @@
 #include <time.h>
 #include <list>
 
+#include "SDL/include/SDL_rect.h"
+
+#define MAX_FRAMES 60
+
 class Emitter;
 class Submodule;
 class Particle;
+
+class CDevShader
+{
+public:
+    // the program ID
+    unsigned int ID;
+
+    // constructor reads and builds the shader
+	CDevShader(){}
+	CDevShader(const char* vertexPath, const char* fragmentPath);
+    void Set(const char* vertexPath, const char* fragmentPath);
+
+    // use/activate the shader
+    void Use();
+    void Unuse();
+
+    // utility uniform functions
+    void SetBool(const std::string& name, bool value) const;
+    void SetInt(const std::string& name, int value) const;
+    void SetFloat(const std::string& name, float value) const;
+
+    void SetMat4x4(const std::string& name, mat4x4 value) const;
+};
+
+
+struct CDevTexture {
+	std::string name;
+	unsigned int id;
+	std::string type;
+	std::string path;
+
+	int width;
+	int height;
+	int nrChannels;
+};
 
 class CDeVertex {
 
@@ -89,6 +128,67 @@ struct ColorTime
 	}
 };
 
+
+class Animation
+{
+public:
+	float speed = 1.0f;
+	SDL_Rect frames[MAX_FRAMES];
+	bool loop = true;
+	// Allows the animation to keep going back and forth
+	bool pingpong = false;
+	bool mustFlip = false;
+
+private:
+	float currentFrame = 0.0f;
+	int totalFrames = 0;
+	int loopCount = 0;
+	int pingpongDirection = 1;
+
+public:
+
+	void PushBack(const SDL_Rect& rect)
+	{
+		frames[totalFrames++] = rect;
+	}
+
+	void Reset()
+	{
+		currentFrame = 0;
+		loopCount = 0;
+	}
+
+	bool HasFinished()
+	{
+		return !loop && !pingpong && loopCount > 0;
+	}
+
+	void Update()
+	{
+		currentFrame += speed;
+		if (currentFrame >= totalFrames)
+		{
+			currentFrame = (loop || pingpong) ? 0.0f : totalFrames - 1;
+			++loopCount;
+
+			if (pingpong)
+				pingpongDirection = -pingpongDirection;
+		}
+	}
+
+	SDL_Rect& GetCurrentFrame()
+	{
+		int actualFrame = currentFrame;
+		if (pingpongDirection == -1)
+			actualFrame = totalFrames - currentFrame;
+
+		return frames[actualFrame];
+	}
+};
+
+
+// //////////////////////////////////
+
 class ParticleSystem : public Module
 {
 public:
@@ -105,6 +205,7 @@ public:
 	bool SaveState(JSON_Value* file, std::string root = "") const override;
 
 	std::vector<std::shared_ptr<Emitter>> allEmitters;
+	std::vector<std::shared_ptr<CDevTexture>> allTextures;
 
 	std::shared_ptr<Emitter> CreateEmitter();
 	
@@ -138,7 +239,9 @@ public:
 
 	void AppendToDelete();
 	void Delete();
-	void CreateSubmodule();
+	std::shared_ptr<Submodule> CreateSubmodule();
+	std::shared_ptr<Submodule> GetSubmodule(uint id);
+	
 
 	bool EditColor(ColorTime& colorTime, uint pos = 0u);
 
@@ -149,6 +252,7 @@ public:
 	std::vector<std::shared_ptr<Submodule>> submodules;
 	std::vector< std::shared_ptr<Particle>> particles;
 	bool pendingToDelete = false;
+	uint submoduleLastID = 0;
 
 	float3 position;
 
@@ -165,7 +269,7 @@ class Submodule
 {
 public:
 	Submodule() {}
-	Submodule(Emitter* emitter);
+	Submodule(Emitter* emitter, uint id);
 	~Submodule();
 
 	void Update(float dt);
@@ -175,22 +279,43 @@ public:
 	/// When needed, adds this Submodule's particles to the Emitter.
 	/// </summary>
 	void AddParticles();
+	void SetTextureSliceData();
+	void SetTexture(std::shared_ptr<CDevTexture> texture);
+	void SetTextures(std::vector<std::shared_ptr<CDevTexture>> textures);
+	void FuncionChorra(std::shared_ptr<CDevTexture> a);
 
+	//Submodule data
+	uint id;
+	std::shared_ptr<CDevShader> particle_mainShader;
+	std::shared_ptr<CDevShader> particle_selectedShader;
+
+	std::shared_ptr<CDevTexture> particle_textureReference;
+	std::vector<std::shared_ptr<CDevTexture>> particle_textures;
 	
+	float timer;
+
+
 	//Submodule parameters
 	float particle_rate;
 	bool  particle_rate_isRanged;
 	float particle_rate_range[2];
 
-
-	float timer;
 	bool repeat = true;
+
+	bool particle_texture_isSliced = false;
+	int particle_texture_rowsColumnsToSet[2];
+	int particle_texture_rowsColumnsUsing[2];
+	int particle_texture_amountToSet;
+	int particle_texture_amountUsing;
 
 
 	//particle parameters
+
+	
+
 	int   particle_amount;
 	bool  particle_amount_isRanged;
-	int particle_amount_range[2];
+	int   particle_amount_range[2];
 
 	float particle_lifetime;
 	bool  particle_lifetime_isRanged;
@@ -217,7 +342,8 @@ public:
 	bool   particle_direction_isRanged;
 	float3 particle_direction_range[2];
 
-	bool particle_followOrigin;
+	bool particle_followEmitter;
+
 
 	Emitter* emitter;
 private:
@@ -243,17 +369,20 @@ public:
 	
 	void OnDeath();
 
+	//particle mesh
 	CDeVertex vertices[4];
 	float3 quad_vertices[4];
-
 	int indices[6];
 
-	
+	//particle data
 	Emitter* emitter;
 	std::vector<std::shared_ptr<Submodule>> submodules;
+	std::vector<std::shared_ptr<CDevTexture>> textures;
+	std::shared_ptr<CDevShader> myShader;
+	std::shared_ptr<CDevShader> selectedShader;
+	
 
 	//customizable parameters;
-
 	float  lifetime = 0;
 	float4 color;
 	float3 originPosition;
@@ -261,7 +390,7 @@ public:
 	float3  velocity;
 	float3  acceleration;
 	float3 direction;
-	bool   followOrigin;
+	bool   followEmitter;
 
 
 private:

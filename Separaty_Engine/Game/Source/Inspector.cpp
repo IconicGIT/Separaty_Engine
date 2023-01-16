@@ -810,6 +810,7 @@ update_status Inspector::Update(float dt)
 									ImGui::Text("Particle attributes");
 									ImGui::Separator();
 
+									ImGui::Checkbox("Follow Emitter", &submod->particle_followEmitter);
 
 									ImGui::Dummy(ImVec2(0, 0));
 									ImGui::SameLine();
@@ -829,8 +830,25 @@ update_status Inspector::Update(float dt)
 										ImGui::DragFloat("##3", &submod->particle_lifetime, 0.05f, 0.0f, 0.0f, "%.2f");
 										ImGui::SameLine();
 									}
+
 									ImGui::PopItemWidth();
 									ImGui::Text("Particle life time");
+									
+									ImGui::Text("Particle Origin");
+									ImGui::SameLine();
+									ImGui::Checkbox("Range##7", &submod->particle_originPosition_isRanged);
+									if (submod->particle_originPosition_isRanged)
+									{
+										ImGui::DragFloat3("##71", &(submod->particle_originPosition_range[0])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::DragFloat3("##72", &(submod->particle_originPosition_range[1])[0], 0.05f, 0.0f, 0.0f, "%.2f");
+
+
+									}
+									else
+									{
+										ImGui::DragFloat3("##7", &(submod->particle_originPosition)[0], 0.05f, 0.0f, 0.0f, "%.2f");
+									}
+
 
 
 									ImGui::Dummy(ImVec2(0, 0));
@@ -916,6 +934,7 @@ update_status Inspector::Update(float dt)
 
 									ImGui::TreePop();
 								}
+								ImGui::Separator();
 								ImGui::Separator();
 								if (ImGui::TreeNode("Particle Shape"))
 								{
@@ -1117,6 +1136,264 @@ update_status Inspector::Update(float dt)
 								if (ImGui::TreeNode("Particle Texture"))
 								{
 									ImGui::Separator();
+									if (submod->particle_textureReference)
+									{
+
+
+										std::string texName = "Texture name: " + submod->particle_textureReference->name;
+										ImGui::Text(texName.c_str());
+
+										ImVec2 pos = ImGui::GetCursorScreenPos();
+										float image_size = 85;
+										ImGui::Image((ImTextureID)submod->particle_textureReference->id, ImVec2(85, image_size));
+										ImDrawList* draw_list = ImGui::GetWindowDrawList();
+										if (submod->particle_texture_isSliced)
+										{
+											int amount = submod->particle_texture_amountUsing;
+											int amountH = submod->particle_texture_rowsColumnsUsing[0];
+											int amountV = submod->particle_texture_rowsColumnsUsing[1];
+
+											int amountIndex = 0;
+											
+											if (submod->particle_texture_amountToSet == submod->particle_texture_amountUsing &&
+												submod->particle_texture_rowsColumnsToSet[0] == submod->particle_texture_rowsColumnsUsing[0] &&
+												submod->particle_texture_rowsColumnsToSet[1] == submod->particle_texture_rowsColumnsUsing[1])
+											{
+												for (size_t v = 0; v < amountV; v++)
+												{
+													for (size_t h = 0; h < amountH; h++)
+													{
+														if (amountIndex < amount)
+														{
+															float a1 = pos.x + h * int(image_size / amountH);
+															float b1 = pos.x + h * int(image_size / amountH) + int(image_size / amountH);
+
+															float a2 = pos.y + v * int(image_size / amountV);
+															float b2 = pos.y + v * int(image_size / amountV) + int(image_size / amountV);
+
+
+															draw_list->AddRectFilled(
+																ImVec2(a1, a2),
+																ImVec2(b1, b2),
+																IM_COL32(102, 255, 102, 50),
+																0.0f,
+																ImDrawCornerFlags_None);
+
+															draw_list->AddRect(
+																ImVec2(a1, a2),
+																ImVec2(b1, b2),
+																IM_COL32(153, 255, 153, 50),
+																0.0f,
+																ImDrawCornerFlags_None,
+																1.f);
+
+															amountIndex++;
+														}
+														else
+														{
+															break;
+														}
+													}
+													if (!(amountIndex < amount)) break;
+												}
+											}
+											else
+											{
+												amount = submod->particle_texture_amountToSet;
+												amountH = submod->particle_texture_rowsColumnsToSet[0];
+												amountV = submod->particle_texture_rowsColumnsToSet[1];
+
+												amountIndex = 0;
+												for (size_t v = 0; v < amountV; v++)
+												{
+													for (size_t h = 0; h < amountH; h++)
+													{
+														if (amountIndex < amount)
+														{
+															float a1 = pos.x + h * int(image_size / amountH);
+															float b1 = pos.x + h * int(image_size / amountH) + int(image_size / amountH);
+
+															float a2 = pos.y + v * int(image_size / amountV);
+															float b2 = pos.y + v * int(image_size / amountV) + int(image_size / amountV);
+
+															draw_list->AddRect(
+																ImVec2(a1, a2),
+																ImVec2(b1, b2),
+																IM_COL32(0, 204, 255, 75),
+																0.0f,
+																ImDrawCornerFlags_All,
+																0.5f);
+
+															amountIndex++;
+														}
+														else
+														{
+															break;
+														}
+													}
+													if (!(amountIndex < amount)) break;
+												}
+											}
+										}
+									}
+									else
+									{
+										ImGui::Text("No texture loaded.");
+									}
+
+									//ImGui::Image((ImTextureID)texture->GetTexture(), ImVec2(85, 85));
+									ImGui::SameLine();
+									ImGui::BeginGroup();
+									/*ImGui::Text(texture->GetTexture()->name.c_str());
+									ImGui::PushID(texture->GetTexture()->id << 8);*/
+
+									if (ImGui::Button("Change Texture")) {
+										/*panelChooser->OpenPanel("ChangeTexture", "png");
+										currentTextureId = tex.GetTexture();*/
+										OPENFILENAMEA ofn;
+										char fileName[MAX_PATH] = "";
+										ZeroMemory(&ofn, sizeof(ofn));
+										ofn.lStructSize = sizeof(OPENFILENAMEA);
+										ofn.hwndOwner = NULL;
+										ofn.lpstrFilter = "All Files (*.*)\0*.*\0";
+										ofn.lpstrFile = fileName;
+										ofn.nMaxFile = MAX_PATH;
+										ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+										ofn.lpstrDefExt = "";
+
+										GetOpenFileNameA(&ofn);
+										if (fileName[0] != '\0')
+										{
+											App->engineSystem->LoadFromPath(fileName);
+										}
+
+										std::string path_s = fileName;
+										int lastBar = path_s.find_last_of("\\\"");
+										if (lastBar == -1)
+										{
+											lastBar = path_s.find_last_of("/");
+										}
+
+										std::string newTex_name = path_s.substr(lastBar + 1);
+
+
+
+										for (Texture tex : App->engineSystem->GetAllTextures())
+										{
+
+											if (std::strcmp(tex.name.c_str(), newTex_name.c_str()) == 0)
+											{
+												submod->particle_textureReference->height = tex.height;
+												submod->particle_textureReference->id = tex.id;
+												submod->particle_textureReference->name = tex.name;
+												submod->particle_textureReference->nrChannels = tex.nrChannels;
+												submod->particle_textureReference->path = tex.path;
+												submod->particle_textureReference->type = tex.type;
+												submod->particle_textureReference->width = tex.width;
+
+												break;
+											}
+										}
+									}
+									/*ImGui::PopID();*/
+
+									/*ImGui::PushID(texture->GetTexture() << 16);*/
+									ImGui::Dummy(ImVec2(0, 0));
+									if (ImGui::Button("Delete Texture"))
+									{
+										for (Texture tex : App->engineSystem->GetAllTextures())
+										{
+											if (std::strcmp(tex.name.c_str(), "default_texture.png") == 0)
+											{
+												submod->particle_textureReference->height = tex.height;
+												submod->particle_textureReference->id = tex.id;
+												submod->particle_textureReference->name = tex.name;
+												submod->particle_textureReference->nrChannels = tex.nrChannels;
+												submod->particle_textureReference->path = tex.path;
+												submod->particle_textureReference->type = tex.type;
+												submod->particle_textureReference->width = tex.width;
+												break;
+											}
+										}
+									}
+									/*ImGui::PopID();*/
+
+									ImGui::EndGroup();
+
+
+									if (ImGui::Button("Show Checker Texture")) {
+
+										for (Texture tex : App->engineSystem->GetAllTextures())
+										{
+											if (std::strcmp(tex.name.c_str(), "checker_pattern.png") == 0)
+											{
+												submod->particle_textureReference->height = tex.height;
+												submod->particle_textureReference->id = tex.id;
+												submod->particle_textureReference->name = tex.name;
+												submod->particle_textureReference->nrChannels = tex.nrChannels;
+												submod->particle_textureReference->path = tex.path;
+												submod->particle_textureReference->type = tex.type;
+												submod->particle_textureReference->width = tex.width;
+												break;
+											}
+										}
+										/*Texture a = ;
+										texture->SetTexture(a);
+										texture->UpdateMeshRendererTexture();*/
+									}
+									ImGui::Dummy(ImVec2(0, 5));
+
+									ImGui::Checkbox("Multiple Texture", &submod->particle_texture_isSliced);
+
+									if (submod->particle_texture_isSliced)
+									{
+										ImGui::Text("Rows & Columns");
+										ImGui::PushItemWidth(46.0f);
+										if (ImGui::DragInt("##81", &submod->particle_texture_rowsColumnsToSet[0], 0.05f, 0.0f, 0.0f, "%.2f"))
+										{
+											submod->particle_texture_amountToSet = submod->particle_texture_rowsColumnsToSet[0] * submod->particle_texture_rowsColumnsToSet[1];
+										}
+										ImGui::SameLine();
+										if (ImGui::DragInt("##82", &submod->particle_texture_rowsColumnsToSet[1], 0.05f, 0.0f, 0.0f, "%.2f"))
+										{
+											submod->particle_texture_amountToSet = submod->particle_texture_rowsColumnsToSet[0] * submod->particle_texture_rowsColumnsToSet[1];
+										}
+										std::string setRowCol = "Using: " + std::to_string(submod->particle_texture_rowsColumnsUsing[0]) + " , " + std::to_string(submod->particle_texture_rowsColumnsUsing[1]);
+										ImGui::Text(setRowCol.c_str());
+
+										ImGui::Dummy(ImVec2(0, 5));
+										ImGui::PopItemWidth();
+
+										ImGui::Text("Amount");
+										ImGui::PushItemWidth(46.0f);
+										ImGui::DragInt("##83", &submod->particle_texture_amountToSet, 0.05f, 0.0f, 0.0f, "%.2f");
+										ImGui::SameLine();
+										if (ImGui::Button("Slice & Attach"))
+										{
+											submod->SetTextureSliceData();
+											comp->SetSubmoduleTexture(submod->particle_textureReference, submod);
+
+										}
+										std::string setAmount = "Using: " + std::to_string(submod->particle_texture_amountUsing);
+										ImGui::Text(setAmount.c_str());
+
+										ImGui::PopItemWidth();
+
+									}
+									else
+									{
+										if (ImGui::Button("Attach"))
+										{
+											comp->SetSubmoduleTexture(submod->particle_textureReference, submod);
+										}
+									}
+
+									if (submod->particle_texture_rowsColumnsToSet[0] < 1) submod->particle_texture_rowsColumnsToSet[0] = 1;
+									if (submod->particle_texture_rowsColumnsToSet[1] < 1) submod->particle_texture_rowsColumnsToSet[1] = 1;
+									if (submod->particle_texture_amountToSet < 1) submod->particle_texture_amountToSet = submod->particle_texture_rowsColumnsToSet[0] * submod->particle_texture_rowsColumnsToSet[1];
+
+									int p_tex_rc_max_am = submod->particle_texture_rowsColumnsToSet[0] * submod->particle_texture_rowsColumnsToSet[1];
+									if (submod->particle_texture_amountToSet > p_tex_rc_max_am) submod->particle_texture_amountToSet = p_tex_rc_max_am;
 
 									ImGui::TreePop();
 								}

@@ -61,7 +61,7 @@ public:
 
 	/// <summary>
 	/// The order in the original model mesh list.
-	/// If the value is -1, the renderer has no mesh asociated
+	/// If the value is -4, the renderer has no mesh asociated
 	/// If the value is -1, the mesh is single and this renderer uses it.
 	/// If the value is 0, the renderer gameObject is parent of the model's meshes.
 	/// If the value is >0,the renderer corresponds to a child mesh of the original model.
@@ -74,18 +74,6 @@ private:
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
-
-
-	unsigned int vertexShader;
-	const char* vertexShaderSource = "#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;\n"
-		"void main()\n"
-		"{\n"
-		"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-		"}\0";
-
-	unsigned int shaderProgram;
-
 	
 
 	bool modelLoadSuccess = false;
