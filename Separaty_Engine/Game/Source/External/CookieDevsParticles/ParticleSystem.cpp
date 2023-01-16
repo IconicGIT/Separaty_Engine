@@ -164,7 +164,7 @@ void CDevShader::SetFloat(const std::string& name, float value) const
 
 
 void CDevShader::SetMat4x4(const std::string& name, mat4x4 value) const
-{
+{/*
 	if (std::strcmp(name.c_str(), "projection") == 0)
 	{
 		std::cout << "projection: " << std::endl;
@@ -206,7 +206,7 @@ void CDevShader::SetMat4x4(const std::string& name, mat4x4 value) const
 
 		}
 		std::cout << std::endl;
-	}
+	}*/
 
 
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, false, &value);
@@ -363,11 +363,40 @@ void Emitter::Update(float dt)
 
 	if (!particles.empty())
 	{
+		GLint polygonMode[2];
+		glGetIntegerv(GL_POLYGON_MODE, polygonMode);
+
+		glPolygonMode(GL_FRONT, GL_FILL);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glColor4f(1.0, 1.0, 1.0, 1);
+		
+		glEnable(GL_TEXTURE_2D);
+
+		
+
 		for (size_t i = 0; i < particles.size(); i++)
 		{
+			//enable depth test
+			GLint depthTest[2];
+			glGetIntegerv(GL_DEPTH_TEST, polygonMode);
+			glDisable(GL_DEPTH_TEST);
+
+			glEnable(GL_BLEND);
+
+			//Draw particle
 			DrawParticle(i);
 
+
+			glEnable(depthTest[0]);
+			glGetIntegerv(GL_POLYGON_MODE, &polygonMode[0]);
+			glDisable(GL_BLEND);
+			glEnable(GL_DEPTH_TEST);
+
 		}
+		glDisable(GL_TEXTURE_2D);
+		glPolygonMode(GL_FRONT, polygonMode[0]);
 	}
 }
 
@@ -399,65 +428,81 @@ void Emitter::DrawParticle(int index)
 	//glLinkProgram(ID);
 
 	//glUseProgram(particles[index]->selectedShader->ID);
-	std::shared_ptr<CDevShader> s = particles[index]->selectedShader;
+	//std::shared_ptr<CDevShader> s = particles[index]->selectedShader;
 
 
-	CDeVertex vertices[4] = {
-		particles[index]->vertices[0],
-		particles[index]->vertices[1],
-		particles[index]->vertices[2],
-		particles[index]->vertices[3]
-	};
+	//CDeVertex vertices[4] = {
+	//	particles[index]->vertices[0],
+	//	particles[index]->vertices[1],
+	//	particles[index]->vertices[2],
+	//	particles[index]->vertices[3]
+	//};
 
-	int indices[6] =
-	{
-		particles[index]->indices[0],
-		particles[index]->indices[1],
-		particles[index]->indices[2],
-		particles[index]->indices[3],
-		particles[index]->indices[4],
-		particles[index]->indices[5]
-	};
+	//int indices[6] =
+	//{
+	//	particles[index]->indices[0],
+	//	particles[index]->indices[1],
+	//	particles[index]->indices[2],
+	//	particles[index]->indices[3],
+	//	particles[index]->indices[4],
+	//	particles[index]->indices[5]
+	//};
 
-	//set mesh
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	////set mesh
+	//glGenVertexArrays(1, &VAO);
+	//glGenBuffers(1, &VBO);
+	//glGenBuffers(1, &EBO);
 
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(CDeVertex), &vertices[0], GL_DYNAMIC_DRAW);
+	//glBindVertexArray(VAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(CDeVertex), &vertices[0], GL_DYNAMIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), &indices[0], GL_DYNAMIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), &indices[0], GL_DYNAMIC_DRAW);
 
-	// Specify position data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Position));
-	glEnableVertexAttribArray(0);
+	//// Specify position data
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Position));
+	//glEnableVertexAttribArray(0);
 
-	// Specify normal data
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Normal));
-	glEnableVertexAttribArray(1);
+	//// Specify normal data
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Normal));
+	//glEnableVertexAttribArray(1);
 
-	// Specify texture coordinates data
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
-	glEnableVertexAttribArray(2);
+	//// Specify texture coordinates data
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
+	//glEnableVertexAttribArray(2);
 
 	// Use the Shader program
 	//put if selected
 	//particles[index]->myShader->Use();
 
-	GLint polygonMode[2];
-	glGetIntegerv(GL_POLYGON_MODE, polygonMode);
+	
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	unsigned int diffuseNr = 1;
-	unsigned int specularNr = 1;
+	
+
+	
+
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, GL_TEXTURE0);
+
+
 	if (!particles[index]->textures.empty())
 	{
 		for (unsigned int i = 0; i < particles[index]->textures.size(); i++)
 		{
+
+			GLint actTex[2];
+			glGetIntegerv(GL_ACTIVE_TEXTURE, actTex);
+
+			int a = int(GL_TEXTURE0) - 33984;
+			int b = int(GL_TEXTURE31) - 33984;
+			int c = int(actTex[0]) - 33984;
+
+			 //Bind the texture to the active texture unit
+
+			 //Set the active texture unit
+		/*	glActiveTexture(GL_TEXTURE0 + i);*/
 			vec3 vertices[4]{
 				particles[index]->vertices[0].Position,
 				particles[index]->vertices[1].Position,
@@ -471,24 +516,23 @@ void Emitter::DrawParticle(int index)
 				particles[index]->vertices[2].TexCoords,
 				particles[index]->vertices[3].TexCoords
 			};
-			glDisable(GL_TEXTURE_2D);
-
 			
 
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, 1);
-
+			glActiveTexture(index);
+			glBindTexture(GL_TEXTURE_2D, particles[index]->textures[i]->id);
 			glBegin(GL_QUADS);
-			glTexCoord2f(texCoords[0].x, texCoords[0].y); glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z + 1);
-			glTexCoord2f(texCoords[1].x, texCoords[1].y); glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z + 1);
-			glTexCoord2f(texCoords[2].x, texCoords[2].y); glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z + 1);
-			glTexCoord2f(texCoords[3].x, texCoords[3].y); glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z + 1);
-			glEnd();
 
+			glTexCoord2f(texCoords[0].x, texCoords[0].y); glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+			glTexCoord2f(texCoords[1].x, texCoords[1].y); glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+			glTexCoord2f(texCoords[2].x, texCoords[2].y); glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+			glTexCoord2f(texCoords[3].x, texCoords[3].y); glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+
+			glEnd();
+			glDisable(GL_BLEND);
+
+			unsigned int diffuseNr = 1;
+			unsigned int specularNr = 1;
 			
-			glDisable(GL_TEXTURE_2D);
 			//// retrieve texture number (the N in diffuse_textureN)
 			//std::string number;
 			//std::string name = particles[index]->textures[i]->type;
@@ -505,22 +549,22 @@ void Emitter::DrawParticle(int index)
 			//glUniform1i(glGetUniformLocation(particles[index]->myShader->ID, ("material." + name + number).c_str()), i);
 		}
 	}
+	
 
-	// Draw the mesh using the indices
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//// Draw the mesh using the indices
+	//glBindVertexArray(VAO);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
 	/*particles[index]->myShader->Unuse();
 	particles[index]->selectedShader->Unuse();*/
 
 	// Unbind the vertex array after drawing
-	glBindVertexArray(0);
+	//glBindVertexArray(0);
 
-	glGetIntegerv(GL_POLYGON_MODE, &polygonMode[0]);
-	glDeleteVertexArrays(4, &VAO);
-	glDeleteBuffers(sizeof(VBO), &VBO);
-	glDeleteBuffers(sizeof(EBO), &EBO);
+	//glDeleteVertexArrays(4, &VAO);
+	//glDeleteBuffers(sizeof(VBO), &VBO);
+	//glDeleteBuffers(sizeof(EBO), &EBO);
 }
 
 /// <summary>
@@ -928,17 +972,17 @@ void Particle::UpdateParticleMesh(float dt)
 		translationWorld.M[0] = translationWorld.M[5] = translationWorld.M[10] = translationWorld.M[15] = 1;
 	}
 
-	std::cout << "transform: " << std::endl;
-	for (size_t i = 0; i < 16; i += 4)
-	{
-		std::cout << transformWorld.M[i] << "\t";
-		std::cout << transformWorld.M[i + 1] << "\t";
-		std::cout << transformWorld.M[i + 2] << "\t";
-		std::cout << transformWorld.M[i + 3];
-		std::cout << std::endl;
+	//std::cout << "transform: " << std::endl;
+	//for (size_t i = 0; i < 16; i += 4)
+	//{
+	//	std::cout << transformWorld.M[i] << "\t";
+	//	std::cout << transformWorld.M[i + 1] << "\t";
+	//	std::cout << transformWorld.M[i + 2] << "\t";
+	//	std::cout << transformWorld.M[i + 3];
+	//	std::cout << std::endl;
 
-	}
-	std::cout << std::endl;
+	//}
+	//std::cout << std::endl;
 
 	/*float3 resultantVector = vec(direction).Normalized() * resultantPosition;*/
 

@@ -157,7 +157,7 @@ void Mesh::Draw(Shader& shader, bool wireframeActive)
     //glDisable(GL_TEXTURE_2D);
 
     
-
+    //deactivate Textures
     if (!textures.empty())
     {
         for (unsigned int i = 0; i < textures.size(); i++)

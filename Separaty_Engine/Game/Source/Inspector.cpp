@@ -1171,60 +1171,61 @@ update_status Inspector::Update(float dt)
 										ImVec2 pos = ImGui::GetCursorScreenPos();
 										float image_size = 84;
 										
-										if (submod->particle_textures.size() > 0)
-										{
-											/*int amount = submod->particle_texture_amountUsing;
-											int amountH = submod->particle_texture_rowsColumnsUsing[0];
-											int amountV = submod->particle_texture_rowsColumnsUsing[1];
+										//if (submod->particle_textures.size() > 0)
+										//{
+										//	/*int amount = submod->particle_texture_amountUsing;
+										//	int amountH = submod->particle_texture_rowsColumnsUsing[0];
+										//	int amountV = submod->particle_texture_rowsColumnsUsing[1];
 
-											int amountIndex = 0;
-											for (size_t v = 0; v < amountV; v++)
-											{
-												for (size_t h = 0; h < amountH; h++)
-												{
-													if (amountIndex < amount)
-													{
-														float a1 = pos.x + h * int(image_size / amountH);
-														float b1 = pos.x + h * int(image_size / amountH) + int(image_size / amountH);
+										//	int amountIndex = 0;
+										//	for (size_t v = 0; v < amountV; v++)
+										//	{
+										//		for (size_t h = 0; h < amountH; h++)
+										//		{
+										//			if (amountIndex < amount)
+										//			{
+										//				float a1 = pos.x + h * int(image_size / amountH);
+										//				float b1 = pos.x + h * int(image_size / amountH) + int(image_size / amountH);
 
-														float a2 = pos.y + v * int(image_size / amountV);
-														float b2 = pos.y + v * int(image_size / amountV) + int(image_size / amountV);
+										//				float a2 = pos.y + v * int(image_size / amountV);
+										//				float b2 = pos.y + v * int(image_size / amountV) + int(image_size / amountV);
 
 
-														draw_list->AddRectFilled(
-															ImVec2(a1, a2),
-															ImVec2(b1, b2),
-															IM_COL32(102, 255, 102, 50),
-															0.0f,
-															ImDrawCornerFlags_None);
+										//				draw_list->AddRectFilled(
+										//					ImVec2(a1, a2),
+										//					ImVec2(b1, b2),
+										//					IM_COL32(102, 255, 102, 50),
+										//					0.0f,
+										//					ImDrawCornerFlags_None);
 
-														draw_list->AddRect(
-															ImVec2(a1, a2),
-															ImVec2(b1, b2),
-															IM_COL32(153, 255, 153, 50),
-															0.0f,
-															ImDrawCornerFlags_None,
-															1.f);
+										//				draw_list->AddRect(
+										//					ImVec2(a1, a2),
+										//					ImVec2(b1, b2),
+										//					IM_COL32(153, 255, 153, 50),
+										//					0.0f,
+										//					ImDrawCornerFlags_None,
+										//					1.f);
 
-														amountIndex++;
-													}
-													else
-													{
-														break;
-													}
-												}
-												if (!(amountIndex < amount)) break;
-											}*/
+										//				amountIndex++;
+										//			}
+										//			else
+										//			{
+										//				break;
+										//			}
+										//		}
+										//		if (!(amountIndex < amount)) break;
+										//	}*/
 
-											float h_ = float(submod->particle_textures[0]->height) / float(submod->particle_textureReference->height) * image_size;
-											float w_ = float(submod->particle_textures[0]->width) / float(submod->particle_textureReference->width) * image_size;
+										//	float h_ = float(submod->particle_textures[0]->height) / float(submod->particle_textureReference->height) * image_size;
+										//	float w_ = float(submod->particle_textures[0]->width) / float(submod->particle_textureReference->width) * image_size;
 
-											ImGui::Image((void*)(intptr_t)submod->particle_textures[0]->id, ImVec2(w_, h_));
-										}
-										else
-										{
-											ImGui::Image((ImTextureID)15, ImVec2(image_size, image_size));
-										}
+										//	ImGui::Image((void*)(intptr_t)submod->particle_textures[0]->id, ImVec2(w_, h_));
+										//}
+										//else
+										//{
+										//	ImGui::Image((ImTextureID)15, ImVec2(image_size, image_size));
+										//}
+										ImGui::Image((ImTextureID)submod->particle_textureReference->id, ImVec2(image_size, image_size));
 
 										ImDrawList* draw_list = ImGui::GetWindowDrawList();
 										if (submod->particle_texture_isSliced)
@@ -1255,14 +1256,14 @@ update_status Inspector::Update(float dt)
 															draw_list->AddRectFilled(
 																ImVec2(a1, a2),
 																ImVec2(b1, b2),
-																IM_COL32(102, 255, 102, 50),
+																IM_COL32(102, 255, 102, 100),
 																0.0f,
 																ImDrawCornerFlags_None);
 
 															draw_list->AddRect(
 																ImVec2(a1, a2),
 																ImVec2(b1, b2),
-																IM_COL32(153, 255, 153, 50),
+																IM_COL32(153, 255, 153, 100),
 																0.0f,
 																ImDrawCornerFlags_None,
 																1.f);

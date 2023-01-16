@@ -109,7 +109,7 @@ std::vector<Texture> LoadSlicedTexture(std::string file_path, int horizontalAmou
 						if (nrChannels == 4)
 						{
 							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sectionWidth, sectionHeight * horizontalAmount, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-							glTexSubImage2D(GL_TEXTURE_2D, 0, sectionX, sectionY, sectionWidth, sectionHeight * horizontalAmount, GL_RGB, GL_UNSIGNED_BYTE, data);
+							glTexSubImage2D(GL_TEXTURE_2D, 0, sectionX, sectionY, sectionWidth, sectionHeight * horizontalAmount, GL_RGBA, GL_UNSIGNED_BYTE, data);
 						}
 
 						glGenerateMipmap(GL_TEXTURE_2D);

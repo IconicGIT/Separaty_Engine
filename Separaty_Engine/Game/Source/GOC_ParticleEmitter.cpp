@@ -57,12 +57,18 @@ bool GOC_ParticleEmitter::Execute()
 
 			for (size_t i = 0; i < 2; i++)
 			{
+
 				if (submod->particle_followEmitter)
 				{
 					arrayAABB[0] =  float3(emitterPos.x, emitterPos.y, emitterPos.z);
 
 					arrayAABB[1] = float3(emitterPos.x, emitterPos.y, emitterPos.z);
 				}
+
+
+				//arrayAABB[0] = submod->particle_originPosition_range[0] + float3(emitterPos.x, emitterPos.y, emitterPos.z);
+
+				//arrayAABB[1] = submod->particle_originPosition_range[1] + float3(emitterPos.x, emitterPos.y, emitterPos.z);
 
 			}
 
