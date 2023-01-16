@@ -56,6 +56,9 @@ public:
 	Sphere sphereCreation = Sphere(float3::zero, 1.0f);
 	Circle circleCreation = Circle(float3::unitY, float3::unitY, 1.0f);
 
+	//float3 RandPos();
+
+	math::LCG randomMath;
 private:
 	std::string name;
 

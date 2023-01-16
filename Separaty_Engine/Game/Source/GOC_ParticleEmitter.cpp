@@ -20,7 +20,78 @@ bool GOC_ParticleEmitter::Execute()
 {
 	vec3 emitterPos = gameObject->transform->GetPosition();
 	emitter->position = float3(emitterPos.x, emitterPos.y, emitterPos.z);
+
+	for (std::shared_ptr<Submodule> submod : emitter->submodules)
+	{
+		float3 arrayAABB[2] = { submod->particle_originPosition_range[0], submod->particle_originPosition_range[1] };
+
+		AABB box;
+
+		box.SetNegativeInfinity();
+
+		box.Enclose(arrayAABB, 2);
+
+		float3 arrayVec[8];
+
+		for (size_t i = 0; i < 2; i++)
+		{
+			if (submod->particle_followEmitter)
+			{
+				arrayAABB[0] += float3(emitterPos.x, emitterPos.y, emitterPos.z);
+
+				arrayAABB[1] += float3(emitterPos.x, emitterPos.y, emitterPos.z);
+			}
+			
+		}
+
+		box.GetCornerPoints(arrayVec);
+
+		DrawCube(arrayVec, Color(1, 1, 1, 1));
+	}
+
+
 	return true;
+}
+
+void GOC_ParticleEmitter::DrawCube(static float3* corners, Color color)
+{
+	glLineWidth(2.0f);
+	glColor4f(color.r, color.g, color.b, color.a);
+
+	glBegin(GL_QUADS);
+
+	glVertex3fv((GLfloat*)&corners[1]);
+	glVertex3fv((GLfloat*)&corners[5]);
+	glVertex3fv((GLfloat*)&corners[7]);
+	glVertex3fv((GLfloat*)&corners[3]);
+						
+	glVertex3fv((GLfloat*)&corners[4]);
+	glVertex3fv((GLfloat*)&corners[0]);
+	glVertex3fv((GLfloat*)&corners[2]);
+	glVertex3fv((GLfloat*)&corners[6]);
+						
+	glVertex3fv((GLfloat*)&corners[5]);
+	glVertex3fv((GLfloat*)&corners[4]);
+	glVertex3fv((GLfloat*)&corners[6]);
+	glVertex3fv((GLfloat*)&corners[7]);
+						
+	glVertex3fv((GLfloat*)&corners[0]);
+	glVertex3fv((GLfloat*)&corners[1]);
+	glVertex3fv((GLfloat*)&corners[3]);
+	glVertex3fv((GLfloat*)&corners[2]);
+						
+	glVertex3fv((GLfloat*)&corners[3]);
+	glVertex3fv((GLfloat*)&corners[7]);
+	glVertex3fv((GLfloat*)&corners[6]);
+	glVertex3fv((GLfloat*)&corners[2]);
+						
+	glVertex3fv((GLfloat*)&corners[0]);
+	glVertex3fv((GLfloat*)&corners[4]);
+	glVertex3fv((GLfloat*)&corners[5]);
+	glVertex3fv((GLfloat*)&corners[1]);
+
+	glEnd();
+
 }
 //
 //void GOC_ParticleEmitter::SetSubmoduleTexture(Texture texture, uint SubmoduleId)

@@ -6,6 +6,7 @@
 #include "CookieDevsParticles/ParticleSystem.h"
 #include "Texture.h"
 #include "TextureLoader.h"
+#include "MathGeoLib/Geometry/AABB.h"
 
 
 class Emitter;
@@ -25,6 +26,9 @@ public:
 	//void SetSubmoduleTexture(Texture texture, uint SubmoduleId);
 	void SetSubmoduleTexture(std::shared_ptr<CDevTexture> submoduleTextureReference, std::shared_ptr<Submodule> &submodule);
 
+	void DrawCube(static float3* corners, Color color);
+
+	std::vector<AABB> submodulesAABB;
 private:
 
 };

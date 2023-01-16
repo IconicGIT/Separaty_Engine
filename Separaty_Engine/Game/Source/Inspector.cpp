@@ -1442,6 +1442,21 @@ update_status Inspector::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+//float3 Inspector::RandPos()
+//{
+//	float3 spawn = float3::zero;
+//	float angle = 0.0f;
+//	float centerDist = 0.0f;
+//
+//	if (boxShape)
+//	{
+//		spawn = boxCreation.RandomPointInside(randomMath);
+//		 = (float3::unitY * gameObject->transform->GetRotation().ToFloat3x3()).Normalized();
+//	}
+//	
+//
+//}
+
 //Inspector
 //void UIFunctions::SetPosition(const float3& newPosition)
 //{
