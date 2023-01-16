@@ -21,6 +21,8 @@ public:
 
 	float gameTime = 0.0f;
 	float timeSpeed = 1.0f;
+
+	double time = 0;
 private:
 	std::string name;
 
