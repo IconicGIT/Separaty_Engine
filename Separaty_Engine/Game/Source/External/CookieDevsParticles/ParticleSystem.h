@@ -42,6 +42,8 @@ public:
     void SetFloat(const std::string& name, float value) const;
 
     void SetMat4x4(const std::string& name, mat4x4 value) const;
+
+	mat4x4 proj, view, model;
 };
 
 
@@ -210,6 +212,7 @@ public:
 	std::shared_ptr<Emitter> CreateEmitter();
 	
 	
+	
 
 private:
 
@@ -236,6 +239,7 @@ public:
 
 	void UpdateSubmodules(float dt);
 	void DrawParticle(int index);
+	void UpdateSubmoduleShaderData(std::shared_ptr<Submodule>& submodule, mat4x4 projection, mat4x4 view);
 
 	void AppendToDelete();
 	void Delete();
@@ -255,6 +259,17 @@ public:
 	uint submoduleLastID = 0;
 
 	float3 position;
+	mat4x4 transformLocal;
+	mat4x4 transformWorld;
+
+	mat4x4 translationLocal;
+	mat4x4 translationWorld;
+
+	mat4x4 scalingLocal;
+	mat4x4 scalingWorld;
+
+	mat4x4 rotationLocal;
+	mat4x4 rotationWorld;
 
 	bool timeColor = false;
 private:
@@ -373,6 +388,18 @@ public:
 	CDeVertex vertices[4];
 	float3 quad_vertices[4];
 	int indices[6];
+
+	mat4x4 transformLocal;
+	mat4x4 transformWorld;
+
+	mat4x4 translationLocal;
+	mat4x4 translationWorld;
+
+	mat4x4 scalingLocal;
+	mat4x4 scalingWorld;
+
+	mat4x4 rotationLocal;
+	mat4x4 rotationWorld;
 
 	//particle data
 	Emitter* emitter;

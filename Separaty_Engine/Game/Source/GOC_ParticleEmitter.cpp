@@ -10,6 +10,11 @@ GOC_ParticleEmitter::GOC_ParticleEmitter(GameObject* gameObjectAttached, int id)
 	GOC_type = GOC_Type::GOC_PARTICLE_EMITTER;
 
 	emitter = App->engineSystem->particleSystem->CreateEmitter();
+	std::shared_ptr<Submodule> firstSubmod = emitter->CreateSubmodule();
+
+	std::shared_ptr<CDevShader> shader = std::make_shared<CDevShader>("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
+
+	SetSubmoduleShader(shader, firstSubmod);
 }
 
 GOC_ParticleEmitter::~GOC_ParticleEmitter()
@@ -20,6 +25,7 @@ bool GOC_ParticleEmitter::Execute()
 {
 	vec3 emitterPos = gameObject->transform->GetPosition();
 	emitter->position = float3(emitterPos.x, emitterPos.y, emitterPos.z);
+
 
 	for (std::shared_ptr<Submodule> submod : emitter->submodules)
 	{
@@ -46,9 +52,30 @@ bool GOC_ParticleEmitter::Execute()
 
 		box.GetCornerPoints(arrayVec);
 
-		DrawCube(arrayVec, Color(1, 1, 1, 1));
+		//get polygon mode
+		GLint polygonMode[2];
+		glGetIntegerv(GL_POLYGON_MODE, polygonMode);
+
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//DrawCube(arrayVec, Color(1, 1, 1, 1));
+
+		glGetIntegerv(GL_POLYGON_MODE, &polygonMode[0]);
+
+
+		//DEBUG_LOG("%i, %i", int(polygonMode[0]), int(polygonMode[1]));
+		
 	}
 
+	
+
+	mat4x4 projection = App->renderer3D->ProjectionMatrix;
+	mat4x4 view = App->camera->GetViewMatrix();
+
+	for (std::shared_ptr<Submodule> submod : emitter->submodules)
+	{
+		emitter->UpdateSubmoduleShaderData(submod, projection, view);
+	}
 
 	return true;
 }
@@ -59,6 +86,7 @@ void GOC_ParticleEmitter::DrawCube(static float3* corners, Color color)
 	glColor4f(color.r, color.g, color.b, color.a);
 
 	glBegin(GL_QUADS);
+
 
 	glVertex3fv((GLfloat*)&corners[1]);
 	glVertex3fv((GLfloat*)&corners[5]);
@@ -148,5 +176,42 @@ void GOC_ParticleEmitter::SetSubmoduleTexture(std::shared_ptr<CDevTexture> textu
 		
 
 	}
+
+}
+
+
+
+void GOC_ParticleEmitter::SetSubmoduleShader(std::shared_ptr<CDevShader> shader, std::shared_ptr<Submodule>& submodule, mat4x4 projection, mat4x4 view)
+{
+	mat4x4 i = mat4x4(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	);
+	shader->SetMat4x4("projection", projection);
+	shader->SetMat4x4("view", view);
+	shader->SetMat4x4("model", i);
+
+	std::shared_ptr<Submodule> submod = emitter->GetSubmodule(submodule->id);
+	submod->particle_mainShader = shader;
+	submod->particle_selectedShader = shader;
+
+}
+
+
+void GOC_ParticleEmitter::SetSubmoduleShader(std::shared_ptr<CDevShader> shader, std::shared_ptr<Submodule>& submodule)
+{
+	mat4x4 i = IdentityMatrix;
+
+	mat4x4 projection = App->renderer3D->ProjectionMatrix;
+	mat4x4 view = App->camera->GetViewMatrix();
+	shader->SetMat4x4("projection", projection);
+	shader->SetMat4x4("view", view);
+	shader->SetMat4x4("model", i);
+
+	std::shared_ptr<Submodule> submod = emitter->GetSubmodule(submodule->id);
+	submod->particle_mainShader = shader;
+	submod->particle_selectedShader = shader;
 
 }

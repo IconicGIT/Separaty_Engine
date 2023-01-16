@@ -103,11 +103,13 @@ std::vector<Texture> LoadSlicedTexture(std::string file_path, int horizontalAmou
 					{
 						if (nrChannels == 3)
 						{
-							glTexSubImage2D(GL_TEXTURE_2D, 0, sectionX, sectionY, sectionWidth, sectionHeight, GL_RGB, GL_UNSIGNED_BYTE, data);
+							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sectionWidth, sectionHeight * horizontalAmount, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+							glTexSubImage2D(GL_TEXTURE_2D, 0, sectionX, sectionY, sectionWidth, sectionHeight * horizontalAmount, GL_RGB, GL_UNSIGNED_BYTE, data);
 						}
 						if (nrChannels == 4)
 						{
-							glTexSubImage2D(GL_TEXTURE_2D, 0, sectionX, sectionY, sectionWidth, sectionHeight, GL_RGBA, GL_UNSIGNED_BYTE, data);
+							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sectionWidth, sectionHeight * horizontalAmount, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+							glTexSubImage2D(GL_TEXTURE_2D, 0, sectionX, sectionY, sectionWidth, sectionHeight * horizontalAmount, GL_RGB, GL_UNSIGNED_BYTE, data);
 						}
 
 						glGenerateMipmap(GL_TEXTURE_2D);
@@ -123,9 +125,19 @@ std::vector<Texture> LoadSlicedTexture(std::string file_path, int horizontalAmou
 				tex.id = texture;
 				tex.path = file_path;
 				tex.type = "null";
-				tex.width = width;
-				tex.height = height;
+				tex.width = sectionWidth;
+				tex.height = sectionHeight;
 				tex.nrChannels = nrChannels;
+
+				int w, h;
+
+				glBindTexture(GL_TEXTURE_2D, texture);
+				glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
+				glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
+
+				DEBUG_LOG("Width: %i", w);
+				DEBUG_LOG("Height: %i", h);
+
 
 				output.push_back(tex);
 			}

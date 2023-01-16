@@ -17,6 +17,31 @@ float RandomRange(float value01, float value02) {
 
 }
 
+
+mat4x4 AddMatrices(const mat4x4& Matrix1, const mat4x4& Matrix2)
+{
+	mat4x4 Matrix3;
+
+	Matrix3.M[0] = Matrix1.M[0] + Matrix2.M[0];
+	Matrix3.M[1] = Matrix1.M[1] + Matrix2.M[1];
+	Matrix3.M[2] = Matrix1.M[2] + Matrix2.M[2];
+	Matrix3.M[3] = Matrix1.M[3] + Matrix2.M[3];
+	Matrix3.M[4] = Matrix1.M[4] + Matrix2.M[4];
+	Matrix3.M[5] = Matrix1.M[5] + Matrix2.M[5];
+	Matrix3.M[6] = Matrix1.M[6] + Matrix2.M[6];
+	Matrix3.M[7] = Matrix1.M[7] + Matrix2.M[7];
+	Matrix3.M[8] = Matrix1.M[8] + Matrix2.M[8];
+	Matrix3.M[9] = Matrix1.M[9] + Matrix2.M[9];
+	Matrix3.M[10] = Matrix1.M[10] + Matrix2.M[10];
+	Matrix3.M[11] = Matrix1.M[11] + Matrix2.M[11];
+	Matrix3.M[12] = Matrix1.M[12] + Matrix2.M[12];
+	Matrix3.M[13] = Matrix1.M[13] + Matrix2.M[13];
+	Matrix3.M[14] = Matrix1.M[14] + Matrix2.M[14];
+	Matrix3.M[15] = Matrix1.M[15] + Matrix2.M[15];
+
+	return Matrix3;
+}
+
 CDevShader::CDevShader(const char* vertexPath, const char* fragmentPath)
 {
 	Set(vertexPath, fragmentPath);
@@ -140,6 +165,50 @@ void CDevShader::SetFloat(const std::string& name, float value) const
 
 void CDevShader::SetMat4x4(const std::string& name, mat4x4 value) const
 {
+	if (std::strcmp(name.c_str(), "projection") == 0)
+	{
+		std::cout << "projection: " << std::endl;
+		for (size_t i = 0; i < 16; i += 4)
+		{
+			std::cout << value.M[i] << "\t";
+			std::cout << value.M[i + 1] << "\t";
+			std::cout << value.M[i + 2] << "\t";
+			std::cout << value.M[i + 3];
+			std::cout << std::endl;
+
+		}
+		std::cout << std::endl;
+	}
+	if (std::strcmp(name.c_str(), "view") == 0)
+	{
+		std::cout << "view: " << std::endl;
+		for (size_t i = 0; i < 16; i += 4)
+		{
+			std::cout << value.M[i] << "\t";
+			std::cout << value.M[i + 1] << "\t";
+			std::cout << value.M[i + 2] << "\t";
+			std::cout << value.M[i + 3];
+			std::cout << std::endl;
+
+		}
+		std::cout << std::endl;
+	}
+	if (std::strcmp(name.c_str(), "model") == 0)
+	{
+		std::cout << "model: " << std::endl;
+		for (size_t i = 0; i < 16; i += 4)
+		{
+			std::cout << value.M[i] << "\t";
+			std::cout << value.M[i + 1] << "\t";
+			std::cout << value.M[i + 2] << "\t";
+			std::cout << value.M[i + 3];
+			std::cout << std::endl;
+
+		}
+		std::cout << std::endl;
+	}
+
+
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, false, &value);
 }
 
@@ -250,9 +319,21 @@ bool ParticleSystem::SaveState(JSON_Value* file, std::string root) const
 Emitter::Emitter()
 {
 	position = float3(0, 0, 0);
-	std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this, submoduleLastID);
-	submodules.push_back(newSubmodule);
-	submoduleLastID++;
+	//std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this, submoduleLastID);
+	//submodules.push_back(newSubmodule);
+	//submoduleLastID++;
+
+	transformLocal = IdentityMatrix;
+	transformWorld = IdentityMatrix;
+
+	translationLocal = IdentityMatrix;
+	translationWorld = IdentityMatrix;
+
+	scalingLocal = IdentityMatrix;
+	scalingWorld = IdentityMatrix;
+
+	rotationLocal = IdentityMatrix;
+	rotationWorld = IdentityMatrix;
 }
 
 Emitter::~Emitter()
@@ -317,7 +398,8 @@ void Emitter::DrawParticle(int index)
 	//glAttachShader(ID, fragmentShader);
 	//glLinkProgram(ID);
 
-	//glUseProgram(particles[index]->myShader->ID);
+	//glUseProgram(particles[index]->selectedShader->ID);
+	std::shared_ptr<CDevShader> s = particles[index]->selectedShader;
 
 
 	CDeVertex vertices[4] = {
@@ -362,7 +444,13 @@ void Emitter::DrawParticle(int index)
 	glEnableVertexAttribArray(2);
 
 	// Use the Shader program
+	//put if selected
 	//particles[index]->myShader->Use();
+
+	GLint polygonMode[2];
+	glGetIntegerv(GL_POLYGON_MODE, polygonMode);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
@@ -370,20 +458,51 @@ void Emitter::DrawParticle(int index)
 	{
 		for (unsigned int i = 0; i < particles[index]->textures.size(); i++)
 		{
-			// retrieve texture number (the N in diffuse_textureN)
-			std::string number;
-			std::string name = particles[index]->textures[i]->type;
-			if (name == "texture_diffuse")
-				number = std::to_string(diffuseNr++);
-			else if (name == "texture_specular")
-				number = std::to_string(specularNr++);
+			vec3 vertices[4]{
+				particles[index]->vertices[0].Position,
+				particles[index]->vertices[1].Position,
+				particles[index]->vertices[2].Position,
+				particles[index]->vertices[3].Position,
+			};
 
-				// Bind the texture to the corresponding texture unit
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, particles[index]->textures[i]->id);
+			vec2 texCoords[4]{
+				particles[index]->vertices[0].TexCoords,
+				particles[index]->vertices[1].TexCoords,
+				particles[index]->vertices[2].TexCoords,
+				particles[index]->vertices[3].TexCoords
+			};
+			glDisable(GL_TEXTURE_2D);
 
-			// Set the uniform variable for the texture in the fragment shader
-			glUniform1i(glGetUniformLocation(particles[index]->myShader->ID, ("material." + name + number).c_str()), i);
+			
+
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 1);
+
+			glBegin(GL_QUADS);
+			glTexCoord2f(texCoords[0].x, texCoords[0].y); glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z + 1);
+			glTexCoord2f(texCoords[1].x, texCoords[1].y); glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z + 1);
+			glTexCoord2f(texCoords[2].x, texCoords[2].y); glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z + 1);
+			glTexCoord2f(texCoords[3].x, texCoords[3].y); glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z + 1);
+			glEnd();
+
+			
+			glDisable(GL_TEXTURE_2D);
+			//// retrieve texture number (the N in diffuse_textureN)
+			//std::string number;
+			//std::string name = particles[index]->textures[i]->type;
+			//if (name == "texture_diffuse")
+			//	number = std::to_string(diffuseNr++);
+			//else if (name == "texture_specular")
+			//	number = std::to_string(specularNr++);
+
+			//	// Bind the texture to the corresponding texture unit
+			//glActiveTexture(GL_TEXTURE0 + i);
+			//glBindTexture(GL_TEXTURE_2D, particles[index]->textures[i]->id);
+
+			//// Set the uniform variable for the texture in the fragment shader
+			//glUniform1i(glGetUniformLocation(particles[index]->myShader->ID, ("material." + name + number).c_str()), i);
 		}
 	}
 
@@ -391,11 +510,14 @@ void Emitter::DrawParticle(int index)
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	//particles[index]->myShader->Unuse();
+
+	/*particles[index]->myShader->Unuse();
+	particles[index]->selectedShader->Unuse();*/
 
 	// Unbind the vertex array after drawing
 	glBindVertexArray(0);
 
+	glGetIntegerv(GL_POLYGON_MODE, &polygonMode[0]);
 	glDeleteVertexArrays(4, &VAO);
 	glDeleteBuffers(sizeof(VBO), &VBO);
 	glDeleteBuffers(sizeof(EBO), &EBO);
@@ -442,6 +564,24 @@ std::shared_ptr<Submodule> Emitter::GetSubmodule(uint id)
 	return nullptr;
 }
 
+void Emitter::UpdateSubmoduleShaderData(std::shared_ptr<Submodule>& submodule, mat4x4 projection, mat4x4 view)
+{
+	mat4x4 i = IdentityMatrix;
+
+	
+	std::shared_ptr<Submodule> submod = GetSubmodule(submodule->id);
+
+	submod->particle_mainShader->SetMat4x4("projection", projection);
+	submod->particle_mainShader->SetMat4x4("view", view);
+	submod->particle_mainShader->SetMat4x4("model", i);
+
+	submod->particle_selectedShader->SetMat4x4("projection", projection);
+	submod->particle_selectedShader->SetMat4x4("view", view);
+	submod->particle_selectedShader->SetMat4x4("model", i);
+
+
+}
+
 		//Submodule
 ///////////////////////////////////////////
 
@@ -468,7 +608,7 @@ Submodule::Submodule(Emitter* emitter, uint id)
 	
 
 	//initialize particle settings
-	particle_mainShader = std::make_shared<CDevShader>("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
+	particle_mainShader =     std::make_shared<CDevShader>("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/default.fragment");
 	particle_selectedShader = std::make_shared<CDevShader>("Assets/Project_1/Assets/Shaders/default.vertex", "Assets/Project_1/Assets/Shaders/selected.fragment");
 	particle_textureReference = std::make_shared<CDevTexture>();
 
@@ -688,7 +828,17 @@ Particle::Particle(Emitter* emitter)
 	direction = float3(0, 0, 0);
 	followEmitter = false;
 
+	transformLocal = IdentityMatrix;
+	transformWorld = IdentityMatrix;
 
+	translationLocal = IdentityMatrix;
+	translationWorld = IdentityMatrix;
+
+	scalingLocal = IdentityMatrix;
+	scalingWorld = IdentityMatrix;
+
+	rotationLocal = IdentityMatrix;
+	rotationWorld = IdentityMatrix;
 
 	SetParticleMesh();
 }
@@ -700,6 +850,10 @@ Particle::~Particle()
 void Particle::Update(float dt)
 {
 	UpdateParticleMesh(dt);
+
+	myShader->SetMat4x4("model", transformWorld);
+	selectedShader->SetMat4x4("model", transformWorld);
+
 	if (lifetime > 0)
 	{
 		lifetime -= dt;
@@ -713,7 +867,7 @@ void Particle::OnDeath()
 
 void Particle::SetParticleMesh()
 {
-
+	for (std::shared_ptr<Submodule> submod : emitter->submodules)
 	//vertex position
 	quad_vertices[0] = float3(-1, 1, 0);			quad_vertices[3] = float3(1, 1, 0);
 
@@ -769,7 +923,28 @@ void Particle::UpdateParticleMesh(float dt)
 
 	localPosition += resultantPosition;
 
+	translationLocal.translate(resultantPosition.x, resultantPosition.y, resultantPosition.z);
 
+
+	transformWorld = translationLocal * rotationLocal * scalingLocal;
+
+	if (followEmitter)
+	{
+		translationWorld = AddMatrices(emitter->translationWorld, translationLocal);
+		translationWorld.M[0] = translationWorld.M[5] = translationWorld.M[10] = translationWorld.M[15] = 1;
+	}
+
+	std::cout << "transform: " << std::endl;
+	for (size_t i = 0; i < 16; i += 4)
+	{
+		std::cout << transformWorld.M[i] << "\t";
+		std::cout << transformWorld.M[i + 1] << "\t";
+		std::cout << transformWorld.M[i + 2] << "\t";
+		std::cout << transformWorld.M[i + 3];
+		std::cout << std::endl;
+
+	}
+	std::cout << std::endl;
 
 	for (size_t i = 0; i < 4; i++)
 	{

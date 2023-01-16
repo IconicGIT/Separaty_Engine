@@ -12,6 +12,7 @@
 class Emitter;
 class Submodule;
 class CDevTexture;
+class CDevShader;
 
 class GOC_ParticleEmitter : public GameObjectComponent
 {
@@ -29,6 +30,10 @@ public:
 	void DrawCube(static float3* corners, Color color);
 
 	std::vector<AABB> submodulesAABB;
+
+	void SetSubmoduleShader(std::shared_ptr<CDevShader> shader, std::shared_ptr<Submodule>& submodule);
+	void SetSubmoduleShader(std::shared_ptr<CDevShader> shader, std::shared_ptr<Submodule>& submodule, mat4x4 projection, mat4x4 view);
+
 private:
 
 };

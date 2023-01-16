@@ -61,7 +61,6 @@ void Mesh::SetupMesh()
         bboxVertices[i] = vec;
     }
 
-    
 
     bbox.Enclose(bboxVertices, vertices.size());
     
