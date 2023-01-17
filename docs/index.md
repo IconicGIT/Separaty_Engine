@@ -23,17 +23,56 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 
 **Brandon Arandia**
 
-  * *Programmer*
-
+  * *Which has been in charge of the innermost part of the engine, developing the creation and management of:* 
+  * *Game Objects*
+  * *Editor Tools*
+  * *Texture Import*
+  * *Model Import*
+  * *Scene Seralitzation*
+  * *Resource Managment*
+  
     - Github account: [IconicGIT](https://github.com/IconicGIT)
     
 **Gerard Martinez**
 
-  * *Programmer*
-  
+  * *Which has been in charge of the design and interface of the engine, developing the creation and management of:* 
+  * *Game Objects Hierarchy*
+  * *Editor Tools*
+  * *Camera Control*
+  * *Texture Import*
+  * *Game viewport & editor viewport*
+  * *Transformation*
+  * *Resource Managment*
+ 
     - Github account: [GerardMartinez02](https://github.com/GerardMartinez02)
+ 
+Although as you can see, there are many steps in which we have worked as a team to achieve the objective, since the two of us have had a lot to do with their creation.
     
 ## Main core sub-system
+
+### Game Objects and Components:
+Game Object and Component structure similar to other engines lets the user have a more comfortable experience when using the engine and leads to a more productive work.
+
+### Mouse Picking: (Still in beta testing)
+Objects can easyly be selected in the scene window by clicking on them. 
+
+### Extense Configuration: 
+The user can easily customize the engine settings so the engine can adapt to the user needs. It is able change the style of the engine, the FPS...
+
+### Own File Format: 
+In order to make file management faster Separaty Engine uses it's own file format which increases the load and unload speed reducing waiting times. Thus avoiding loading all unnecessary fbx information each time.
+
+### Easy Import: 
+Importing in Separaty Engine is easy, just drag and drop any model or texture you need onto the engine and it will be automatically imported. If you want any file or texture to be imported without having to drag and drop you can easily select your files in the inspector editor. 
+
+### Scene Management: 
+Save your work by saving it into a scene. Then load again to pick up where you left off. 
+
+### Camera Culling: (Still in beta testing)
+Why should we waste resources printing objects which won't even be on screen? That's the question which leads to a camera culling implementation which will discard objects out of camera view printing only those which can be seen. To visualize the process Separaty Engine lets you choose if you want camera culling to be applied only on the main camera or also on the editor camera.
+
+### Resource Management: 
+Memory management is very important in computer games, so in order to save some those resources which won't be used won't be loaded until they are required and at the time they stop being used they will be unloaded from memory.
 
 ```markdown
 
