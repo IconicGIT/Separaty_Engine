@@ -23,7 +23,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
 
 **Brandon Arandia**
 
-  * *Which has been in charge of the innermost part of the engine, developing the creation and management of:* 
+*Which has been in charge of the innermost part of the engine, developing the creation and management of:* 
   * *Game Objects*
   * *Editor Tools*
   * *Texture Import*
@@ -35,7 +35,7 @@ Obviously, we believe that this is not necessary to emphasize, but we will say i
     
 **Gerard Martinez**
 
-  * *Which has been in charge of the design and interface of the engine, developing the creation and management of:* 
+*Which has been in charge of the design and interface of the engine, developing the creation and management of:* 
   * *Game Objects Hierarchy*
   * *Editor Tools*
   * *Camera Control*
