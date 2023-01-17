@@ -21,7 +21,7 @@ public:
 	}
 	~GOC_Texture(){}
 
-	bool Execute()
+	bool Execute(float dt)
 	{
 		return true;
 	}

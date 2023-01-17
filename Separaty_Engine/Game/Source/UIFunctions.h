@@ -28,6 +28,7 @@ public:
 	~UIFunctions();
 
 	bool Start();
+	bool Init() override;
 	update_status Update(float dt) override;
 
 	Preferences* showPreferences;

@@ -42,6 +42,18 @@ mat4x4 AddMatrices(const mat4x4& Matrix1, const mat4x4& Matrix2)
 	return Matrix3;
 }
 
+
+bool CompareDistance(std::shared_ptr<Particle> pA, std::shared_ptr<Particle> pB, float3 ref) {
+
+	float3 a = pA->localPosition;
+	float3 b = pB->localPosition;
+
+	double distA = (a.x - ref.x) * (a.x - ref.x) + (a.y - ref.y) * (a.y - ref.y);
+	double distB = (b.x - ref.x) * (b.x - ref.x) + (b.y - ref.y) * (b.y - ref.y);
+	return distA > distB;
+}
+
+
 CDevShader::CDevShader(const char* vertexPath, const char* fragmentPath)
 {
 	Set(vertexPath, fragmentPath);
@@ -292,13 +304,125 @@ bool ParticleSystem::CleanUp()
 
 std::shared_ptr<Emitter> ParticleSystem::CreateEmitter()
 {
-	std::shared_ptr<Emitter> newEmitter = std::make_shared<Emitter>();
+	std::shared_ptr<Emitter> newEmitter = std::make_shared<Emitter>(this);
 
 	allEmitters.push_back(newEmitter);
 
 
 
 	return newEmitter;
+}
+
+
+void ParticleSystem::DrawAllParticles()
+{
+	if (!allParticles.empty())
+	{
+		GLint polygonMode[2];
+		glGetIntegerv(GL_POLYGON_MODE, polygonMode);
+
+		glPolygonMode(GL_FRONT, GL_FILL);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glColor4f(1.0, 1.0, 1.0, 1);
+
+		glEnable(GL_TEXTURE_2D);
+
+		glDepthFunc(GL_LEQUAL);
+
+		for (size_t i = 0; i < allParticles.size(); i++)
+		{
+			//enable depth test
+			GLint depthTest[2];
+
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0);
+
+			glGetIntegerv(GL_DEPTH_TEST, polygonMode);
+			//glDisable(GL_DEPTH_TEST);
+			glDepthMask(GL_TRUE);
+			glClearDepth(1.0);
+			glDepthFunc(GL_LESS);
+
+			glEnable(GL_BLEND);
+
+			//Draw particle
+			DrawParticle(i);
+
+
+			glEnable(depthTest[0]);
+			glGetIntegerv(GL_POLYGON_MODE, &polygonMode[0]);
+			glDisable(GL_BLEND);
+			//glEnable(GL_DEPTH_TEST);
+
+		}
+		glDisable(GL_TEXTURE_2D);
+		glPolygonMode(GL_FRONT, polygonMode[0]);
+
+	}
+
+	allParticles.clear();
+}
+
+
+void ParticleSystem::DrawParticle(int index)
+{
+
+	if (!allParticles[index]->textures.empty())
+	{
+		for (unsigned int i = 0; i < allParticles[index]->textures.size(); i++)
+		{
+
+			vec3 vertices[4]{
+				allParticles[index]->vertices[0].Position,
+				allParticles[index]->vertices[1].Position,
+				allParticles[index]->vertices[2].Position,
+				allParticles[index]->vertices[3].Position,
+			};
+
+			vec2 texCoords[4]{
+				allParticles[index]->vertices[0].TexCoords,
+				allParticles[index]->vertices[1].TexCoords,
+				allParticles[index]->vertices[2].TexCoords,
+				allParticles[index]->vertices[3].TexCoords
+			};
+
+
+			glActiveTexture(index);
+			glBindTexture(GL_TEXTURE_2D, allParticles[index]->textures[i]->id);
+			glBegin(GL_QUADS);
+
+			glTexCoord2f(texCoords[0].x, texCoords[0].y); glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+			glTexCoord2f(texCoords[1].x, texCoords[1].y); glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+			glTexCoord2f(texCoords[2].x, texCoords[2].y); glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+			glTexCoord2f(texCoords[3].x, texCoords[3].y); glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+
+			glEnd();
+
+			unsigned int diffuseNr = 1;
+			unsigned int specularNr = 1;
+
+		}
+	}
+
+}
+
+
+void ParticleSystem::OrderParticlesByDistanceTo(float3 position)
+{
+	if (allParticles.size() > 0)
+	{
+		std::sort(allParticles.begin(), allParticles.end(), 
+			[&](std::shared_ptr<Particle> a, std::shared_ptr<Particle> b) 
+			{ return CompareDistance(a, b, position); }
+		);
+
+		for (size_t i = 0; i < allParticles.size(); i++)
+		{
+			allParticles[i]->drawOrder = i;
+		}
+	}
 }
 
 bool ParticleSystem::LoadState(JSON_Value* file, std::string root)
@@ -316,7 +440,7 @@ bool ParticleSystem::SaveState(JSON_Value* file, std::string root) const
 		//Emitter
 ///////////////////////////////////////////
 
-Emitter::Emitter()
+Emitter::Emitter(ParticleSystem* system) : particleSystem(system)
 {
 	position = float3(0, 0, 0);
 	//std::shared_ptr<Submodule> newSubmodule = std::make_shared<Submodule>(this, submoduleLastID);
@@ -361,47 +485,11 @@ void Emitter::Update(float dt)
 		particles[i]->Update(dt * emitterdt);
 	}
 
-	if (!particles.empty())
-	{
-		GLint polygonMode[2];
-		glGetIntegerv(GL_POLYGON_MODE, polygonMode);
-
-		glPolygonMode(GL_FRONT, GL_FILL);
-
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glColor4f(1.0, 1.0, 1.0, 1);
-		
-		glEnable(GL_TEXTURE_2D);
-
-		
-
-		for (size_t i = 0; i < particles.size(); i++)
-		{
-			//enable depth test
-			GLint depthTest[2];
-			glGetIntegerv(GL_DEPTH_TEST, polygonMode);
-			glDisable(GL_DEPTH_TEST);
-
-			glEnable(GL_BLEND);
-
-			//Draw particle
-			DrawParticle(i);
-
-
-			glEnable(depthTest[0]);
-			glGetIntegerv(GL_POLYGON_MODE, &polygonMode[0]);
-			glDisable(GL_BLEND);
-			glEnable(GL_DEPTH_TEST);
-
-		}
-		glDisable(GL_TEXTURE_2D);
-		glPolygonMode(GL_FRONT, polygonMode[0]);
-	}
 }
 
 void Emitter::PostUpdate(float dt)
 {
+
 	
 }
 
@@ -422,87 +510,12 @@ void Emitter::UpdateSubmodules(float dt)
 
 void Emitter::DrawParticle(int index)
 {
-	//unsigned int ID = glCreateProgram();
-	//glAttachShader(ID, vertices);
-	//glAttachShader(ID, fragmentShader);
-	//glLinkProgram(ID);
-
-	//glUseProgram(particles[index]->selectedShader->ID);
-	//std::shared_ptr<CDevShader> s = particles[index]->selectedShader;
-
-
-	//CDeVertex vertices[4] = {
-	//	particles[index]->vertices[0],
-	//	particles[index]->vertices[1],
-	//	particles[index]->vertices[2],
-	//	particles[index]->vertices[3]
-	//};
-
-	//int indices[6] =
-	//{
-	//	particles[index]->indices[0],
-	//	particles[index]->indices[1],
-	//	particles[index]->indices[2],
-	//	particles[index]->indices[3],
-	//	particles[index]->indices[4],
-	//	particles[index]->indices[5]
-	//};
-
-	////set mesh
-	//glGenVertexArrays(1, &VAO);
-	//glGenBuffers(1, &VBO);
-	//glGenBuffers(1, &EBO);
-
-	//glBindVertexArray(VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(CDeVertex), &vertices[0], GL_DYNAMIC_DRAW);
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), &indices[0], GL_DYNAMIC_DRAW);
-
-	//// Specify position data
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Position));
-	//glEnableVertexAttribArray(0);
-
-	//// Specify normal data
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, Normal));
-	//glEnableVertexAttribArray(1);
-
-	//// Specify texture coordinates data
-	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CDeVertex), (void*)offsetof(CDeVertex, TexCoords));
-	//glEnableVertexAttribArray(2);
-
-	// Use the Shader program
-	//put if selected
-	//particles[index]->myShader->Use();
-
-	
-
-
-	
-
-	
-
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, GL_TEXTURE0);
-
 
 	if (!particles[index]->textures.empty())
 	{
 		for (unsigned int i = 0; i < particles[index]->textures.size(); i++)
 		{
 
-			GLint actTex[2];
-			glGetIntegerv(GL_ACTIVE_TEXTURE, actTex);
-
-			int a = int(GL_TEXTURE0) - 33984;
-			int b = int(GL_TEXTURE31) - 33984;
-			int c = int(actTex[0]) - 33984;
-
-			 //Bind the texture to the active texture unit
-
-			 //Set the active texture unit
-		/*	glActiveTexture(GL_TEXTURE0 + i);*/
 			vec3 vertices[4]{
 				particles[index]->vertices[0].Position,
 				particles[index]->vertices[1].Position,
@@ -528,43 +541,13 @@ void Emitter::DrawParticle(int index)
 			glTexCoord2f(texCoords[3].x, texCoords[3].y); glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
 
 			glEnd();
-			glDisable(GL_BLEND);
 
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
-			
-			//// retrieve texture number (the N in diffuse_textureN)
-			//std::string number;
-			//std::string name = particles[index]->textures[i]->type;
-			//if (name == "texture_diffuse")
-			//	number = std::to_string(diffuseNr++);
-			//else if (name == "texture_specular")
-			//	number = std::to_string(specularNr++);
 
-			//	// Bind the texture to the corresponding texture unit
-			//glActiveTexture(GL_TEXTURE0 + i);
-			//glBindTexture(GL_TEXTURE_2D, particles[index]->textures[i]->id);
-
-			//// Set the uniform variable for the texture in the fragment shader
-			//glUniform1i(glGetUniformLocation(particles[index]->myShader->ID, ("material." + name + number).c_str()), i);
 		}
 	}
-	
 
-	//// Draw the mesh using the indices
-	//glBindVertexArray(VAO);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
-	/*particles[index]->myShader->Unuse();
-	particles[index]->selectedShader->Unuse();*/
-
-	// Unbind the vertex array after drawing
-	//glBindVertexArray(0);
-
-	//glDeleteVertexArrays(4, &VAO);
-	//glDeleteBuffers(sizeof(VBO), &VBO);
-	//glDeleteBuffers(sizeof(EBO), &EBO);
 }
 
 /// <summary>
@@ -624,6 +607,14 @@ void Emitter::UpdateSubmoduleShaderData(std::shared_ptr<Submodule>& submodule, m
 	submod->particle_selectedShader->SetMat4x4("model", i);
 
 
+}
+
+void Emitter::PushParticlesToSystem()
+{
+	for (std::shared_ptr<Particle> p : particles)
+	{
+		particleSystem->allParticles.push_back(p);
+	}
 }
 
 		//Submodule

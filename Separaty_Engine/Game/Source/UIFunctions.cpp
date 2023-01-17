@@ -24,12 +24,20 @@ std::string WStringToString(const std::wstring& s)
 
 UIFunctions::UIFunctions()
 {
-	ghostObject = App->engineSystem->CreateNewGameObject();
+	
 }
 
 UIFunctions::~UIFunctions()
 {
 
+}
+
+bool UIFunctions::Init()
+{
+
+	ghostObject = App->engineSystem->CreateNewGameObject();
+
+	return true;
 }
 
 bool UIFunctions::Start()

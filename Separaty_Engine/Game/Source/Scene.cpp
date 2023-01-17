@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "ModuleUI.h"
+#include "ModuleCamera3D.h"
 
 
 
@@ -691,9 +692,7 @@ bool Scene::Start()
 	return ret;
 }
 
-
-
-update_status Scene::Update(float dt)
+update_status Scene::PreUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 	if (!gameObjects.empty())
@@ -708,26 +707,42 @@ update_status Scene::Update(float dt)
 			ret = item->PreUpdate(dt);
 			item_it++;
 		}
+	}
 
-		item = gameObjects.front();
-		item_it = 0;
+
+	return UPDATE_CONTINUE;
+}
+
+
+
+update_status Scene::Update(float dt)
+{
+	update_status ret = UPDATE_CONTINUE;
+	if (!gameObjects.empty())
+	{
+
+		Module* item = gameObjects.front();
+		int item_it = 0;
 
 		while (item_it < gameObjects.size() && ret == true && item->enabled)
 		{
 			item = gameObjects[item_it];
 			ret = item->Update(dt);
+
+			GameObject* itemGo = (GameObject*)item;
+			if (itemGo->HasComponent(GOC_Type::GOC_PARTICLE_EMITTER))
+			{
+				GOC_ParticleEmitter* goEmitter = (GOC_ParticleEmitter*)itemGo->GetComponent(GOC_Type::GOC_PARTICLE_EMITTER);
+				if (goEmitter->emitter->particles.size() > 0)
+				{
+					goEmitter->emitter->PushParticlesToSystem();
+				}
+
+			}
+
 			item_it++;
 		}
 
-		item = gameObjects.front();
-		item_it = 0;
-
-		while (item_it < gameObjects.size() && ret == true && item->enabled)
-		{
-			item = gameObjects[item_it];
-			ret = item->PostUpdate(dt);
-			item_it++;
-		}
 	}
 
 
@@ -782,6 +797,29 @@ update_status Scene::Update(float dt)
 
 }
 
+update_status Scene::PostUpdate(float dt)
+{
+	update_status ret = UPDATE_CONTINUE;
+	if (!gameObjects.empty())
+	{
+
+		Module* item = gameObjects.front();
+		int item_it = 0;
+
+		while (item_it < gameObjects.size() && ret == true && item->enabled)
+		{
+			item = gameObjects[item_it];
+			ret = item->PostUpdate(dt);
+			item_it++;
+		}
+		if (engineSystem->particleSystem->allParticles.size() > 0)
+		{
+			engineSystem->particleSystem->OrderParticlesByDistanceTo(float3(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z));
+			engineSystem->particleSystem->DrawAllParticles();
+		}
+	}
+	return UPDATE_CONTINUE;
+}
 
 GameObject* Scene::CreateNewGameObject()
 {

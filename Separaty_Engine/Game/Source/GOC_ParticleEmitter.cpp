@@ -21,15 +21,8 @@ GOC_ParticleEmitter::~GOC_ParticleEmitter()
 {
 }
 
-bool GOC_ParticleEmitter::Execute()
+bool GOC_ParticleEmitter::PreExecute(float dt)
 {
-	vec3 emitterPos = gameObject->transform->GetPosition();
-	emitter->position = float3(emitterPos.x, emitterPos.y, emitterPos.z);
-
-	for (std::shared_ptr<Submodule> submod : emitter->submodules)
-
-	emitter->emitterdt = App->ui->uiFunctions->playStopWindow->timeSpeed;
-
 	if (emitter->particles.size() > 0)
 
 	{
@@ -40,6 +33,23 @@ bool GOC_ParticleEmitter::Execute()
 			gameObject->transform->Set4x4MatrixLocal(particle->rotationMatrix);
 		}
 	}
+
+
+	emitter->PreUpdate(dt);
+	return true;
+}
+
+
+bool GOC_ParticleEmitter::Execute(float dt)
+{
+	vec3 emitterPos = gameObject->transform->GetPosition();
+	emitter->position = float3(emitterPos.x, emitterPos.y, emitterPos.z);
+
+	for (std::shared_ptr<Submodule> submod : emitter->submodules)
+
+	emitter->emitterdt = App->ui->uiFunctions->playStopWindow->timeSpeed;
+
+	
 
 	if (App->ui->uiFunctions->inspectorWindow->activeBox)
 	{
@@ -104,8 +114,18 @@ bool GOC_ParticleEmitter::Execute()
 		emitter->UpdateSubmoduleShaderData(submod, projection, view);
 	}
 
+	emitter->Update(dt);
+
 	return true;
 }
+
+
+bool GOC_ParticleEmitter::PostExecute(float dt)
+{
+	emitter->PostUpdate(dt);
+	return true;
+}
+
 
 void GOC_ParticleEmitter::DrawCube(static float3* corners, Color color)
 {

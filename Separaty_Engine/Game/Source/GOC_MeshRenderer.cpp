@@ -182,10 +182,19 @@ void GOC_MeshRenderer::RenderAxis()
 	glPopMatrix();
 }
 
-bool GOC_MeshRenderer::Execute()
+bool GOC_MeshRenderer::Execute(float dt)
 {
 	//App->ui->AppendToOutput(DEBUG_LOG("executing"));
 	transform = gameObject->transform->Get4x4Matrix();
+
+
+	return true;
+}
+
+bool GOC_MeshRenderer::PostExecute(float dt)
+{
+	//App->ui->AppendToOutput(DEBUG_LOG("executing"));
+
 	Render();
 
 	return true;

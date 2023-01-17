@@ -211,6 +211,11 @@ public:
 
 	std::shared_ptr<Emitter> CreateEmitter();
 	
+	std::vector<std::shared_ptr<Particle>> allParticles;
+
+	void OrderParticlesByDistanceTo(float3 position);
+	void DrawAllParticles();
+	void DrawParticle(int index);
 	
 	
 
@@ -230,7 +235,8 @@ private:
 class Emitter
 {
 public:
-	Emitter();
+	Emitter(){}
+	Emitter(ParticleSystem* system);
 	~Emitter();
 
 	void PreUpdate(float dt);
@@ -246,12 +252,15 @@ public:
 	std::shared_ptr<Submodule> CreateSubmodule();
 	std::shared_ptr<Submodule> GetSubmodule(uint id);
 	
+	void PushParticlesToSystem();
 
 	bool EditColor(ColorTime& colorTime, uint pos = 0u);
 
 	ImVec4 EqualsFloat4(const float4 float4D);
 
 	//update order: UpdateSubmodules() in preUpdate -> Update() self and spawns if necessary -> DrawParticles() on postUpdate
+
+	ParticleSystem* particleSystem;
 
 	std::vector<std::shared_ptr<Submodule>> submodules;
 	std::vector< std::shared_ptr<Particle>> particles;
@@ -271,6 +280,7 @@ public:
 	mat4x4 rotationLocal;
 	mat4x4 rotationWorld;
 
+	float3 camPos;
 	
 
 	bool timeColor = false;
@@ -404,6 +414,8 @@ public:
 	mat4x4 rotationLocal;
 	mat4x4 rotationWorld;
 
+	int drawOrder;
+
 	//particle data
 	Emitter* emitter;
 	std::vector<std::shared_ptr<Submodule>> submodules;
@@ -423,8 +435,7 @@ public:
 	bool   followEmitter;
 
 	mat4x4 rotationMatrix = IdentityMatrix;
-
-
+	
 private:
 
 };

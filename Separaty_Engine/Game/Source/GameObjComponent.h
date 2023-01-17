@@ -48,7 +48,19 @@ public:
 		return GOC_type;
 	}
 
-	virtual bool Execute() = 0;
+	virtual bool PreExecute(float dt = 0)
+	{
+		return true;
+	}
+	
+	virtual bool Execute(float dt = 0)
+	{
+		return true;
+	}
+	virtual bool PostExecute(float dt = 0)
+	{
+		return true;
+	}
 
 	std::string GetName() const
 	{

@@ -27,7 +27,7 @@ public:
 	void DrawCube(static float3* corners, Color color);
 
 
-	bool Execute();
+	bool Execute(float dt);
 
 
 	float4x4 GetViewMatrix();

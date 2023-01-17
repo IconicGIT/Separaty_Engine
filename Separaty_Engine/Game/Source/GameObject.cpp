@@ -29,6 +29,24 @@ bool GameObject::Start()
 	return true;
 }
 
+update_status GameObject::PreUpdate(float dt)
+{
+	bool ret = UPDATE_CONTINUE;
+
+	GameObjectComponent* item = components.front();
+	int item_it = 0;
+
+	while (item_it < components.size() && ret == true)
+	{
+		item = components[item_it];
+		ret = item->PreExecute(dt);
+		item_it++;
+	}
+
+
+	return UPDATE_CONTINUE;
+}
+
 update_status GameObject::Update(float dt)
 {
 	bool ret = UPDATE_CONTINUE;
@@ -39,7 +57,7 @@ update_status GameObject::Update(float dt)
 	while (item_it < components.size() && ret == true)
 	{
 		item = components[item_it];
-		ret = item->Execute();
+		ret = item->Execute( dt);
 		item_it++;
 	}
 	
@@ -49,6 +67,19 @@ update_status GameObject::Update(float dt)
 
 update_status GameObject::PostUpdate(float dt)
 {
+
+	bool ret = UPDATE_CONTINUE;
+
+	GameObjectComponent* item = components.front();
+	int item_it = 0;
+
+	while (item_it < components.size() && ret == true)
+	{
+		item = components[item_it];
+		ret = item->PostExecute(dt);
+		item_it++;
+	}
+
 
 	return UPDATE_CONTINUE;
 }
@@ -245,19 +276,27 @@ bool GameObject::LoadState(JSON_Value* file, std::string root)
 }
 
 
-void GameObject::AddComponent(GOC_Type type)
+bool GameObject::HasComponent(GOC_Type type)
 {
-
 	for (auto component : components)
 	{
 		if (component->GetGOC_Type() == type)
 		{
-			App->ui->AppendToOutput(DEBUG_LOG("There already exists a component of that type in %s!", name.c_str()));
-			return;
+			return true;
 		}
 	}
-	GameObjectComponent* comp = engineSystem->CreateNewGOC(this, type);
-	components.push_back(comp);
+	return false;
+}
+
+void GameObject::AddComponent(GOC_Type type)
+{
+	if (!this->HasComponent(type))
+	{
+		GameObjectComponent* comp = engineSystem->CreateNewGOC(this, type);
+		components.push_back(comp);
+	}
+	else
+		App->ui->AppendToOutput(DEBUG_LOG("There already exists a component of that type in %s!", name.c_str()));
 
 }
 

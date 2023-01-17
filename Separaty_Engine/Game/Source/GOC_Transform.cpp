@@ -33,7 +33,7 @@ void GOC_Transform::SetScale(float x, float y, float z)
 	transformWorld.scale(x, y, z);
 }
 
-bool GOC_Transform::Execute()
+bool GOC_Transform::Execute(float dt)
 {	
 
 	return true;

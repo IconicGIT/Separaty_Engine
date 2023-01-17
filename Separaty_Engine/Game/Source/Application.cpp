@@ -26,9 +26,9 @@ Application::Application() : debug(false)
 	// Scenes
 	AddModule(scene_intro);
 
+	AddModule(ui);
 	// Renderer last!
 	AddModule(renderer3D);
-	AddModule(ui);
 }
 
 Application::~Application()
@@ -90,6 +90,8 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	engineSystem->ExecutePendingToDelete();
 
 	if (loadGameRequested == true)

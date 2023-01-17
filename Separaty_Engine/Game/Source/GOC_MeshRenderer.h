@@ -36,7 +36,8 @@ public:
 
 
 	void Render();
-	bool Execute();
+	bool Execute(float dt);
+	bool PostExecute(float dt);
 
 	void SetMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	void SetMesh(Mesh* mesh);

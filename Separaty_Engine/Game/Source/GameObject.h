@@ -31,6 +31,7 @@ public:
 
 	bool Init();
 	bool Start();
+	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp(); 
@@ -68,6 +69,7 @@ public:
 		return components;
 	}
 
+	bool HasComponent(GOC_Type type);
 	void AddComponent(GOC_Type type);
 	GameObjectComponent* GetComponent(GOC_Type type);
 	bool selected = false;

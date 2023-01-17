@@ -20,7 +20,9 @@ public:
 	GOC_ParticleEmitter(GameObject* gameObjectAttached, int id);
 	~GOC_ParticleEmitter();
 
-	bool Execute();
+	bool PreExecute(float dt);
+	bool Execute(float dt);
+	bool PostExecute(float dt);
 
 	std::shared_ptr<Emitter> emitter;
 

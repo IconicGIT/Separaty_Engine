@@ -57,7 +57,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	/*gameObject->Update(dt);
 	gameObject->PostUpdate(dt);*/
 
-	plane.Render();
 	//cube.Render();
 	//sphere.Render();
 	////cil.Render();
@@ -125,6 +124,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	//{
 	//	primitives[n]->Render();
 	//}
+	//plane.Render();
 
 	return UPDATE_CONTINUE;
 }

@@ -53,7 +53,7 @@ GOC_Camera::GOC_Camera(GameObject* gameObjectAttached, int id)
 	frustumColor = Color(0, 1, 0, 1);
 }
 
-bool GOC_Camera::Execute()
+bool GOC_Camera::Execute(float dt)
 {
 
 	UpdateFrustum();

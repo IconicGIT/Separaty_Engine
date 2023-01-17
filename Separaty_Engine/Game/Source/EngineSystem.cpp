@@ -88,7 +88,6 @@ update_status EngineSystem::PreUpdate(float dt)
 			item_it++;
 		}
 	}
-	particleSystem->PreUpdate(dt);
 
 	return UPDATE_CONTINUE;
 }
@@ -96,6 +95,7 @@ update_status EngineSystem::PreUpdate(float dt)
 update_status EngineSystem::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
+
 
 	if (!scenes.empty())
 	{
@@ -111,7 +111,6 @@ update_status EngineSystem::Update(float dt)
 
 	}
 
-	particleSystem->Update(dt);
 	if (App->input->FileJustDropped())
 	{
 		LoadFromPath(App->input->GetDroppedFileDir());
@@ -121,8 +120,6 @@ update_status EngineSystem::Update(float dt)
 }
 update_status EngineSystem::PostUpdate(float dt)
 {
-
-	particleSystem->PostUpdate(dt);
 
 	update_status ret = UPDATE_CONTINUE;
 
